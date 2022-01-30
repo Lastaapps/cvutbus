@@ -10,6 +10,7 @@
           <set>
             <option value="/mnt/c/SSD_projects/CVUTBus" />
             <option value="/mnt/c/SSD_projects/CVUTBus/app" />
+            <option value="/mnt/c/SSD_projects/CVUTBus/buildSrc" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />
