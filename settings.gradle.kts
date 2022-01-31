@@ -38,4 +38,5 @@ include(
     ":entity",
     ":storage:database",
     ":storage:repo",
+    ":generator"
 )

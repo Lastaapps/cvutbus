@@ -10,7 +10,7 @@ CREATE TABLE routes (
 CREATE INDEX routes_index ON routes(route_id);
 
 insert:
-    INSERT INTO  routes(route_id,route_short_name,route_long_name)
+    INSERT OR IGNORE INTO routes(route_id,route_short_name,route_long_name)
     VALUES (:routeId,:shortName, :longName);
 
 deleteAll:

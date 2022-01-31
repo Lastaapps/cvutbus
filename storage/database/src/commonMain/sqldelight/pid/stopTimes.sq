@@ -13,7 +13,7 @@ CREATE TABLE stopTimes (
 CREATE INDEX stopTimesIndex ON stopTimes(stop_id, trip_id);
 
 insert:
-    INSERT INTO stopTimes (stop_id, trip_id, arrival_time, departure_time)
+    INSERT OR IGNORE INTO stopTimes (stop_id, trip_id, arrival_time, departure_time)
     VALUES (:stopId, :tripId, :arrivalTime,:departureTime);
 
 deleteAll:

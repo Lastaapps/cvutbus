@@ -23,6 +23,7 @@ plugins {
     id(Plugins.APPLICATION) version Versions.GRADLE apply false
     id(Plugins.LIBRARY) version Versions.GRADLE apply false
     id("org.jetbrains.kotlin.android") version Versions.KOTLIN apply false
+    kotlin("jvm") version Versions.KOTLIN apply false
 }
 
 tasks.register("clean", Delete::class) {

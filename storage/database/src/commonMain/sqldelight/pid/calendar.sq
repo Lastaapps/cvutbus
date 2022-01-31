@@ -12,7 +12,7 @@ CREATE TABLE calendar (
 CREATE INDEX calendar_index ON calendar(service_id);
 
 insert:
-    INSERT INTO calendar (service_id, days, start_date, end_date)
+    INSERT OR IGNORE INTO calendar (service_id, days, start_date, end_date)
     VALUES (:serviceId, :days, :startDate, :endDate);
 
 deleteAll:

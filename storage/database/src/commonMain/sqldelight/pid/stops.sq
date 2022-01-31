@@ -15,7 +15,7 @@ getStopsByName:
     WHERE stops.stop_name IN ?;
 
 insert:
-    INSERT INTO  stops(stop_id, stop_name)
+    INSERT OR IGNORE INTO  stops(stop_id, stop_name)
     VALUES (:stopId, :stopName);
 
 deleteAll:
