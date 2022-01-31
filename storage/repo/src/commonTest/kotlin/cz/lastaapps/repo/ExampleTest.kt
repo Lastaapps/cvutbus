@@ -17,13 +17,13 @@
  * along with ČVUT Bus.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package cz.lastaapps.entity
+package cz.lastaapps.repo
 
-import cz.lastaapps.entity.utils.ServiceDayTime
 
-data class StopTime(
-    val stopId: StopId,
-    val tripId: TripId,
-    val arrival: ServiceDayTime,
-    val departure: ServiceDayTime,
-)
+import kotlin.test.Test
+
+class ExampleTest {
+    @Test
+    fun example() {
+    }
+}

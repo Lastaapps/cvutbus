@@ -61,10 +61,10 @@ android {
         jvmTarget = Versions.JVM_TARGET
     }
     buildFeatures {
-        compose = true
+        //compose = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = Versions.COMPOSE_COMPILER
+        //kotlinCompilerExtensionVersion = Versions.COMPOSE_COMPILER
     }
     packagingOptions {
         resources {
@@ -77,6 +77,8 @@ dependencies {
     coreLibraryDesugaring(Libs.DESUGARING)
 
     implementation(Libs.APPCOMPAT)
+    implementation(Libs.MATERIAL)
+
     testImplementation(Tests.JUNIT)
     testImplementation(Tests.ESPRESSO)
 }

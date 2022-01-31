@@ -1,0 +1,20 @@
+import cz.lastaapps.entity.StopId;
+import cz.lastaapps.entity.TripId;
+import cz.lastaapps.entity.utils.ServiceDayTime;
+
+CREATE TABLE stopTimes (
+    stop_id TEXT AS StopId NOT NULL,
+    trip_id TEXT AS TripId NOT NULL,
+    arrival_time INTEGER AS ServiceDayTime NOT NULL,
+    departure_time INTEGER AS ServiceDayTime NOT NULL,
+    PRIMARY KEY(stop_id, trip_id, arrival_time, departure_time)
+);
+
+CREATE INDEX stopTimesIndex ON stopTimes(stop_id, trip_id);
+
+insert:
+    INSERT INTO stopTimes (stop_id, trip_id, arrival_time, departure_time)
+    VALUES (:stopId, :tripId, :arrivalTime,:departureTime);
+
+deleteAll:
+    DELETE FROM stopTimes;

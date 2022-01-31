@@ -11,10 +11,13 @@
         <option name="gradleJvm" value="17" />
         <option name="modules">
           <set>
-            <option value="/mnt/c/SSD_projects/CVUTBus" />
-            <option value="/mnt/c/SSD_projects/CVUTBus/app" />
-            <option value="/mnt/c/SSD_projects/CVUTBus/buildSrc" />
-            <option value="/mnt/c/SSD_projects/CVUTBus/entity" />
+            <option value="$PROJECT_DIR$" />
+            <option value="$PROJECT_DIR$/app" />
+            <option value="$PROJECT_DIR$/buildSrc" />
+            <option value="$PROJECT_DIR$/entity" />
+            <option value="$PROJECT_DIR$/storage" />
+            <option value="$PROJECT_DIR$/storage/database" />
+            <option value="$PROJECT_DIR$/storage/repo" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />

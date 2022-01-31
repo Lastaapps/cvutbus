@@ -6,6 +6,14 @@
       <module name="ČVUTBus.entity.commonTest" target="11" />
       <module name="ČVUTBus.entity.desktopMain" target="11" />
       <module name="ČVUTBus.entity.desktopTest" target="11" />
+      <module name="ČVUTBus.storage.database.commonMain" target="11" />
+      <module name="ČVUTBus.storage.database.commonTest" target="11" />
+      <module name="ČVUTBus.storage.database.desktopMain" target="11" />
+      <module name="ČVUTBus.storage.database.desktopTest" target="11" />
+      <module name="ČVUTBus.storage.repo.commonMain" target="11" />
+      <module name="ČVUTBus.storage.repo.commonTest" target="11" />
+      <module name="ČVUTBus.storage.repo.desktopMain" target="11" />
+      <module name="ČVUTBus.storage.repo.desktopTest" target="11" />
     </bytecodeTargetLevel>
   </component>
 </project>

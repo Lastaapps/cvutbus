@@ -22,4 +22,14 @@ package cz.lastaapps.entity
 sealed class Direction(val id: Int) {
     object Outbound : Direction(0)
     object Inbound : Direction(1)
+
+    companion object {
+        fun withId(id: Int): Direction {
+            return when (id) {
+                Outbound.id -> Outbound
+                Inbound.id -> Inbound
+                else -> error("Unknown direction")
+            }
+        }
+    }
 }

@@ -17,13 +17,23 @@
  * along with ČVUT Bus.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package cz.lastaapps.entity
+package cz.lastaapps.database.testdata
 
-import cz.lastaapps.entity.utils.ServiceDayTime
+import cz.lastaapps.entity.Route
+import cz.lastaapps.entity.RouteId
+import java.io.BufferedReader
+import java.io.InputStreamReader
 
-data class StopTime(
-    val stopId: StopId,
-    val tripId: TripId,
-    val arrival: ServiceDayTime,
-    val departure: ServiceDayTime,
-)
+object RoutesParser {
+
+    fun parse(): List<Route> {
+        val stream = ResourceOpener.openResource("routes")
+        val buffered = BufferedReader(InputStreamReader(stream))
+
+        buffered.readLine()
+        return buffered.readLines().map {
+            val (routeId, _, short, long) = it.safeSplit()
+            Route(RouteId(routeId.drop(1).toInt()), short, long)
+        }
+    }
+}

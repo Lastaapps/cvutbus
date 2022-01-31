@@ -17,13 +17,27 @@
  * along with ČVUT Bus.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package cz.lastaapps.entity
+package cz.lastaapps.database.testdata
 
-import cz.lastaapps.entity.utils.ServiceDayTime
-
-data class StopTime(
-    val stopId: StopId,
-    val tripId: TripId,
-    val arrival: ServiceDayTime,
-    val departure: ServiceDayTime,
-)
+fun String.safeSplit(): List<String> {
+    val parts = mutableListOf<String>()
+    var text = ""
+    var isProtected = false
+    forEach { char ->
+        when (char) {
+            ',' -> {
+                if (isProtected)
+                    text += char
+                else {
+                    parts += text
+                    text = ""
+                }
+            }
+            '"' -> isProtected = !isProtected
+            '\n' -> {}
+            else -> text += char
+        }
+    }
+    parts += text
+    return parts
+}

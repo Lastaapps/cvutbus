@@ -17,13 +17,14 @@
  * along with ČVUT Bus.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package cz.lastaapps.entity
+package cz.lastaapps.cvutbus
 
-import cz.lastaapps.entity.utils.ServiceDayTime
+import android.os.Bundle
+import androidx.activity.ComponentActivity
 
-data class StopTime(
-    val stopId: StopId,
-    val tripId: TripId,
-    val arrival: ServiceDayTime,
-    val departure: ServiceDayTime,
-)
+class MainActivity : ComponentActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        finish()
+    }
+}

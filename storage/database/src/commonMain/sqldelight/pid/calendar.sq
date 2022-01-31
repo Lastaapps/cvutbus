@@ -1,0 +1,19 @@
+import cz.lastaapps.entity.ServiceDays;
+import cz.lastaapps.entity.ServiceId;
+import kotlinx.datetime.LocalDate;
+
+CREATE TABLE calendar (
+    service_id TEXT AS ServiceId NOT NULL,
+    days INTEGER AS ServiceDays NOT NULL,
+    start_date INTEGER AS LocalDate NOT NULL,
+    end_date INTEGER AS LocalDate NOT NULL
+);
+
+CREATE INDEX calendar_index ON calendar(service_id);
+
+insert:
+    INSERT INTO calendar (service_id, days, start_date, end_date)
+    VALUES (:serviceId, :days, :startDate, :endDate);
+
+deleteAll:
+    DELETE FROM calendar;

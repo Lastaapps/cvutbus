@@ -20,8 +20,8 @@
 buildscript {
 }
 plugins {
-    id("com.android.application") version Versions.GRADLE apply false
-    id("com.android.library") version Versions.GRADLE apply false
+    id(Plugins.APPLICATION) version Versions.GRADLE apply false
+    id(Plugins.LIBRARY) version Versions.GRADLE apply false
     id("org.jetbrains.kotlin.android") version Versions.KOTLIN apply false
 }
 

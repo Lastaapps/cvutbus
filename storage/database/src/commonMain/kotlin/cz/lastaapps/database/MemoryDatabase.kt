@@ -17,13 +17,10 @@
  * along with ČVUT Bus.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package cz.lastaapps.entity
+package cz.lastaapps.database
 
-import cz.lastaapps.entity.utils.ServiceDayTime
+import com.squareup.sqldelight.db.SqlDriver
 
-data class StopTime(
-    val stopId: StopId,
-    val tripId: TripId,
-    val arrival: ServiceDayTime,
-    val departure: ServiceDayTime,
-)
+expect class MemoryDriverFactory : MenzaDriverFactory {
+    override fun createDriver(): SqlDriver
+}

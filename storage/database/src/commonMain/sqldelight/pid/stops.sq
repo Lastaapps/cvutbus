@@ -1,0 +1,22 @@
+import cz.lastaapps.entity.StopId;
+
+CREATE TABLE stops (
+    stop_id TEXT AS StopId NOT NULL PRIMARY KEY,
+    stop_name TEXT NOT NULL
+);
+
+CREATE INDEX stops_index ON stops(stop_id);
+
+getAllStops:
+    SELECT * FROM stops;
+
+getStopsByName:
+    SELECT * FROM stops
+    WHERE stops.stop_name IN ?;
+
+insert:
+    INSERT INTO  stops(stop_id, stop_name)
+    VALUES (:stopId, :stopName);
+
+deleteAll:
+    DELETE FROM stops;

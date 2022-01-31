@@ -38,8 +38,9 @@ value class ServiceDays private constructor(private val data: Int) {
         }
 
         fun fromDays(
-            monday: Boolean, tuesday: Boolean, wednesday: Boolean,
-            thursday: Boolean, friday: Boolean, saturday: Boolean, sunday: Boolean,
+            monday: Boolean = false, tuesday: Boolean = false, wednesday: Boolean = false,
+            thursday: Boolean = false, friday: Boolean = false, saturday: Boolean = false,
+            sunday: Boolean = false,
         ): ServiceDays {
             var data = 0
 

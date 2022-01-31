@@ -22,7 +22,7 @@ package cz.lastaapps.entity
 data class Trip(
     val routeId: RouteId,
     val serviceId: ServiceId,
-    val tripId: RouteId,
+    val tripId: TripId,
     val headSign: String,
     val direction: Direction,
 )

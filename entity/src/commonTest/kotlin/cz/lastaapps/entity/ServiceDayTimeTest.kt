@@ -19,11 +19,28 @@
 
 package cz.lastaapps.entity
 
-import cz.lastaapps.entity.utils.ServiceDayTime
 
-data class StopTime(
-    val stopId: StopId,
-    val tripId: TripId,
-    val arrival: ServiceDayTime,
-    val departure: ServiceDayTime,
-)
+import cz.lastaapps.entity.utils.ServiceDayTime
+import kotlin.test.Test
+
+class ServiceDayTimeTest {
+
+    @Test
+    fun localTime() {
+
+        val data = listOf(
+            ServiceDayTime(0, 0, 0),
+            ServiceDayTime(1, 0, 0),
+            ServiceDayTime(1, 1, 0),
+            ServiceDayTime(1, 1, 1),
+            ServiceDayTime(1, 1, 2),
+        )
+
+        data.forEach {
+            val transformed = ServiceDayTime.fromDaySeconds(it.toDaySeconds())
+            println("$it - $transformed")
+            assert(it == transformed)
+        }
+
+    }
+}

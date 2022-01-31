@@ -36,4 +36,6 @@ rootProject.name = "ČVUTBus"
 include(
     ":app",
     ":entity",
+    ":storage:database",
+    ":storage:repo",
 )

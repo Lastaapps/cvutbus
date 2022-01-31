@@ -23,4 +23,11 @@ package cz.lastaapps.entity
  * Original format L???
  */
 @JvmInline
-value class RouteId(val id: Int)
+value class RouteId(val id: Int) {
+    companion object {
+        /**
+         * Parses a string in L123 format
+         */
+        fun fromString(id: String) = RouteId(id.drop(1).toInt())
+    }
+}
