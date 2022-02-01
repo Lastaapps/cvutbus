@@ -1,6 +1,6 @@
 
 getTripIds:
-    SELECT startStopTimes.trip_id FROM stops startStops, stops endStops
+    SELECT startStopTimes.trip_id AS tripId FROM stops startStops, stops endStops
 
     INNER JOIN stopTimes startStopTimes ON startStopTimes.stop_id = startStops.stop_id
     INNER JOIN stopTimes endStopTimes ON endStopTimes.stop_id = endStops.stop_id
@@ -10,8 +10,10 @@ getTripIds:
     ;
 
 getAll:
-    SELECT startStops.stop_name, startStopTimes.trip_id, routes.route_short_name, trips.trip_headsign,
-        startStopTimes.arrival_time, calendar.start_date, calendar.end_date, calendar.days
+    SELECT routes.route_short_name AS shortName, trips.trip_headsign AS headsign,
+        startStopTimes.arrival_time AS startArrivalTime, endStopTimes.arrival_time AS endArrivalTime,
+        calendar.start_date AS startDate, calendar.end_date AS endDate,
+        calendar.days AS days
     FROM stops startStops, stops endStops
 
     INNER JOIN stopTimes startStopTimes ON startStopTimes.stop_id = startStops.stop_id
@@ -25,9 +27,11 @@ getAll:
     AND startStopTimes.trip_id = endStopTimes.trip_id
     ;
 
-getAllForDirection:
-    SELECT startStops.stop_name, startStopTimes.trip_id, routes.route_short_name, trips.trip_headsign,
-        startStopTimes.arrival_time, calendar.start_date, calendar.end_date, calendar.days
+getAllForDays:
+    SELECT routes.route_short_name AS shortName, trips.trip_headsign AS headsign,
+        startStopTimes.arrival_time AS startArrivalTime, endStopTimes.arrival_time AS endArrivalTime,
+        calendar.start_date AS startDate, calendar.end_date AS endDate,
+        calendar.days AS days
     FROM stops startStops, stops endStops
 
     INNER JOIN stopTimes startStopTimes ON startStopTimes.stop_id = startStops.stop_id
@@ -39,7 +43,7 @@ getAllForDirection:
 
     WHERE startStops.stop_name = :startDest AND endStops.stop_name = :endDest
     AND startStopTimes.trip_id = endStopTimes.trip_id
-    AND trips.direction = :direction
+    AND calendar.start_date <= :startDate AND :endDate <= calendar.end_date
     ;
 
 getAllColumns:

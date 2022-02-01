@@ -60,7 +60,6 @@ fun createDatabase(driverFactory: MenzaDriverFactory): PIDDatabase {
             trip_idAdapter = cl.tripId,
             route_idAdapter = cl.routeId,
             service_idAdapter = cl.serviceId,
-            directionAdapter = cl.direction,
         ),
     )
 }

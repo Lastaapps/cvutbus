@@ -22,7 +22,6 @@ package cz.lastaapps.generator
 import cz.lastaapps.database.MemoryDriverFactory
 import cz.lastaapps.database.PIDDatabase
 import cz.lastaapps.database.createDatabase
-import cz.lastaapps.entity.Direction
 import cz.lastaapps.entity.StopName
 import io.kotest.matchers.collections.shouldHaveSize
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -64,22 +63,13 @@ class DatabaseTest {
     @OptIn(ExperimentalTime::class)
     @Test
     fun filterTripNumber() = runTest {
-        measureTime {
-            database.queriesQueries.getTripIds(strahov, dejvicka).executeAsList()
-                .shouldHaveSize(358)
-        }.also { println("One query duration: $it") }
+        database.queriesQueries.getTripIds(strahov, dejvicka).executeAsList().shouldHaveSize(358)
         database.queriesQueries.getTripIds(dejvicka, strahov).executeAsList().shouldHaveSize(358)
     }
 
     @Test
     fun directions() = runTest {
-        database.queriesQueries.getAllForDirection(strahov, dejvicka, Direction.Inbound)
-            .executeAsList().shouldHaveSize(176)
-        database.queriesQueries.getAllForDirection(strahov, dejvicka, Direction.Outbound)
-            .executeAsList().shouldHaveSize(182)
-        database.queriesQueries.getAllForDirection(dejvicka, strahov, Direction.Inbound)
-            .executeAsList().shouldHaveSize(176)
-        database.queriesQueries.getAllForDirection(dejvicka, strahov, Direction.Outbound)
-            .executeAsList().shouldHaveSize(182)
+        database.queriesQueries.getAll(strahov, dejvicka).executeAsList().shouldHaveSize(358)
+        database.queriesQueries.getAll(dejvicka, strahov).executeAsList().shouldHaveSize(358)
     }
 }

@@ -26,16 +26,6 @@ import kotlinx.datetime.LocalDate
 
 internal object ColumnConvertors {
 
-    val direction = object : ColumnAdapter<Direction, Long> {
-        override fun decode(databaseValue: Long): Direction {
-            return if (databaseValue.toInt() == Direction.Inbound.id) Direction.Inbound else Direction.Outbound
-        }
-
-        override fun encode(value: Direction): Long {
-            return value.id.toLong()
-        }
-    }
-
     val routeId = object : ColumnAdapter<RouteId, Long> {
         override fun decode(databaseValue: Long): RouteId {
             return RouteId(databaseValue.toInt())

@@ -19,7 +19,6 @@
 
 package cz.lastaapps.repo
 
-import cz.lastaapps.entity.Direction
 import cz.lastaapps.entity.StopName
 
 data class TransportConnection(
@@ -28,8 +27,8 @@ data class TransportConnection(
     val direction: Direction,
 ) {
     val from: StopName
-        get() = if (direction == Direction.Inbound) stop1 else stop2
+        get() = if (direction == Direction.Outbound) stop1 else stop2
 
     val to: StopName
-        get() = if (direction != Direction.Inbound) stop1 else stop2
+        get() = if (direction != Direction.Outbound) stop1 else stop2
 }

@@ -19,7 +19,10 @@
 
 package cz.lastaapps.generator.parsers
 
-import cz.lastaapps.entity.*
+import cz.lastaapps.entity.RouteId
+import cz.lastaapps.entity.ServiceId
+import cz.lastaapps.entity.Trip
+import cz.lastaapps.entity.TripId
 import java.io.BufferedReader
 import java.io.InputStream
 import java.io.InputStreamReader
@@ -36,7 +39,6 @@ object TripsParser {
                 ServiceId(split[1]),
                 TripId(split[2]),
                 split[3],
-                Direction.withId(split[5].toInt()),
             )
         }
     }

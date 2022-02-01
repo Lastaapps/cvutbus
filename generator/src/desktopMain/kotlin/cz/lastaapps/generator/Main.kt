@@ -145,37 +145,22 @@ fun main(): Unit = runBlocking {
                 database.stopsQueries.insert(row.stop_id_, row.stop_name_)
 
                 database.routesQueries.insert(
-                    row.route_id,
-                    row.route_short_name,
-                    row.route_long_name
+                    row.route_id, row.route_short_name, row.route_long_name,
                 )
 
                 database.tripsQueries.insert(
-                    row.trip_id,
-                    row.route_id,
-                    row.service_id,
-                    row.trip_headsign,
-                    row.direction
+                    row.trip_id, row.route_id, row.service_id, row.trip_headsign,
                 )
 
                 database.stopTimesQueries.insert(
-                    row.stop_id__,
-                    row.trip_id,
-                    row.arrival_time,
-                    row.departure_time
+                    row.stop_id__, row.trip_id, row.arrival_time, row.departure_time,
                 )
                 database.stopTimesQueries.insert(
-                    row.stop_id___,
-                    row.trip_id_,
-                    row.arrival_time_,
-                    row.departure_time_
+                    row.stop_id___, row.trip_id_, row.arrival_time_, row.departure_time_,
                 )
 
                 database.calendarQueries.insert(
-                    row.service_id,
-                    row.days,
-                    row.start_date,
-                    row.end_date
+                    row.service_id, row.days, row.start_date, row.end_date,
                 )
             }
     }
@@ -309,7 +294,7 @@ internal fun loadData(dir: File, database: PIDDatabase) {
         parseLog.i { "Parsing trips.txt" }
         TripsParser.parse(stream("trips")).forEach {
             database.tripsQueries.insert(
-                it.tripId, it.routeId, it.serviceId, it.headSign, it.direction
+                it.tripId, it.routeId, it.serviceId, it.headSign,
             )
         }
     }

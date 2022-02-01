@@ -22,6 +22,7 @@ package cz.lastaapps.repo
 import cz.lastaapps.database.PIDDatabase
 import cz.lastaapps.entity.hasDay
 import cz.lastaapps.entity.utils.ServiceDayTime
+import io.kotest.matchers.ints.shouldBeGreaterThanOrEqual
 import kotlinx.datetime.*
 
 class PIDRepoImpl(private val database: PIDDatabase) : PIDRepo {
@@ -29,32 +30,48 @@ class PIDRepoImpl(private val database: PIDDatabase) : PIDRepo {
     companion object {
         /**
          * To how many days each entry should be expanded
+         * Required for service time -> normal time conversion
          */
         private const val generateForDays = 2
+
+        init {
+            generateForDays shouldBeGreaterThanOrEqual 2
+        }
     }
 
     override suspend fun getData(
         fromDateTime: LocalDateTime, connection: TransportConnection,
     ): List<DepartureInfo> {
 
-        val rows = database.queriesQueries.getAllForDirection(
-            connection.from, connection.to, connection.direction,
-        ).executeAsList()
+        val maxStartDate = fromDateTime.date.plus(generateForDays, DateTimeUnit.DAY)
+        val maxEndDate = fromDateTime.date.minus(1, DateTimeUnit.DAY)
 
+        // get data for the both directions
+        val rows = database.queriesQueries.getAllForDays(
+            connection.from, connection.to, maxStartDate, maxEndDate,
+        ).executeAsList()
+        //is a little bit slower
+        //val rows = database.queriesQueries.getAll(connection.from, connection.to).executeAsList()
+
+        // we need to start 1 day before, service day can have up to 47 hours
         val startDate = fromDateTime.date.minus(1, DateTimeUnit.DAY)
-        //caching, creating objects just once
+        // caching, creating objects just once
         val dayShifts = List(generateForDays) { startDate.plus(it.toLong(), DateTimeUnit.DAY) }
 
         val times = mutableListOf<DepartureInfo>()
         rows.forEach { row ->
-            dayShifts.forEach { date ->
-                if (row.start_date <= date && date <= row.end_date && row.days.hasDay(date)) {
-                    times.add(
-                        DepartureInfo(
-                            serviceToNormalDateTime(date, row.arrival_time),
-                            row.route_short_name, row.trip_headsign, connection,
+            // select the correct direction
+            if (row.startArrivalTime.toDaySeconds() < row.endArrivalTime.toDaySeconds()) {
+                dayShifts.forEach { date ->
+                    // is time valid
+                    if (row.startDate <= date && date <= row.endDate && row.days.hasDay(date)) {
+                        times.add(
+                            DepartureInfo(
+                                serviceToNormalDateTime(date, row.startArrivalTime),
+                                row.shortName, row.headsign, connection,
+                            )
                         )
-                    )
+                    }
                 }
             }
         }
@@ -62,19 +79,23 @@ class PIDRepoImpl(private val database: PIDDatabase) : PIDRepo {
         times.sort()
         val index = times.binarySearchBy(fromDateTime) { it.dateTime }
 
-        val validTimes = if (index >= 0) {
-            //there may be same departure time twice from two or more different trips
-            var newIndex = index
-            while (newIndex > 0 && times[newIndex - 1].dateTime == fromDateTime) {
-                newIndex--
-            }
-            times.subList(fromIndex = newIndex, toIndex = times.lastIndex)
-        } else {
-            val newIndex = -1 * (index + 1)
-            if (newIndex <= times.lastIndex)
+        val validTimes =
+            // there is an item with the exact same time as the one requested
+            if (index >= 0) {
+                //there may be same departure time twice from two or more different trips
+                var newIndex = index
+                while (newIndex > 0 && times[newIndex - 1].dateTime == fromDateTime) {
+                    newIndex--
+                }
                 times.subList(fromIndex = newIndex, toIndex = times.lastIndex)
-            else emptyList()
-        }
+            } else {
+                // there is no item, we need to select the next one
+                val newIndex = -1 * (index + 1)
+                if (newIndex <= times.lastIndex)
+                    times.subList(fromIndex = newIndex, toIndex = times.lastIndex)
+                // there are no data left, user should probably update data
+                else emptyList()
+            }
 
         return validTimes
     }

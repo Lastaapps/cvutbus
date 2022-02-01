@@ -24,5 +24,4 @@ data class Trip(
     val serviceId: ServiceId,
     val tripId: TripId,
     val headSign: String,
-    val direction: Direction,
 )
