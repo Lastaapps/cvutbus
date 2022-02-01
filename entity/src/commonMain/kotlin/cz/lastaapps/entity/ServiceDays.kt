@@ -22,6 +22,7 @@ package cz.lastaapps.entity
 import cz.lastaapps.entity.utils.index
 import io.kotest.matchers.collections.shouldHaveSize
 import kotlinx.datetime.DayOfWeek
+import kotlinx.datetime.LocalDate
 
 /**
  * Stores in which days of week a service operates
@@ -65,4 +66,16 @@ value class ServiceDays private constructor(private val data: Int) {
     fun hasDay(day: DayOfWeek): Boolean = data and (1 shl day.index) != 0
 
     fun toDatabase(): Int = data
+
+    val days: List<Boolean>
+        get() = listOf(
+            DayOfWeek.MONDAY, DayOfWeek.TUESDAY, DayOfWeek.WEDNESDAY, DayOfWeek.THURSDAY,
+            DayOfWeek.FRIDAY, DayOfWeek.SATURDAY, DayOfWeek.SUNDAY,
+        ).map { hasDay(it) }
+
+    override fun toString(): String {
+        return days.joinToString { if (it) "1" else "0" }
+    }
 }
+
+fun ServiceDays.hasDay(day: LocalDate): Boolean = hasDay(day.dayOfWeek)

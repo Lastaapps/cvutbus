@@ -17,9 +17,14 @@
  * along with ČVUT Bus.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package cz.lastaapps.entity
+package cz.lastaapps.database
 
-data class Stop(
-    val stopId: StopId,
-    val name: StopName,
-)
+import com.squareup.sqldelight.db.SqlDriver
+import java.io.File
+
+actual class DatabaseDriverFactoryImpl(private val file: File) : MenzaDriverFactory {
+    @Suppress("UNREACHABLE_CODE")
+    actual override fun createDriver(): SqlDriver {
+        return JvmSqliteDriver(PIDDatabase.Schema, file.absolutePath)
+    }
+}

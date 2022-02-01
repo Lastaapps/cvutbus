@@ -10,7 +10,7 @@ getTripIds:
     ;
 
 getAll:
-    SELECT startStops.stop_name, startStopTimes.trip_id, routes.route_short_name,
+    SELECT startStops.stop_name, startStopTimes.trip_id, routes.route_short_name, trips.trip_headsign,
         startStopTimes.arrival_time, calendar.start_date, calendar.end_date, calendar.days
     FROM stops startStops, stops endStops
 
@@ -26,7 +26,7 @@ getAll:
     ;
 
 getAllForDirection:
-    SELECT startStops.stop_name, startStopTimes.trip_id, routes.route_short_name,
+    SELECT startStops.stop_name, startStopTimes.trip_id, routes.route_short_name, trips.trip_headsign,
         startStopTimes.arrival_time, calendar.start_date, calendar.end_date, calendar.days
     FROM stops startStops, stops endStops
 

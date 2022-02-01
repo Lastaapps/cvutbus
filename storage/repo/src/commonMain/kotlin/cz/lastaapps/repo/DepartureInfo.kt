@@ -17,17 +17,17 @@
  * along with ČVUT Bus.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package cz.lastaapps.database
+package cz.lastaapps.repo
 
-import com.squareup.sqldelight.db.SqlDriver
-import com.squareup.sqldelight.sqlite.driver.JdbcSqliteDriver
-import java.io.File
+import kotlinx.datetime.LocalDateTime
 
-actual class DatabaseDriverFactoryFactoryImpl(private val file: File) : MenzaDriverFactory {
-    @Suppress("UNREACHABLE_CODE")
-    actual override fun createDriver(): SqlDriver {
-        val driver: SqlDriver = JdbcSqliteDriver("jdbc:sqlite:" + file.absolutePath)
-        PIDDatabase.Schema.create(driver)
-        return driver
+data class DepartureInfo(
+    val dateTime: LocalDateTime,
+    val routeShortName: String,
+    val headSign: String,
+    val connection: TransportConnection,
+) : Comparable<DepartureInfo> {
+    override fun compareTo(other: DepartureInfo): Int {
+        return dateTime.compareTo(other.dateTime)
     }
 }

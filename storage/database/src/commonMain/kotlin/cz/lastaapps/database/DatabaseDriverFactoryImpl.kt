@@ -26,7 +26,7 @@ interface MenzaDriverFactory {
     fun createDriver(): SqlDriver
 }
 
-expect class DatabaseDriverFactoryFactoryImpl : MenzaDriverFactory {
+expect class DatabaseDriverFactoryImpl : MenzaDriverFactory {
     override fun createDriver(): SqlDriver
 }
 
@@ -48,6 +48,7 @@ fun createDatabase(driverFactory: MenzaDriverFactory): PIDDatabase {
         ),
         stopsAdapter = Stops.Adapter(
             stop_idAdapter = cl.stopId,
+            stop_nameAdapter = cl.stopName,
         ),
         stopTimesAdapter = StopTimes.Adapter(
             trip_idAdapter = cl.tripId,

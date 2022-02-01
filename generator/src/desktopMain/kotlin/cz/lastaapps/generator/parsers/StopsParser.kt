@@ -21,6 +21,7 @@ package cz.lastaapps.generator.parsers
 
 import cz.lastaapps.entity.Stop
 import cz.lastaapps.entity.StopId
+import cz.lastaapps.entity.StopName
 import java.io.BufferedReader
 import java.io.InputStream
 import java.io.InputStreamReader
@@ -32,7 +33,7 @@ object StopsParser {
 
         return buffered.readLines().drop(1).map { line ->
             val (stopId, name) = line.safeSplit()
-            Stop(StopId(stopId), name)
+            Stop(StopId(stopId), StopName(name))
         }
     }
 }

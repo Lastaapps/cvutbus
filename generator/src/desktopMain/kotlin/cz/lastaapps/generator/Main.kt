@@ -19,10 +19,11 @@
 
 package cz.lastaapps.generator
 
-import cz.lastaapps.database.DatabaseDriverFactoryFactoryImpl
+import cz.lastaapps.database.DatabaseDriverFactoryImpl
 import cz.lastaapps.database.MemoryDriverFactory
 import cz.lastaapps.database.PIDDatabase
 import cz.lastaapps.database.createDatabase
+import cz.lastaapps.entity.StopName
 import cz.lastaapps.generator.parsers.*
 import io.ktor.client.*
 import io.ktor.client.engine.cio.*
@@ -79,6 +80,10 @@ const val jsonName = "config.json"
  */
 fun main(): Unit = runBlocking {
 
+    val skipDownload = false
+    val skipZip = false
+    val skipCleanup = false
+
     val dir = File(dirPath)
     dir.mkdirs()
     dir.mkdir()
@@ -87,7 +92,7 @@ fun main(): Unit = runBlocking {
     genLog.i { "Output directory: " + dir.absolutePath }
 
     val archive = File(dir, archiveName)
-    if (!archive.exists() || Instant.ofEpochMilli(archive.lastModified() + 24 * 3600 * 1000) < Instant.now()) {
+    if ((!archive.exists() || Instant.ofEpochMilli(archive.lastModified() + 24 * 3600 * 1000) < Instant.now()) && !skipDownload) {
         downLog.i { "Downloading from http://data.pid.cz/PID_GTFS.zip" }
 
         if (!archive.exists())
@@ -111,7 +116,8 @@ fun main(): Unit = runBlocking {
     }
 
     zipLog.i { "Unzipping..." }
-    unzip(archive, dir)
+    if (!skipZip)
+        unzip(archive, dir)
     zipLog.i { "Unzipped!" }
 
 
@@ -122,13 +128,13 @@ fun main(): Unit = runBlocking {
 
     val stationPairs = listOf(
         "Koleje Strahov" to "Dejvická",
-    )
+    ).map { StopName(it.first) to StopName(it.second) }
 
     val databaseFile = File(dir, databaseName)
     if (databaseFile.exists()) databaseFile.delete()
     databaseFile.createNewFile()
 
-    val database = createDatabase(DatabaseDriverFactoryFactoryImpl(databaseFile))
+    val database = createDatabase(DatabaseDriverFactoryImpl(databaseFile))
     stationPairs.forEach {
         dbLog.i { "Querying data for ${it.first} - ${it.second}" }
         completeDatabase.queriesQueries.getAllColumns(it.first, it.second).executeAsList()
@@ -193,7 +199,8 @@ fun main(): Unit = runBlocking {
     jsonOut.close()
 
     cleanLog.i { "Cleaning up..." }
-    cleanup(dir)
+    if (!skipCleanup)
+        cleanup(dir)
 
     genLog.i { "Done, bye" }
 }

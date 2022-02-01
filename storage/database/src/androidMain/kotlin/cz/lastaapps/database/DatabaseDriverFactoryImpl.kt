@@ -17,9 +17,14 @@
  * along with ČVUT Bus.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package cz.lastaapps.entity
+package cz.lastaapps.database
 
-data class Stop(
-    val stopId: StopId,
-    val name: StopName,
-)
+import android.content.Context
+import com.squareup.sqldelight.android.AndroidSqliteDriver
+import com.squareup.sqldelight.db.SqlDriver
+
+actual class DatabaseDriverFactoryImpl(private val context: Context) : MenzaDriverFactory {
+    actual override fun createDriver(): SqlDriver {
+        return AndroidSqliteDriver(PIDDatabase.Schema, context, "menza.db")
+    }
+}

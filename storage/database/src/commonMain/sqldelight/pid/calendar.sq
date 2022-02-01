@@ -3,7 +3,7 @@ import cz.lastaapps.entity.ServiceId;
 import kotlinx.datetime.LocalDate;
 
 CREATE TABLE calendar (
-    service_id TEXT AS ServiceId NOT NULL,
+    service_id TEXT AS ServiceId NOT NULL PRIMARY KEY,
     days INTEGER AS ServiceDays NOT NULL,
     start_date INTEGER AS LocalDate NOT NULL,
     end_date INTEGER AS LocalDate NOT NULL

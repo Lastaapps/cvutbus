@@ -23,6 +23,7 @@ import cz.lastaapps.database.MemoryDriverFactory
 import cz.lastaapps.database.PIDDatabase
 import cz.lastaapps.database.createDatabase
 import cz.lastaapps.entity.Direction
+import cz.lastaapps.entity.StopName
 import io.kotest.matchers.collections.shouldHaveSize
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
@@ -33,21 +34,24 @@ import kotlin.time.ExperimentalTime
 import kotlin.time.measureTime
 
 @OptIn(ExperimentalCoroutinesApi::class)
-object DatabaseTest {
+class DatabaseTest {
 
-    lateinit var database: PIDDatabase
-    const val strahov = "Koleje Strahov"
-    const val dejvicka = "Dejvická"
+    companion object {
 
-    @OptIn(ExperimentalTime::class)
-    @BeforeAll
-    @JvmStatic
-    fun initDatabase() {
-        database = createDatabase(MemoryDriverFactory())
-        measureTime {
-            loadData(File("src/desktopTest/kotlin/cz/lastaapps/generator/testdata"), database)
-        }.also {
-            println("Database ready, took: $it")
+        lateinit var database: PIDDatabase
+        val strahov = StopName("Koleje Strahov")
+        val dejvicka = StopName("Dejvická")
+
+        @OptIn(ExperimentalTime::class)
+        @BeforeAll
+        @JvmStatic
+        fun initDatabase() {
+            database = createDatabase(MemoryDriverFactory())
+            measureTime {
+                loadData(File("src/desktopTest/kotlin/cz/lastaapps/generator/testdata"), database)
+            }.also {
+                println("Database ready, took: $it")
+            }
         }
     }
 

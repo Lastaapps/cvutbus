@@ -19,7 +19,5 @@
 
 package cz.lastaapps.entity
 
-data class Stop(
-    val stopId: StopId,
-    val name: StopName,
-)
+@JvmInline
+value class StopName(val name: String)

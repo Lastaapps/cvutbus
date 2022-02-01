@@ -76,6 +76,16 @@ internal object ColumnConvertors {
         }
     }
 
+    val stopName = object : ColumnAdapter<StopName, String> {
+        override fun decode(databaseValue: String): StopName {
+            return StopName(databaseValue)
+        }
+
+        override fun encode(value: StopName): String {
+            return value.name
+        }
+    }
+
     val tripId = object : ColumnAdapter<TripId, String> {
         override fun decode(databaseValue: String): TripId {
             return TripId(databaseValue)

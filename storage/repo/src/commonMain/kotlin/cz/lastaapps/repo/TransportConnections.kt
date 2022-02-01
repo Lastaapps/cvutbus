@@ -17,14 +17,14 @@
  * along with ČVUT Bus.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package cz.lastaapps.database
+package cz.lastaapps.repo
 
-import android.content.Context
-import com.squareup.sqldelight.android.AndroidSqliteDriver
-import com.squareup.sqldelight.db.SqlDriver
+import cz.lastaapps.entity.Direction
+import cz.lastaapps.entity.StopName
 
-actual class DatabaseDriverFactoryFactoryImpl(private val context: Context) : MenzaDriverFactory {
-    actual override fun createDriver(): SqlDriver {
-        return AndroidSqliteDriver(PIDDatabase.Schema, context, "menza.db")
-    }
+object TransportConnections {
+    fun strahovDejvicka(toDejvicka: Boolean) = TransportConnection(
+        StopName("Koleje Strahov"), StopName("Dejvická"),
+        if (toDejvicka) Direction.Inbound else Direction.Outbound
+    )
 }

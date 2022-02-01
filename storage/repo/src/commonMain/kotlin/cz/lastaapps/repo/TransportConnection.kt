@@ -19,11 +19,17 @@
 
 package cz.lastaapps.repo
 
+import cz.lastaapps.entity.Direction
+import cz.lastaapps.entity.StopName
 
-import kotlin.test.Test
+data class TransportConnection(
+    private val stop1: StopName,
+    private val stop2: StopName,
+    val direction: Direction,
+) {
+    val from: StopName
+        get() = if (direction == Direction.Inbound) stop1 else stop2
 
-class ExampleTest {
-    @Test
-    fun example() {
-    }
+    val to: StopName
+        get() = if (direction != Direction.Inbound) stop1 else stop2
 }

@@ -27,7 +27,7 @@ object TimeUtils {
 }
 
 /** Central Europe timezone*/
-internal val CET get() = TimeZone.of("Europe/Prague")
+val CET get() = TimeZone.of("Europe/Prague")
 
 /** Days in Czech week */
 internal val daysOfWeekSorted = listOf(

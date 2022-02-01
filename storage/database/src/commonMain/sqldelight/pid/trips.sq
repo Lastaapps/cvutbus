@@ -11,7 +11,7 @@ CREATE TABLE trips (
     direction INTEGER AS Direction NOT NULL
 );
 
-CREATE INDEX trips_index ON trips(trip_id, service_id);
+CREATE INDEX trips_index ON trips(trip_id, service_id, direction);
 
 insert:
     INSERT OR IGNORE INTO trips (trip_id, route_id, service_id, trip_headsign, direction)

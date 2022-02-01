@@ -17,9 +17,13 @@
  * along with ČVUT Bus.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package cz.lastaapps.entity
+package cz.lastaapps.repo
 
-data class Stop(
-    val stopId: StopId,
-    val name: StopName,
-)
+import kotlinx.datetime.LocalDateTime
+
+interface PIDRepo {
+    suspend fun getData(
+        fromDateTime: LocalDateTime,
+        connection: TransportConnection,
+    ): List<DepartureInfo>
+}
