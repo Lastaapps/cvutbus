@@ -1,4 +1,4 @@
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright 2022, Petr Laštovička as Lasta apps, All rights reserved
   ~
   ~ This file is part of ČVUT Bus.
@@ -18,5 +18,13 @@
   -->
 
 <resources>
-    <string name="app_name">ČVUT Bus</string>
+
+    <style name="AppTheme" parent="Theme.Material3.DynamicColors.DayNight" />
+
+    <style name="AppTheme.Starting" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenAnimatedIcon">@drawable/ic_launcher_foreground</item>
+        <item name="android:windowSplashScreenIconBackgroundColor">@color/md_theme_light_primary
+        </item>
+        <item name="postSplashScreenTheme">@style/AppTheme</item>
+    </style>
 </resources>

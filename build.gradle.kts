@@ -18,14 +18,39 @@
  */
 
 buildscript {
+    dependencies {
+        classpath(Classpath.DAGGER_HILT)
+    }
 }
 plugins {
     id(Plugins.APPLICATION) version Versions.GRADLE apply false
     id(Plugins.LIBRARY) version Versions.GRADLE apply false
-    id("org.jetbrains.kotlin.android") version Versions.KOTLIN apply false
-    kotlin("jvm") version Versions.KOTLIN apply false
+
+    id(Plugins.KOTLIN) version Versions.KOTLIN apply false
+    id(Plugins.KSP) version Versions.KSP apply false
+    id(Plugins.KOTLIN_JVM) version Versions.KOTLIN apply false
+
+    id(Plugins.ABOUT_LIBRARIES) version Versions.ABOUT_LIBRARIES apply false
 }
 
 tasks.register("clean", Delete::class) {
     delete(rootProject.buildDir)
+}
+
+allprojects {
+    afterEvaluate {
+        // Remove log pollution until Android support in KMP improves.
+        // https://discuss.kotlinlang.org/t/disabling-androidandroidtestrelease-source-set-in-gradle-kotlin-dsl-script/21448/5
+        project.extensions.findByType<org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension>()
+            ?.let { kmpExt ->
+                kmpExt.sourceSets.removeAll { sourceSet ->
+                    setOf(
+                        "androidAndroidTestRelease",
+                        "androidTestFixtures",
+                        "androidTestFixturesDebug",
+                        "androidTestFixturesRelease",
+                    ).contains(sourceSet.name)
+                }
+            }
+    }
 }

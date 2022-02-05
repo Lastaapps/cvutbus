@@ -30,6 +30,7 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
+        maven("https://jitpack.io")
     }
 }
 rootProject.name = "ČVUTBus"
@@ -38,5 +39,6 @@ include(
     ":entity",
     ":storage:database",
     ":storage:repo",
-    ":generator"
+    ":generator",
+    ":lastaapps:common",
 )

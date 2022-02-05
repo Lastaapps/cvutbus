@@ -17,6 +17,14 @@
   ~ along with ČVUT Bus.  If not, see <https://www.gnu.org/licenses/>.
   -->
 
-<resources>
-    <string name="app_name">ČVUT Bus</string>
-</resources>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+        android:width="24dp"
+        android:height="24dp"
+        android:viewportWidth="256"
+        android:viewportHeight="256">
+    <path
+            android:fillColor="@color/facebook_background"
+            android:pathData="M0,128a128,128 0,1 0,256 0a128,128 0,1 0,-256 0z"
+            android:strokeLineCap="round"
+            android:strokeLineJoin="round" />
+</vector>

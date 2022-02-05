@@ -1,3 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+
 <!--
   ~ Copyright 2022, Petr Laštovička as Lasta apps, All rights reserved
   ~
@@ -17,6 +19,11 @@
   ~ along with ČVUT Bus.  If not, see <https://www.gnu.org/licenses/>.
   -->
 
-<resources>
-    <string name="app_name">ČVUT Bus</string>
-</resources>
+<manifest package="cz.lastaapps.common"
+        xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <queries>
+        <package android:name="com.facebook.katana" />
+    </queries>
+
+</manifest>

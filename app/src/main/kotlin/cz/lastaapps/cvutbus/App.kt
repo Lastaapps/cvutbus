@@ -17,10 +17,10 @@
  * along with ČVUT Bus.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-object Classpath {
+package cz.lastaapps.cvutbus
 
-    const val OSS_LICENSE = "com.google.android.gms:oss-licenses-plugin:${Versions.OSS_PLUGIN}"
-    const val DAGGER_HILT = "com.google.dagger:hilt-android-gradle-plugin:${Versions.DAGGER_HILT}"
-    const val ABOUT_LIBRARIES = "com.mikepenz.aboutlibraries.plugin:aboutlibraries-plugin:${Versions.ABOUT_LIBRARIES}"
+import android.app.Application
+import dagger.hilt.android.HiltAndroidApp
 
-}
+@HiltAndroidApp
+class App : Application()

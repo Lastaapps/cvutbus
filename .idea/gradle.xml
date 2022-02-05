@@ -16,6 +16,8 @@
             <option value="$PROJECT_DIR$/buildSrc" />
             <option value="$PROJECT_DIR$/entity" />
             <option value="$PROJECT_DIR$/generator" />
+            <option value="$PROJECT_DIR$/lastaapps" />
+            <option value="$PROJECT_DIR$/lastaapps/common" />
             <option value="$PROJECT_DIR$/storage" />
             <option value="$PROJECT_DIR$/storage/database" />
             <option value="$PROJECT_DIR$/storage/repo" />
