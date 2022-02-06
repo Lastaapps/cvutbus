@@ -17,16 +17,29 @@
  * along with ČVUT Bus.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package cz.lastaapps.repo
+package cz.lastaapps.cvutbus.di
 
-import kotlinx.datetime.LocalDateTime
+/*
+@Module
+@InstallIn(SingletonComponent::class)
+object DatabaseModule {
 
-data class DepartureInfo(
-    val dateTime: LocalDateTime,
-    val routeShortName: String,
-    val connection: TransportConnection,
-) : Comparable<DepartureInfo> {
-    override fun compareTo(other: DepartureInfo): Int {
-        return dateTime.compareTo(other.dateTime)
+    @Provides
+    @Singleton
+    fun provideDatabaseInfoStore(app: Application): DatabaseInfoStore {
+        return DatabaseInfoStore(app)
+    }
+
+    @Provides
+    @Singleton
+    fun provideDatabaseProvider(app: Application, store: DatabaseInfoStore): DatabaseProvider {
+        return DatabaseProvider(app, store, Dispatchers.IO)
+    }
+
+    @Provides
+    @Singleton
+    fun provideRepoProvider(databaseProvider: DatabaseProvider): PIDRepoProvider {
+        return PIDRepoProvider(databaseProvider)
     }
 }
+ */

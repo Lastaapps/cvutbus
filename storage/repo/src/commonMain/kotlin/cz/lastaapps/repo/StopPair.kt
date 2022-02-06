@@ -19,14 +19,10 @@
 
 package cz.lastaapps.repo
 
-import kotlinx.datetime.LocalDateTime
+import cz.lastaapps.entity.StopName
 
-data class DepartureInfo(
-    val dateTime: LocalDateTime,
-    val routeShortName: String,
-    val connection: TransportConnection,
-) : Comparable<DepartureInfo> {
-    override fun compareTo(other: DepartureInfo): Int {
-        return dateTime.compareTo(other.dateTime)
-    }
-}
+data class StopPair(
+    val id: Int,
+    val stop1: StopName,
+    val stop2: StopName,
+)

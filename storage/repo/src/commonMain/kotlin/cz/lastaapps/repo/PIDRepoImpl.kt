@@ -68,7 +68,7 @@ class PIDRepoImpl(private val database: PIDDatabase) : PIDRepo {
                         times.add(
                             DepartureInfo(
                                 serviceToNormalDateTime(date, row.startArrivalTime),
-                                row.shortName, row.headsign, connection,
+                                row.shortName, connection,
                             )
                         )
                     }

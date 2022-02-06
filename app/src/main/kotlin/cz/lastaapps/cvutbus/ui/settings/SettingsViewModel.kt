@@ -17,16 +17,13 @@
  * along with ČVUT Bus.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package cz.lastaapps.repo
+package cz.lastaapps.cvutbus.ui.settings
 
-import kotlinx.datetime.LocalDateTime
+import androidx.lifecycle.ViewModel
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
-data class DepartureInfo(
-    val dateTime: LocalDateTime,
-    val routeShortName: String,
-    val connection: TransportConnection,
-) : Comparable<DepartureInfo> {
-    override fun compareTo(other: DepartureInfo): Int {
-        return dateTime.compareTo(other.dateTime)
-    }
+@HiltViewModel
+class SettingsViewModel @Inject constructor() : ViewModel() {
+
 }

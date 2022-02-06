@@ -17,16 +17,20 @@
  * along with ČVUT Bus.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package cz.lastaapps.repo
+package cz.lastaapps.cvutbus.navigation
 
-import kotlinx.datetime.LocalDateTime
+object Dests {
+    object Routes {
 
-data class DepartureInfo(
-    val dateTime: LocalDateTime,
-    val routeShortName: String,
-    val connection: TransportConnection,
-) : Comparable<DepartureInfo> {
-    override fun compareTo(other: DepartureInfo): Int {
-        return dateTime.compareTo(other.dateTime)
+        const val pid = "pid"
+        const val settings = "settings"
+
+        const val starting = pid
     }
+
+    object Args
+}
+
+fun String.routesEquals(other: String): Boolean {
+    return substringBeforeLast("?") == (other.substringBeforeLast("?"))
 }

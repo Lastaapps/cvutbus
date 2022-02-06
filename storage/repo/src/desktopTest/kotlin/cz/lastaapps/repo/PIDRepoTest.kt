@@ -63,46 +63,46 @@ class PIDRepoTest {
         toDejvicka shouldContainInOrder listOf(
             DepartureInfo(
                 LocalDateTime(date.year, date.month, date.dayOfMonth, 8, 1, 0),
-                "143", "Dejvická", toDejvickaConnection,
+                "143", toDejvickaConnection,
             ),
             DepartureInfo(
                 LocalDateTime(date.year, date.month, date.dayOfMonth, 8, 2, 0),
-                "149", "Dejvická", toDejvickaConnection,
+                "149", toDejvickaConnection,
             ),
             DepartureInfo(
                 LocalDateTime(date.year, date.month, date.dayOfMonth, 8, 13, 0),
-                "143", "Dejvická", toDejvickaConnection,
+                "143", toDejvickaConnection,
             ),
             DepartureInfo(
                 LocalDateTime(date.year, date.month, date.dayOfMonth, 8, 22, 0),
-                "149", "Dejvická", toDejvickaConnection,
+                "149", toDejvickaConnection,
             ),
             DepartureInfo(
                 LocalDateTime(date.year, date.month, date.dayOfMonth, 8, 28, 0),
-                "143", "Dejvická", toDejvickaConnection,
+                "143", toDejvickaConnection,
             ),
         )
 
         toStrahov shouldContainInOrder listOf(
             DepartureInfo(
                 LocalDateTime(date.year, date.month, date.dayOfMonth, 8, 11, 0),
-                "143", "Stadion Strahov", toStrahovConnection,
+                "143", toStrahovConnection,
             ),
             DepartureInfo(
                 LocalDateTime(date.year, date.month, date.dayOfMonth, 8, 12, 0),
-                "149", "Bavorská", toStrahovConnection,
+                "149", toStrahovConnection,
             ),
             DepartureInfo(
                 LocalDateTime(date.year, date.month, date.dayOfMonth, 8, 26, 0),
-                "143", "Stadion Strahov", toStrahovConnection,
+                "143", toStrahovConnection,
             ),
             DepartureInfo(
                 LocalDateTime(date.year, date.month, date.dayOfMonth, 8, 32, 0),
-                "149", "Bavorská", toStrahovConnection,
+                "149", toStrahovConnection,
             ),
             DepartureInfo(
                 LocalDateTime(date.year, date.month, date.dayOfMonth, 8, 41, 0),
-                "143", "Stadion Strahov", toStrahovConnection,
+                "143", toStrahovConnection,
             ),
         )
     }
@@ -123,46 +123,46 @@ class PIDRepoTest {
         toDejvicka shouldContainInOrder listOf(
             DepartureInfo(
                 LocalDateTime(date.year, date.month, date.dayOfMonth, 8, 19, 0),
-                "149", "Dejvická", toDejvickaConnection,
+                "149", toDejvickaConnection,
             ),
             DepartureInfo(
                 LocalDateTime(date.year, date.month, date.dayOfMonth, 8, 38, 0),
-                "143", "Dejvická", toDejvickaConnection,
+                "143", toDejvickaConnection,
             ),
             DepartureInfo(
                 LocalDateTime(date.year, date.month, date.dayOfMonth, 8, 52, 0),
-                "149", "Dejvická", toDejvickaConnection,
+                "149", toDejvickaConnection,
             ),
             DepartureInfo(
                 LocalDateTime(date.year, date.month, date.dayOfMonth, 9, 8, 0),
-                "143", "Dejvická", toDejvickaConnection,
+                "143", toDejvickaConnection,
             ),
             DepartureInfo(
                 LocalDateTime(date.year, date.month, date.dayOfMonth, 9, 22, 0),
-                "149", "Dejvická", toDejvickaConnection,
+                "149", toDejvickaConnection,
             ),
         )
 
         toStrahov shouldContainInOrder listOf(
             DepartureInfo(
                 LocalDateTime(date.year, date.month, date.dayOfMonth, 8, 0, 0),
-                "149", "Bavorská", toStrahovConnection,
+                "149", toStrahovConnection,
             ),
             DepartureInfo(
                 LocalDateTime(date.year, date.month, date.dayOfMonth, 8, 20, 0),
-                "143", "Stadion Strahov", toStrahovConnection,
+                "143", toStrahovConnection,
             ),
             DepartureInfo(
                 LocalDateTime(date.year, date.month, date.dayOfMonth, 8, 34, 0),
-                "149", "Bavorská", toStrahovConnection,
+                "149", toStrahovConnection,
             ),
             DepartureInfo(
                 LocalDateTime(date.year, date.month, date.dayOfMonth, 8, 51, 0),
-                "143", "Stadion Strahov", toStrahovConnection,
+                "143", toStrahovConnection,
             ),
             DepartureInfo(
                 LocalDateTime(date.year, date.month, date.dayOfMonth, 9, 4, 0),
-                "149", "Bavorská", toStrahovConnection,
+                "149", toStrahovConnection,
             ),
         )
     }

@@ -172,10 +172,10 @@ fun main(): Unit = runBlocking {
     jsonOut.print(
         """
         |{
-        |   jsonVersion: 1.0,
+        |   jsonVersion: 1,
         |   minAppVersion: 1,
         |   dataReleaseDate: ${LocalDate.now().format(DateTimeFormatter.ISO_DATE)},
-        |   daraValidity: ${LocalDate.now().plusDays(10).format(DateTimeFormatter.ISO_DATE)},
+        |   dataValidity: ${LocalDate.now().plusDays(10).format(DateTimeFormatter.ISO_DATE)},
         |   fileSize: ${databaseFile.length()}
         |}
     """.trimMargin()
@@ -231,7 +231,7 @@ internal fun unzip(archive: File, dir: File) {
             }
         } else {
             // fix for Windows-created archives
-            val parent = newFile.parentFile
+            val parent = newFile.parentFile!!
             if (!parent.isDirectory && !parent.mkdirs()) {
                 throw IOException("Failed to create directory $parent")
             }

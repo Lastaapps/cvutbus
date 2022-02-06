@@ -17,16 +17,22 @@
  * along with ČVUT Bus.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package cz.lastaapps.repo
+package cz.lastaapps.cvutbus.ui.settings
 
-import kotlinx.datetime.LocalDateTime
+import android.app.Application
+import android.content.Context
+import androidx.datastore.preferences.preferencesDataStore
+import javax.inject.Inject
+import javax.inject.Singleton
 
-data class DepartureInfo(
-    val dateTime: LocalDateTime,
-    val routeShortName: String,
-    val connection: TransportConnection,
-) : Comparable<DepartureInfo> {
-    override fun compareTo(other: DepartureInfo): Int {
-        return dateTime.compareTo(other.dateTime)
+@Singleton
+class SettingsStore @Inject constructor(app: Application) {
+
+    companion object {
+        private val Context.pidDataStore by preferencesDataStore("pid_store")
     }
+
+    private val store = app.pidDataStore
+
+
 }

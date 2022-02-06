@@ -17,16 +17,16 @@
  * along with ČVUT Bus.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package cz.lastaapps.repo
+package cz.lastaapps.cvutbus.api
 
-import kotlinx.datetime.LocalDateTime
+import cz.lastaapps.repo.PIDRepo
+import cz.lastaapps.repo.PIDRepoImpl
+import javax.inject.Inject
+import javax.inject.Singleton
 
-data class DepartureInfo(
-    val dateTime: LocalDateTime,
-    val routeShortName: String,
-    val connection: TransportConnection,
-) : Comparable<DepartureInfo> {
-    override fun compareTo(other: DepartureInfo): Int {
-        return dateTime.compareTo(other.dateTime)
+@Singleton
+class PIDRepoProvider @Inject constructor(private val provider: DatabaseProvider) {
+    suspend fun provide(): PIDRepo {
+        return PIDRepoImpl(provider.provideDatabase())
     }
 }

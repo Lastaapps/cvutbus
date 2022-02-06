@@ -17,16 +17,21 @@
  * along with ČVUT Bus.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package cz.lastaapps.repo
+package cz.lastaapps.cvutbus.ui
 
-import kotlinx.datetime.LocalDateTime
+import androidx.compose.material3.SnackbarHostState
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.compositionLocalOf
 
-data class DepartureInfo(
-    val dateTime: LocalDateTime,
-    val routeShortName: String,
-    val connection: TransportConnection,
-) : Comparable<DepartureInfo> {
-    override fun compareTo(other: DepartureInfo): Int {
-        return dateTime.compareTo(other.dateTime)
+val LocalSnackbarProvider = compositionLocalOf { SnackbarHostState() }
+
+@Composable
+fun WithSnackbarProvider(
+    snackbarHostState: SnackbarHostState,
+    content: @Composable () -> Unit,
+) {
+    CompositionLocalProvider(LocalSnackbarProvider provides snackbarHostState) {
+        content()
     }
 }

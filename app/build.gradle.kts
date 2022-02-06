@@ -94,8 +94,8 @@ dependencies {
     implementation(Libs.VECTOR_DRAWABLES)
 
     implementation(Libs.DAGGER_HILT)
-    implementation(Libs.HILT_COMMON)
     implementation(Libs.DATASTORE)
+    implementation(Libs.HILT_COMMON)
     implementation(Libs.HILT_VIEWMODEL)
     implementation(Libs.HILT_NAVIGATION_COMPOSE)
     kapt(Libs.DAGGER_HILT_COMPILER)

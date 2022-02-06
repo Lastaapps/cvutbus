@@ -56,6 +56,7 @@ kotlin {
                 implementation(project(":storage:database"))
 
                 api(Libs.KOTLINX_DATETIME)
+                api(Libs.KM_LOGGING)
                 implementation(Tests.KOTEST_ASSERTION)
             }
         }

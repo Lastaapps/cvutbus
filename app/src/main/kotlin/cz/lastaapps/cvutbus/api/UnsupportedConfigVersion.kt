@@ -17,16 +17,8 @@
  * along with ČVUT Bus.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package cz.lastaapps.repo
+package cz.lastaapps.cvutbus.api
 
-import kotlinx.datetime.LocalDateTime
-
-data class DepartureInfo(
-    val dateTime: LocalDateTime,
-    val routeShortName: String,
-    val connection: TransportConnection,
-) : Comparable<DepartureInfo> {
-    override fun compareTo(other: DepartureInfo): Int {
-        return dateTime.compareTo(other.dateTime)
-    }
-}
+class UnsupportedConfigVersion(
+    version: Long
+) : Exception("Config version $version is not supported!")

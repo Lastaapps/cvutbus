@@ -26,6 +26,9 @@ object TimeUtils {
     fun getDaysOfWeek() = daysOfWeekSorted
 }
 
+fun Instant.roundToSeconds(): Instant =
+    Instant.fromEpochSeconds(this.epochSeconds, 0)
+
 /** Central Europe timezone*/
 val CET get() = TimeZone.of("Europe/Prague")
 

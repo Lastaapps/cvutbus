@@ -17,16 +17,20 @@
  * along with ČVUT Bus.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package cz.lastaapps.repo
+package cz.lastaapps.cvutbus
 
-import kotlinx.datetime.LocalDateTime
+import cz.lastaapps.entity.utils.roundToSeconds
+import kotlinx.coroutines.delay
+import kotlinx.datetime.Clock
+import kotlinx.datetime.Instant
 
-data class DepartureInfo(
-    val dateTime: LocalDateTime,
-    val routeShortName: String,
-    val connection: TransportConnection,
-) : Comparable<DepartureInfo> {
-    override fun compareTo(other: DepartureInfo): Int {
-        return dateTime.compareTo(other.dateTime)
+suspend fun secondTicker(getNow: () -> Instant = ::getRoundedNow, onTick: (Instant) -> Unit) {
+    val safetyOffset = 10
+    onTick(getNow())
+    while (true) {
+        delay(1000 - System.currentTimeMillis() % 1000 + safetyOffset)
+        onTick(getNow())
     }
 }
+
+fun getRoundedNow() = Clock.System.now().roundToSeconds()

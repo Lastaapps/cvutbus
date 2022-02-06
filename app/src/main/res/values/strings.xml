@@ -19,4 +19,9 @@
 
 <resources>
     <string name="app_name">ČVUT Bus</string>
+
+    <string name="nav_pid">Departures</string>
+    <string name="nav_settings">Settings</string>
+
+
 </resources>

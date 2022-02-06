@@ -28,7 +28,7 @@ getAll:
     ;
 
 getAllForDays:
-    SELECT routes.route_short_name AS shortName, trips.trip_headsign AS headsign,
+    SELECT routes.route_short_name AS shortName,
         startStopTimes.arrival_time AS startArrivalTime, endStopTimes.arrival_time AS endArrivalTime,
         calendar.start_date AS startDate, calendar.end_date AS endDate,
         calendar.days AS days

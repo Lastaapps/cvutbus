@@ -19,11 +19,9 @@
 
 package cz.lastaapps.repo
 
-import cz.lastaapps.entity.StopName
-
 object TransportConnections {
     fun strahovDejvicka(toDejvicka: Boolean) = TransportConnection(
-        StopName("Koleje Strahov"), StopName("Dejvická"),
+        StopPairs.strahovDejvicka.stop1, StopPairs.strahovDejvicka.stop2,
         if (toDejvicka) Direction.Outbound else Direction.Inbound
     )
 }
