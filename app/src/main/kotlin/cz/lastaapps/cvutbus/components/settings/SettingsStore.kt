@@ -17,23 +17,20 @@
  * along with ČVUT Bus.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package cz.lastaapps.cvutbus.navigation
+package cz.lastaapps.cvutbus.components.settings
 
-object Dests {
-    object Routes {
+import android.app.Application
+import android.content.Context
+import androidx.datastore.preferences.preferencesDataStore
+import javax.inject.Inject
+import javax.inject.Singleton
 
-        const val pid = "pid"
-        const val settings = "settings"
-        const val osturak = "osturak"
-        const val license = "license"
-        const val privacyPolicy = "privacy_policy"
+@Singleton
+class SettingsStore @Inject constructor(app: Application) {
 
-        const val starting = pid
+    companion object {
+        private val Context.settingsDataStore by preferencesDataStore("settings_store")
     }
 
-    //object Args
-}
-
-fun String.routesEquals(other: String): Boolean {
-    return substringBeforeLast("?") == (other.substringBeforeLast("?"))
+    val store = app.settingsDataStore
 }

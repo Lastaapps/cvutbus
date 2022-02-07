@@ -19,13 +19,15 @@
 
 package cz.lastaapps.cvutbus.ui.root
 
+import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.rememberSplineBasedDecay
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.SmallTopAppBar
-import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.foundation.layout.Row
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Modifier
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -38,9 +40,21 @@ fun MainTopBar() {
         TopAppBarDefaults.exitUntilCollapsedScrollBehavior(decayAnimationSpec)
     }
 
+    val list = LocalBackArrowProvider.current
+
     SmallTopAppBar(
         title = { Text(title) },
-        navigationIcon = {},
+        navigationIcon = {
+            Row(Modifier.animateContentSize()) {
+                if (list.isNotEmpty()) {
+                    IconButton(onClick = {
+                        list.last().invoke()
+                    }) {
+                        Icon(Icons.Default.ArrowBack, contentDescription = "Back")
+                    }
+                }
+            }
+        },
         actions = {
             /*IconButton(onClick = {  }) {
                 Icon(

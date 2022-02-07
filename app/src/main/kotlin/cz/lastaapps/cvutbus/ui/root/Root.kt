@@ -22,24 +22,17 @@ package cz.lastaapps.cvutbus.ui.root
 import android.app.Activity
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.isSystemInDarkTheme
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.*
-import androidx.compose.ui.Modifier
 import androidx.lifecycle.ViewModelStoreOwner
-import androidx.navigation.NavHostController
 import com.google.accompanist.insets.ProvideWindowInsets
-import com.google.accompanist.navigation.animation.AnimatedNavHost
-import com.google.accompanist.navigation.animation.composable
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
-import cz.lastaapps.cvutbus.navigation.Dests
-import cz.lastaapps.cvutbus.pid.PIDViewModel
-import cz.lastaapps.cvutbus.pid.ui.PIDLayout
-import cz.lastaapps.cvutbus.settings.SettingsViewModel
-import cz.lastaapps.cvutbus.settings.modules.AppThemeMode
-import cz.lastaapps.cvutbus.settings.modules.appTheme
-import cz.lastaapps.cvutbus.settings.modules.dynamicTheme
-import cz.lastaapps.cvutbus.settings.ui.SettingsLayout
+import cz.lastaapps.cvutbus.components.pid.PIDViewModel
+import cz.lastaapps.cvutbus.components.privacy.PrivacyCheck
+import cz.lastaapps.cvutbus.components.settings.SettingsViewModel
+import cz.lastaapps.cvutbus.components.settings.modules.AppThemeMode
+import cz.lastaapps.cvutbus.components.settings.modules.appTheme
+import cz.lastaapps.cvutbus.components.settings.modules.dynamicTheme
 import cz.lastaapps.cvutbus.ui.WithConnectivity
 import cz.lastaapps.cvutbus.ui.providers.*
 import cz.lastaapps.cvutbus.ui.theme.AppTheme
@@ -74,7 +67,9 @@ fun AppLayout(
 
     AppTheme(useCustomTheme = !dynamic!!, darkTheme = darkState, updateSystemBars = true) {
         ApplyProviders(activity = activity, viewModelStoreOwner = viewModelStoreOwner) {
-            AppContent(pidViewModel, settingsViewModel)
+            PrivacyCheck(hiltActivityViewModel()) {
+                AppContent(pidViewModel, settingsViewModel)
+            }
         }
     }
 }
@@ -128,23 +123,5 @@ private fun AppContent(
             pidViewModel = pidViewModel, settingsViewModel = settingsViewModel,
             content = content,
         )
-    }
-}
-
-@OptIn(ExperimentalAnimationApi::class)
-@Composable
-private fun AppNavigation(
-    navHostController: NavHostController,
-    snackbarHostState: SnackbarHostState,
-    pidViewModel: PIDViewModel,
-    settingsViewModel: SettingsViewModel,
-) {
-    AnimatedNavHost(navHostController, startDestination = Dests.Routes.starting) {
-        composable(Dests.Routes.pid) {
-            PIDLayout(pidViewModel, Modifier.fillMaxSize())
-        }
-        composable(Dests.Routes.settings) {
-            SettingsLayout(settingsViewModel, Modifier.fillMaxSize())
-        }
     }
 }

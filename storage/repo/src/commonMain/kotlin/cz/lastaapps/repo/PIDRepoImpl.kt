@@ -30,12 +30,13 @@ class PIDRepoImpl(private val database: PIDDatabase) : PIDRepo {
     companion object {
         /**
          * To how many days each entry should be expanded
-         * Required for service time -> normal time conversion
+         * Required for service time -> normal time conversion (today + yesterday)
+         * + 1 more day because of the after midnight times
          */
-        private const val generateForDays = 2
+        private const val generateForDays = 3
 
         init {
-            generateForDays shouldBeGreaterThanOrEqual 2
+            generateForDays shouldBeGreaterThanOrEqual 3
         }
     }
 

@@ -17,15 +17,16 @@
  * along with ČVUT Bus.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package cz.lastaapps.cvutbus.pid
+package cz.lastaapps.cvutbus.components.pid.ui
 
 import android.text.format.DateFormat
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -37,6 +38,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import cz.lastaapps.cvutbus.api.DatabaseInfo
+import cz.lastaapps.cvutbus.components.pid.PIDViewModel
 import cz.lastaapps.cvutbus.getRoundedNow
 import cz.lastaapps.cvutbus.secondTicker
 import cz.lastaapps.entity.utils.CET
@@ -79,25 +81,27 @@ private fun ShowData(
     modifier: Modifier = Modifier
 ) {
     val now = rememberNow(data)
-    Column(
-        modifier,
-        horizontalAlignment = Alignment.CenterHorizontally,
-    ) {
-        TimeHeader(
-            showCounter, now, data.first(),
-        )
-        Spacer(modifier = Modifier.height(16.dp))
 
-        val following by remember(data) {
-            derivedStateOf { data.take(10 + 1).drop(1) }
-        }
-        LazyColumn(
-            Modifier.heightIn(max = 36.dp * 4),
+    val following by remember(data) {
+        derivedStateOf { data.take(96 + 1).drop(1).chunked(2) }
+    }
+
+    Column(
+        modifier.verticalScroll(rememberScrollState()),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.spacedBy(16.dp),
+    ) {
+        TimeHeader(showCounter, now, data.first())
+        Column(
+            Modifier.width(IntrinsicSize.Max),
             verticalArrangement = Arrangement.spacedBy(8.dp),
-            horizontalAlignment = Alignment.CenterHorizontally,
         ) {
-            items(following) { info ->
-                TimeItem(showCounter, now, info)
+            following.forEach { chunk ->
+                Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(16.dp)) {
+                    chunk.forEach { info ->
+                        TimeItem(showCounter, now, info, Modifier.weight(1f))
+                    }
+                }
             }
         }
     }
@@ -137,8 +141,8 @@ private fun TimeHeader(
                 textAlign = TextAlign.Center,
             )
 
-            Surface(color = MaterialTheme.colorScheme.primary) {
-                Text(info.routeShortName, Modifier.padding(4.dp))
+            Surface(color = MaterialTheme.colorScheme.primary, shape = CircleShape) {
+                Text(info.routeShortName, Modifier.padding(6.dp))
             }
         }
     }
@@ -156,11 +160,16 @@ private fun TimeItem(
         horizontalArrangement = Arrangement.spacedBy(8.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        Surface(color = MaterialTheme.colorScheme.secondary) {
-            Text(info.routeShortName, Modifier.padding(4.dp))
+        Surface(color = MaterialTheme.colorScheme.secondary, shape = CircleShape) {
+            Text(info.routeShortName, Modifier.padding(6.dp))
         }
 
-        Text(createTimeText(showCounter, now, info), style = MaterialTheme.typography.bodyMedium)
+        Text(
+            createTimeText(showCounter, now, info),
+            style = MaterialTheme.typography.bodyMedium,
+            modifier = modifier.weight(1f),
+            textAlign = TextAlign.Center,
+        )
     }
 }
 

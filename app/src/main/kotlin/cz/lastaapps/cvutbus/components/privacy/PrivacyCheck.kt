@@ -17,20 +17,32 @@
  * along with ČVUT Bus.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package cz.lastaapps.cvutbus.settings.modules
+package cz.lastaapps.cvutbus.components.privacy
 
-import androidx.datastore.preferences.core.booleanPreferencesKey
-import androidx.datastore.preferences.core.edit
-import cz.lastaapps.cvutbus.settings.SettingsStore
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.map
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 
-private val dynamicThemeKey = booleanPreferencesKey("dynamic_theme")
-private const val defaultDynamicTheme = true
+@Composable
+fun PrivacyCheck(
+    privacyViewModel: PrivacyViewModel,
+    content: @Composable () -> Unit,
+) {
+    val state by privacyViewModel.shouldShow.collectAsState()
 
-val SettingsStore.dynamicTheme: Flow<Boolean>
-    get() = store.data.map { it[dynamicThemeKey] ?: defaultDynamicTheme }
-
-suspend fun SettingsStore.setDynamicTheme(enabled: Boolean) {
-    store.edit { it[dynamicThemeKey] = enabled }
+    when (state) {
+        false -> {
+            content()
+        }
+        true -> {
+            PrivacyDialog(
+                shown = true,
+                onDismissRequest = {},
+                showAccept = true,
+            ) {
+                privacyViewModel.onApprove()
+            }
+        }
+        else -> {}
+    }
 }

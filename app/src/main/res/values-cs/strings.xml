@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Copyright 2022, Petr Laštovička as Lasta apps, All rights reserved
+  ~
+  ~ This file is part of ČVUT Bus.
+  ~
+  ~ ČVUT Bus is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ ČVUT Bus is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with ČVUT Bus.  If not, see <https://www.gnu.org/licenses/>.
+  -->
+
+<resources>
+
+    <string name="privacy_title">Zásady ochrany osobních údajů</string>
+    <string name="privacy_text">
+        Tato aplikace neshromažďuje žádná (osobní) data.
+        Pokud nevěříte, můžete si sami zkontrolovat zdrojový kód.
+    </string>
+    <string name="privacy_view_source">Prohlédnout si zdrojový kód</string>
+    <string name="privacy_accept">Přijímám</string>
+    <string name="osturak_text">
+        Ošťurák je název kovové tyčky (či naostřeného klacku) určené k opékání buřtů
+        při ohýnku či větším táboráku. Tento název pochází z okolí Pelhřimova (Vysočina).
+        V jazyce, co je mi známo, neexistuje žádný oficiální název, i když ošťuráky
+        používáme velice často. Touto zprávou chci toto úžasné slovo rozšířit do co
+        nejvíce částí naší republiky. Uznejte, že ošťurák zní mnohem lépe než napichovák.
+        Pokud si nejste jisti, o čem tu píši, můžete si prohlédnout obrázky níže.
+    </string>
+    <string name="osturak_brought_by">Přináší Svědci Ošťurákovi</string>
+    <string name="osturak_source">Zdroj</string>
+    <string name="about_title">Menza ČVUT</string>
+    <string name="about_license_notices">Použité knihovny</string>
+    <string name="about_osturak">Informace o ošťuráku</string>
+    <string name="about_data_source">Zdroj dat</string>
+    <string name="about_developer_contact">Kontakt na vývojáře</string>
+    <string name="report_title">Jakým způsobem chcete nahlásit chybu?</string>
+    <string name="report_telegram">Telegram</string>
+    <string name="report_github">GitHub Issue</string>
+    <string name="report_facebook">Facebook Messenger</string>
+    <string name="report_email">Email</string>
+    <string name="report_email_no_app">Není nainstalovaný emailový klient</string>
+    <string name="report_cancel">Zrušit</string>
+    <string name="report_add_description">Zde prosím popište váš problém více</string>
+    <string name="report_clipboard">Chybové hlášení zkopírováno do schránky</string>
+    <string name="report_clipboard_title">Chybové hlášení Menz</string>
+    <string name="settings_button_privacy_policy">Zásady ochrany osobních údajů</string>
+    <string name="settings_button_about">O aplikaci</string>
+    <string name="settings_button_rate">Ohodnoťte nás!</string>
+    <string name="settings_button_report">Nahlásit chybu</string>
+
+</resources>

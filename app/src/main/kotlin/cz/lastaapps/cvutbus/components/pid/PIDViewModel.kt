@@ -17,15 +17,15 @@
  * along with ČVUT Bus.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package cz.lastaapps.cvutbus.pid
+package cz.lastaapps.cvutbus.components.pid
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import cz.lastaapps.cvutbus.api.PIDRepoProvider
+import cz.lastaapps.cvutbus.components.settings.SettingsStore
+import cz.lastaapps.cvutbus.components.settings.modules.*
 import cz.lastaapps.cvutbus.getRoundedNow
 import cz.lastaapps.cvutbus.secondTicker
-import cz.lastaapps.cvutbus.settings.SettingsStore
-import cz.lastaapps.cvutbus.settings.modules.*
 import cz.lastaapps.entity.utils.CET
 import cz.lastaapps.repo.DepartureInfo
 import cz.lastaapps.repo.Direction
@@ -64,14 +64,19 @@ class PIDViewModel @Inject constructor(
     }
 
 
-    val stops: StateFlow<StopPair> get() = mStops
+    //useless until more transfers are added
+    @Suppress("MemberVisibilityCanBePrivate")
+    val stops: StateFlow<StopPair>
+        get() = mStops
 
     private lateinit var mStops: MutableStateFlow<StopPair>
 
+    @Suppress("unused")
     fun setStops(stops: StopPair) {
         mStops.tryEmit(stops)
         viewModelScope.launch { store.setLatestStopPair(stops) }
     }
+
 
     val transportConnection: Flow<TransportConnection>
         get() = stops.combine(direction) { stops, directions ->

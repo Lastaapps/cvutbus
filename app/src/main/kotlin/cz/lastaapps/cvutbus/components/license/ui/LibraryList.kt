@@ -1,0 +1,72 @@
+/*
+ * Copyright 2022, Petr Laštovička as Lasta apps, All rights reserved
+ *
+ * This file is part of ČVUT Bus.
+ *
+ * ČVUT Bus is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * ČVUT Bus is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with ČVUT Bus.  If not, see <https://www.gnu.org/licenses/>.
+ */
+
+package cz.lastaapps.cvutbus.components.license.ui
+
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalUriHandler
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.dp
+import com.mikepenz.aboutlibraries.entity.Library
+
+@Composable
+fun LibraryList(
+    libraries: List<Library>,
+    onLibrarySelected: (Library?) -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    Column(modifier, verticalArrangement = Arrangement.spacedBy(8.dp)) {
+        AppLicenseButton(Modifier.fillMaxWidth())
+
+        LazyColumn(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+            items(libraries) { library ->
+                LicenseItem(library, Modifier.clickable { onLibrarySelected(library) })
+            }
+            item {
+                Spacer(modifier = Modifier.height(64.dp))
+            }
+        }
+    }
+}
+
+@Composable
+private fun AppLicenseButton(modifier: Modifier = Modifier) {
+    val url = LocalUriHandler.current
+    OutlinedButton(
+        onClick = {
+            url.openUri("https://github.com/Lastaapps/ctubus/LICENSE")
+        },
+        modifier = modifier
+    ) {
+        Text(
+            text = "ČVUT Bus is licensed under GNU GPL v3.0 license",
+            style = MaterialTheme.typography.bodyLarge,
+            textAlign = TextAlign.Center
+        )
+    }
+}
+

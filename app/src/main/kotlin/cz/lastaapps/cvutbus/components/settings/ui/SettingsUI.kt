@@ -17,7 +17,7 @@
  * along with ČVUT Bus.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package cz.lastaapps.cvutbus.settings.ui
+package cz.lastaapps.cvutbus.components.settings.ui
 
 import android.os.Build
 import androidx.compose.foundation.Canvas
@@ -37,10 +37,19 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.layout.Layout
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalUriHandler
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.dp
-import cz.lastaapps.cvutbus.settings.SettingsViewModel
-import cz.lastaapps.cvutbus.settings.modules.*
+import androidx.navigation.NavController
+import cz.lastaapps.cvutbus.R
+import cz.lastaapps.cvutbus.components.ReportDialog
+import cz.lastaapps.cvutbus.components.sendReport
+import cz.lastaapps.cvutbus.components.settings.SettingsViewModel
+import cz.lastaapps.cvutbus.components.settings.modules.*
+import cz.lastaapps.cvutbus.navigation.Dests
 import cz.lastaapps.cvutbus.ui.theme.AppTheme
 import cz.lastaapps.repo.Direction
 import cz.lastaapps.repo.StopPair
@@ -49,15 +58,18 @@ import cz.lastaapps.repo.TransportConnection
 import kotlin.math.min
 
 @Composable
-fun SettingsLayout(
+fun SettingsUI(
+    navController: NavController,
     settingsViewModel: SettingsViewModel,
+    showAbout: Boolean,
     modifier: Modifier = Modifier,
+    onAboutClicked: () -> Unit = {},
 ) {
     Column(
         modifier
-            .padding(bottom = 64.dp)
-            .widthIn(max = 312.dp)
-            .verticalScroll(rememberScrollState()),
+            .widthIn(max = 256.dp)
+            .verticalScroll(rememberScrollState())
+            .padding(bottom = 64.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp),
     ) {
         Text("Settings", style = MaterialTheme.typography.headlineMedium)
@@ -69,6 +81,8 @@ fun SettingsLayout(
         //PreferredStopPairSelection(settingsViewModel, Modifier.fillMaxWidth())
         PreferredDirectionSelection(settingsViewModel, Modifier.fillMaxWidth())
         TimeShowModeSelection(settingsViewModel)
+
+        Buttons(navController, showAbout, onAboutClicked)
     }
 }
 
@@ -312,3 +326,74 @@ private fun TimeShowModeSelection(
     )
 }
 
+@Composable
+private fun Buttons(
+    navController: NavController,
+    showAbout: Boolean, onAboutClicked: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    Column(modifier, verticalArrangement = Arrangement.spacedBy(8.dp)) {
+        val uriHandler = LocalUriHandler.current
+
+        Button(
+            onClick = { navController.navigate(Dests.Routes.privacyPolicy) },
+            Modifier.fillMaxWidth()
+        ) {
+            Text(
+                text = stringResource(R.string.settings_button_privacy_policy),
+                textAlign = TextAlign.Center
+            )
+        }
+
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(IntrinsicSize.Max),
+        ) {
+            AboutButton(
+                showAbout = showAbout,
+                onAboutClicked = onAboutClicked,
+                modifier = Modifier
+                    .weight(1f)
+                    .fillMaxHeight(),
+            )
+
+            Button(
+                onClick = { uriHandler.openUri("https://play.google.com/store/apps/details?id=cz.lastaapps.cvutbus") },
+                modifier = Modifier
+                    .weight(1f)
+                    .fillMaxHeight()
+            ) { Text(stringResource(R.string.settings_button_rate), textAlign = TextAlign.Center) }
+        }
+
+        ReportButton(Modifier.fillMaxWidth())
+    }
+}
+
+@Composable
+private fun ReportButton(modifier: Modifier = Modifier) {
+    var shown by rememberSaveable { mutableStateOf(false) }
+
+    Button(onClick = { shown = true }, modifier) {
+        Text(stringResource(R.string.settings_button_report), textAlign = TextAlign.Center)
+    }
+
+    val context = LocalContext.current
+    ReportDialog(shown, { shown = false }) {
+        sendReport(context, it)
+        shown = false
+    }
+}
+
+@Composable
+private fun AboutButton(
+    showAbout: Boolean, onAboutClicked: () -> Unit, modifier: Modifier = Modifier
+) {
+    if (!showAbout) return
+
+    Button(onClick = onAboutClicked, modifier) {
+        Text(stringResource(R.string.settings_button_about))
+    }
+}

@@ -17,11 +17,11 @@
  * along with ČVUT Bus.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package cz.lastaapps.cvutbus.settings.modules
+package cz.lastaapps.cvutbus.components.settings.modules
 
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.intPreferencesKey
-import cz.lastaapps.cvutbus.settings.SettingsStore
+import cz.lastaapps.cvutbus.components.settings.SettingsStore
 import cz.lastaapps.repo.StopPair
 import cz.lastaapps.repo.StopPairs
 import kotlinx.coroutines.flow.Flow

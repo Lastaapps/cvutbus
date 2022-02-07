@@ -28,8 +28,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
-import cz.lastaapps.cvutbus.pid.PIDViewModel
-import cz.lastaapps.cvutbus.settings.SettingsViewModel
+import cz.lastaapps.cvutbus.components.pid.PIDViewModel
+import cz.lastaapps.cvutbus.components.settings.SettingsViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -127,7 +127,7 @@ fun AppLayoutExpanded(
             MainNavRail(navController = navController, Modifier.fillMaxHeight())
             Box(
                 Modifier
-                    .padding(top = 4.dp, bottom = 4.dp, start = 16.dp, end = 16.dp)
+                    .padding(top = 16.dp, bottom = 16.dp, start = 16.dp, end = 16.dp)
                     .fillMaxSize()
             ) {
                 content()

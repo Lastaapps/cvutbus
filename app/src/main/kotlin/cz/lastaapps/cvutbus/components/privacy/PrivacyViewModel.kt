@@ -17,47 +17,29 @@
  * along with ČVUT Bus.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package cz.lastaapps.cvutbus.settings
+package cz.lastaapps.cvutbus.components.privacy
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import cz.lastaapps.cvutbus.settings.modules.*
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import java.time.LocalDate
 import javax.inject.Inject
 
 @HiltViewModel
-class SettingsViewModel @Inject constructor(
-    val store: SettingsStore,
+class PrivacyViewModel @Inject constructor(
+    private val store: PrivacyStore,
 ) : ViewModel() {
 
-    fun setAppTheme(theme: AppThemeMode) {
-        viewModelScope.launch {
-            store.setAppTheme(theme)
-        }
-    }
+    val shouldShow = store.approved.map { it == null }
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(), null)
 
-    fun setDynamicTheme(enabled: Boolean) {
+    fun onApprove() {
         viewModelScope.launch {
-            store.setDynamicTheme(enabled)
-        }
-    }
-
-    fun setPreferredStopPair(preferred: PreferredStopPair) {
-        viewModelScope.launch {
-            store.setPreferredStopPair(preferred)
-        }
-    }
-
-    fun setPreferredDirection(preferred: PreferredDirection) {
-        viewModelScope.launch {
-            store.setPreferredDirection(preferred)
-        }
-    }
-
-    fun setTimeShowMode(mode: TimeShowMode) {
-        viewModelScope.launch {
-            store.setTimeShowMode(mode)
+            store.setApproved(LocalDate.now())
         }
     }
 }

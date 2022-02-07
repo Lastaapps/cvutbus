@@ -17,7 +17,7 @@
  * along with ČVUT Bus.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package cz.lastaapps.cvutbus.pid.ui
+package cz.lastaapps.cvutbus.components.pid.ui
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
@@ -27,10 +27,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import cz.lastaapps.cvutbus.pid.DirectionsUI
-import cz.lastaapps.cvutbus.pid.PIDIcons
-import cz.lastaapps.cvutbus.pid.PIDViewModel
-import cz.lastaapps.cvutbus.pid.TimeUI
+import cz.lastaapps.cvutbus.components.pid.PIDViewModel
 import cz.lastaapps.cvutbus.ui.providers.LocalWindowWidth
 import cz.lastaapps.cvutbus.ui.providers.WindowSizeClass
 

@@ -17,7 +17,7 @@
  * along with ČVUT Bus.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package cz.lastaapps.cvutbus.pid
+package cz.lastaapps.cvutbus.components.pid.ui
 
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.tween
@@ -36,6 +36,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.unit.dp
+import cz.lastaapps.cvutbus.components.pid.PIDViewModel
 
 @Composable
 fun DirectionsUI(pidViewModel: PIDViewModel, modifier: Modifier = Modifier) {
@@ -44,8 +45,9 @@ fun DirectionsUI(pidViewModel: PIDViewModel, modifier: Modifier = Modifier) {
     if (stops != null) {
         Surface(
             modifier,
-            color = MaterialTheme.colorScheme.tertiaryContainer,
             shape = RoundedCornerShape(8.dp),
+            tonalElevation = 8.dp,
+            shadowElevation = 8.dp,
         ) {
             Row(
                 Modifier.padding(top = 16.dp, bottom = 16.dp),

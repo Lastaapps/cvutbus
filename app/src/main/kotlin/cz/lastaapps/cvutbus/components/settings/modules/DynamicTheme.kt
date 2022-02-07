@@ -17,20 +17,20 @@
  * along with ČVUT Bus.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package cz.lastaapps.cvutbus.settings
+package cz.lastaapps.cvutbus.components.settings.modules
 
-import android.app.Application
-import android.content.Context
-import androidx.datastore.preferences.preferencesDataStore
-import javax.inject.Inject
-import javax.inject.Singleton
+import androidx.datastore.preferences.core.booleanPreferencesKey
+import androidx.datastore.preferences.core.edit
+import cz.lastaapps.cvutbus.components.settings.SettingsStore
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 
-@Singleton
-class SettingsStore @Inject constructor(app: Application) {
+private val dynamicThemeKey = booleanPreferencesKey("dynamic_theme")
+private const val defaultDynamicTheme = true
 
-    companion object {
-        private val Context.settingsDataStore by preferencesDataStore("settings_store")
-    }
+val SettingsStore.dynamicTheme: Flow<Boolean>
+    get() = store.data.map { it[dynamicThemeKey] ?: defaultDynamicTheme }
 
-    val store = app.settingsDataStore
+suspend fun SettingsStore.setDynamicTheme(enabled: Boolean) {
+    store.edit { it[dynamicThemeKey] = enabled }
 }

@@ -108,11 +108,7 @@ dependencies {
     kapt(Libs.HILT_COMPILER)
 
     implementation(Libs.KOTLINX_DATETIME)
-    implementation(Libs.SKRAPE_IT)
-    implementation(Libs.COIL_COMPOSE_COMPLETE)
     implementation(Libs.ABOUT_LIBRARIES_CORE)
-    implementation(Libs.ABOUT_LIBRARIES_COMPOSE)
-
 
     initCompose(useMaterial2 = true)
 }
@@ -128,7 +124,7 @@ fun DependencyHandler.initCompose(useMaterial2: Boolean = false, useMaterial3: B
     if (useMaterial3)
         implementation(Libs.COMPOSE_MATERIAL_3)
     implementation(Libs.COMPOSE_NAVIGATION)
-    implementation(Libs.COMPOSE_TOOLING)
+    debugImplementation(Libs.COMPOSE_TOOLING)
     implementation(Libs.COMPOSE_UI)
     implementation(Libs.COMPOSE_VIEWMODEL)
 
