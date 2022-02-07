@@ -17,66 +17,60 @@
  * along with ČVUT Bus.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package cz.lastaapps.cvutbus.ui.pid
+package cz.lastaapps.cvutbus.pid
 
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import cz.lastaapps.cvutbus.api.PIDRepoProvider
 import cz.lastaapps.cvutbus.getRoundedNow
 import cz.lastaapps.cvutbus.secondTicker
-import cz.lastaapps.cvutbus.ui.settings.SettingsStore
+import cz.lastaapps.cvutbus.settings.SettingsStore
+import cz.lastaapps.cvutbus.settings.modules.*
 import cz.lastaapps.entity.utils.CET
-import cz.lastaapps.repo.*
+import cz.lastaapps.repo.DepartureInfo
+import cz.lastaapps.repo.Direction
+import cz.lastaapps.repo.StopPair
+import cz.lastaapps.repo.TransportConnection
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ObsoleteCoroutinesApi
 import kotlinx.coroutines.flow.*
-import kotlinx.datetime.DateTimeUnit
-import kotlinx.datetime.LocalDateTime
-import kotlinx.datetime.minus
-import kotlinx.datetime.toLocalDateTime
+import kotlinx.coroutines.launch
+import kotlinx.datetime.*
 import javax.inject.Inject
 
 @HiltViewModel
 class PIDViewModel @Inject constructor(
     private val provider: PIDRepoProvider,
     private val store: SettingsStore,
-    private val savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
 
     companion object {
-        private const val directionSaveKey = "direction"
-        private const val stopsPairSaveKey = "stopPair"
-        private const val showCounterSaveKey = "showCounter"
         private const val showPastForSeconds = 60
     }
 
+    val isReady: StateFlow<Boolean>
+        get() = mIsReady
+
+    private val mIsReady = MutableStateFlow(false)
+
+
     val direction: StateFlow<Direction> get() = mDirection
 
-    private val mDirection = MutableStateFlow(
-        when (savedStateHandle.get<Boolean>(directionSaveKey)) {
-            true -> Direction.Outbound
-            false -> Direction.Inbound
-            else -> Direction.Outbound
-        }
-    )
+    private lateinit var mDirection: MutableStateFlow<Direction>
 
     fun setDirection(direction: Direction) {
-        savedStateHandle[directionSaveKey] = direction == Direction.Outbound
         mDirection.tryEmit(direction)
+        viewModelScope.launch { store.setLatestDirection(direction) }
     }
 
 
     val stops: StateFlow<StopPair> get() = mStops
 
-    private val mStops = MutableStateFlow(
-        savedStateHandle.get<Int>(stopsPairSaveKey)?.let {
-            StopPairs.getPairById(it)
-        } ?: StopPairs.strahovDejvicka
-    )
+    private lateinit var mStops: MutableStateFlow<StopPair>
 
     fun setStops(stops: StopPair) {
-        savedStateHandle[stopsPairSaveKey] = stops.id
         mStops.tryEmit(stops)
+        viewModelScope.launch { store.setLatestStopPair(stops) }
     }
 
     val transportConnection: Flow<TransportConnection>
@@ -86,13 +80,44 @@ class PIDViewModel @Inject constructor(
 
 
     val showCounter: StateFlow<Boolean> get() = mShowCounter
-    private val mShowCounter = MutableStateFlow(
-        savedStateHandle.get<Boolean>(showCounterSaveKey) ?: false
-    )
+    private lateinit var mShowCounter: MutableStateFlow<Boolean>
 
-    fun setShowCounter(show: Boolean) {
-        savedStateHandle[showCounterSaveKey] = show
-        mShowCounter.tryEmit(show)
+    fun setShowCounter(showCounter: Boolean) {
+        mShowCounter.tryEmit(showCounter)
+        viewModelScope.launch { store.setWasCounter(showCounter) }
+    }
+
+    init {
+        viewModelScope.launch {
+            val preferredDirection = store.preferredDirection.first()
+            val latestDirection = store.latestDirection.first()
+            val preferredStopPair = store.preferredStopPair.first()
+            val showMode = store.timeShowMode.first()
+            val latestWasCounter = store.latestWasCounter.first()
+
+            mDirection = MutableStateFlow(
+                when (preferredDirection) {
+                    PreferredDirection.Inbound -> Direction.Inbound
+                    PreferredDirection.Outbound -> Direction.Outbound
+                    PreferredDirection.Remember -> latestDirection
+                    PreferredDirection.TimeBased ->
+                        if (Clock.System.now().toLocalDateTime(CET).hour < 12)
+                            Direction.Outbound else Direction.Inbound
+                }
+            )
+
+            mStops = MutableStateFlow(preferredStopPair.stopPair)
+
+            mShowCounter = MutableStateFlow(
+                when (showMode) {
+                    TimeShowMode.Countdown -> true
+                    TimeShowMode.Remember -> latestWasCounter
+                    TimeShowMode.Time -> false
+                }
+            )
+
+            mIsReady.value = true
+        }
     }
 
 

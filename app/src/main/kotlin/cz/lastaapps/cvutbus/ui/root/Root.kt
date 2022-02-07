@@ -24,10 +24,7 @@ import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.SnackbarHostState
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.ViewModelStoreOwner
 import androidx.navigation.NavHostController
@@ -36,11 +33,15 @@ import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 import cz.lastaapps.cvutbus.navigation.Dests
+import cz.lastaapps.cvutbus.pid.PIDViewModel
+import cz.lastaapps.cvutbus.pid.ui.PIDLayout
+import cz.lastaapps.cvutbus.settings.SettingsViewModel
+import cz.lastaapps.cvutbus.settings.modules.AppThemeMode
+import cz.lastaapps.cvutbus.settings.modules.appTheme
+import cz.lastaapps.cvutbus.settings.modules.dynamicTheme
+import cz.lastaapps.cvutbus.settings.ui.SettingsLayout
 import cz.lastaapps.cvutbus.ui.WithConnectivity
-import cz.lastaapps.cvutbus.ui.pid.PIDLayout
-import cz.lastaapps.cvutbus.ui.pid.PIDViewModel
 import cz.lastaapps.cvutbus.ui.providers.*
-import cz.lastaapps.cvutbus.ui.settings.SettingsViewModel
 import cz.lastaapps.cvutbus.ui.theme.AppTheme
 
 @Composable
@@ -49,8 +50,29 @@ fun AppLayout(
     viewModelStoreOwner: ViewModelStoreOwner,
     pidViewModel: PIDViewModel,
     settingsViewModel: SettingsViewModel,
+    onThemeReady: () -> Unit,
 ) {
-    AppTheme(useCustomTheme = false, darkTheme = isSystemInDarkTheme()) {
+
+    val appTheme by settingsViewModel.store.appTheme.collectAsState(initial = null)
+    val dynamic by settingsViewModel.store.dynamicTheme.collectAsState(initial = null)
+    if (appTheme == null || dynamic == null)
+        return
+
+    SideEffect { onThemeReady() }
+
+    val expected = isSystemInDarkTheme()
+    val darkState by remember(appTheme, expected) {
+        derivedStateOf {
+            when (appTheme) {
+                AppThemeMode.Dark -> true
+                AppThemeMode.Light -> false
+                AppThemeMode.System -> expected
+                null -> false
+            }
+        }
+    }
+
+    AppTheme(useCustomTheme = !dynamic!!, darkTheme = darkState, updateSystemBars = true) {
         ApplyProviders(activity = activity, viewModelStoreOwner = viewModelStoreOwner) {
             AppContent(pidViewModel, settingsViewModel)
         }
@@ -122,7 +144,7 @@ private fun AppNavigation(
             PIDLayout(pidViewModel, Modifier.fillMaxSize())
         }
         composable(Dests.Routes.settings) {
-            Text("Settings", Modifier.fillMaxSize())
+            SettingsLayout(settingsViewModel, Modifier.fillMaxSize())
         }
     }
 }

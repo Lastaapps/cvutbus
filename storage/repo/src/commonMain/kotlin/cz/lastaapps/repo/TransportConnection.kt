@@ -31,4 +31,9 @@ data class TransportConnection(
 
     val to: StopName
         get() = if (direction != Direction.Outbound) stop1 else stop2
+
+    companion object {
+        fun fromStopPair(stopPair: StopPair, direction: Direction) =
+            TransportConnection(stopPair.stop1, stopPair.stop2, direction)
+    }
 }

@@ -17,10 +17,11 @@
  * along with ČVUT Bus.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package cz.lastaapps.cvutbus.ui.pid
+package cz.lastaapps.cvutbus.pid
 
 import android.text.format.DateFormat
 import androidx.compose.animation.animateContentSize
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -33,6 +34,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import cz.lastaapps.cvutbus.api.DatabaseInfo
 import cz.lastaapps.cvutbus.getRoundedNow
@@ -83,7 +85,6 @@ private fun ShowData(
     ) {
         TimeHeader(
             showCounter, now, data.first(),
-            Modifier.animateContentSize()
         )
         Spacer(modifier = Modifier.height(16.dp))
 
@@ -131,7 +132,9 @@ private fun TimeHeader(
 
             Text(
                 createTimeText(showCounter, now, info),
-                style = MaterialTheme.typography.displayMedium
+                style = MaterialTheme.typography.displayMedium,
+                modifier = Modifier.animateContentSize(tween()),
+                textAlign = TextAlign.Center,
             )
 
             Surface(color = MaterialTheme.colorScheme.primary) {

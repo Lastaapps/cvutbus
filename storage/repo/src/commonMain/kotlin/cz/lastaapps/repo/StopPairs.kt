@@ -24,7 +24,7 @@ import cz.lastaapps.entity.StopName
 object StopPairs {
     val strahovDejvicka = StopPair(0, StopName("Koleje Strahov"), StopName("Dejvická"))
 
-    private val allStops = listOf(strahovDejvicka)
+    val allStops = listOf(strahovDejvicka)
 
     fun getPairById(id: Int): StopPair? =
         allStops.firstOrNull { it.id == id }

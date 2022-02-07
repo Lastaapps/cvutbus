@@ -17,15 +17,20 @@
  * along with ČVUT Bus.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package cz.lastaapps.cvutbus.ui.pid
+package cz.lastaapps.cvutbus.pid.ui
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import cz.lastaapps.cvutbus.pid.DirectionsUI
+import cz.lastaapps.cvutbus.pid.PIDIcons
+import cz.lastaapps.cvutbus.pid.PIDViewModel
+import cz.lastaapps.cvutbus.pid.TimeUI
 import cz.lastaapps.cvutbus.ui.providers.LocalWindowWidth
 import cz.lastaapps.cvutbus.ui.providers.WindowSizeClass
 
@@ -34,6 +39,9 @@ fun PIDLayout(
     pidViewModel: PIDViewModel,
     modifier: Modifier = Modifier,
 ) {
+    if (!pidViewModel.isReady.collectAsState().value)
+        return
+
     when (LocalWindowWidth.current) {
         WindowSizeClass.COMPACT -> PIDLayoutCompact(pidViewModel, modifier)
         WindowSizeClass.MEDIUM -> PIDLayoutMedium(pidViewModel, modifier)

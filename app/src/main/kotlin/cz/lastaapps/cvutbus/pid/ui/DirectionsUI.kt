@@ -17,9 +17,10 @@
  * along with ČVUT Bus.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package cz.lastaapps.cvutbus.ui.pid
+package cz.lastaapps.cvutbus.pid
 
 import androidx.compose.animation.animateContentSize
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -57,21 +58,23 @@ fun DirectionsUI(pidViewModel: PIDViewModel, modifier: Modifier = Modifier) {
                 Icon(Icons.Default.DoubleArrow, null, iconModifier)
 
                 Column(
-                    Modifier
-                        .height(IntrinsicSize.Min)
-                        .animateContentSize(),
+                    Modifier.height(IntrinsicSize.Min),
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.spacedBy(8.dp),
                 ) {
                     Text(
                         stops!!.to.name,
                         style = MaterialTheme.typography.headlineLarge,
-                        modifier = Modifier.weight(1f)
+                        modifier = Modifier
+                            .weight(1f)
+                            .animateContentSize(tween())
                     )
                     Text(
                         stops!!.from.name,
                         style = MaterialTheme.typography.headlineSmall,
-                        modifier = Modifier.weight(1f)
+                        modifier = Modifier
+                            .weight(1f)
+                            .animateContentSize(tween())
                     )
                 }
 

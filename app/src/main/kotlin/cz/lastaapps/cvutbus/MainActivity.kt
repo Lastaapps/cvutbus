@@ -24,9 +24,9 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
-import cz.lastaapps.cvutbus.ui.pid.PIDViewModel
+import cz.lastaapps.cvutbus.pid.PIDViewModel
+import cz.lastaapps.cvutbus.settings.SettingsViewModel
 import cz.lastaapps.cvutbus.ui.root.AppLayout
-import cz.lastaapps.cvutbus.ui.settings.SettingsViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -38,12 +38,15 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val splash = installSplashScreen()
+        var composeReady = false
 
-        splash.setKeepOnScreenCondition { false }
+        val splash = installSplashScreen()
+        splash.setKeepOnScreenCondition { !(pidViewModel.isReady.value && composeReady) }
 
         setContent {
-            AppLayout(this, this, pidViewModel, settingsViewModel)
+            AppLayout(this, this, pidViewModel, settingsViewModel) {
+                composeReady = true
+            }
         }
     }
 }

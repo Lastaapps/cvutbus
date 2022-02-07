@@ -17,13 +17,20 @@
  * along with ČVUT Bus.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package cz.lastaapps.cvutbus.ui.settings
+package cz.lastaapps.cvutbus.settings.modules
 
-import androidx.lifecycle.ViewModel
-import dagger.hilt.android.lifecycle.HiltViewModel
-import javax.inject.Inject
+import androidx.datastore.preferences.core.booleanPreferencesKey
+import androidx.datastore.preferences.core.edit
+import cz.lastaapps.cvutbus.settings.SettingsStore
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 
-@HiltViewModel
-class SettingsViewModel @Inject constructor() : ViewModel() {
+private val dynamicThemeKey = booleanPreferencesKey("dynamic_theme")
+private const val defaultDynamicTheme = true
 
+val SettingsStore.dynamicTheme: Flow<Boolean>
+    get() = store.data.map { it[dynamicThemeKey] ?: defaultDynamicTheme }
+
+suspend fun SettingsStore.setDynamicTheme(enabled: Boolean) {
+    store.edit { it[dynamicThemeKey] = enabled }
 }

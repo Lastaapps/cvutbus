@@ -17,7 +17,7 @@
  * along with ČVUT Bus.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package cz.lastaapps.cvutbus.ui.settings
+package cz.lastaapps.cvutbus.settings
 
 import android.app.Application
 import android.content.Context
@@ -29,10 +29,8 @@ import javax.inject.Singleton
 class SettingsStore @Inject constructor(app: Application) {
 
     companion object {
-        private val Context.pidDataStore by preferencesDataStore("pid_store")
+        private val Context.settingsDataStore by preferencesDataStore("settings_store")
     }
 
-    private val store = app.pidDataStore
-
-
+    val store = app.settingsDataStore
 }

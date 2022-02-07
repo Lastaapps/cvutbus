@@ -20,9 +20,14 @@
 package cz.lastaapps.repo
 
 import cz.lastaapps.entity.StopName
+import io.kotest.matchers.ints.shouldBeGreaterThanOrEqual
 
 data class StopPair(
     val id: Int,
     val stop1: StopName,
     val stop2: StopName,
-)
+) {
+    init {
+        id shouldBeGreaterThanOrEqual 0
+    }
+}

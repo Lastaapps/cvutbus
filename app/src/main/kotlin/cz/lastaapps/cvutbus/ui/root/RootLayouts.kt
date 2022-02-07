@@ -28,8 +28,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
-import cz.lastaapps.cvutbus.ui.pid.PIDViewModel
-import cz.lastaapps.cvutbus.ui.settings.SettingsViewModel
+import cz.lastaapps.cvutbus.pid.PIDViewModel
+import cz.lastaapps.cvutbus.settings.SettingsViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

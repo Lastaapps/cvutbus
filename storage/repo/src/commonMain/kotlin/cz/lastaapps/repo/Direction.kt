@@ -19,7 +19,14 @@
 
 package cz.lastaapps.repo
 
-sealed class Direction {
-    object Outbound : Direction()
-    object Inbound : Direction()
+sealed class Direction(private val isIn: Boolean) {
+    object Outbound : Direction(false)
+    object Inbound : Direction(true)
+
+    val toBool get() = isIn
+
+    companion object {
+        fun fromBoolean(boolean: Boolean) =
+            if (boolean == Outbound.toBool) Outbound else Inbound
+    }
 }

@@ -36,6 +36,7 @@ import com.google.accompanist.systemuicontroller.rememberSystemUiController
 fun AppTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
     useCustomTheme: Boolean = false,
+    updateSystemBars: Boolean = false,
     content: @Composable () -> Unit
 ) {
     val dynamicColor = Build.VERSION.SDK_INT >= Build.VERSION_CODES.S && !useCustomTheme
@@ -46,17 +47,19 @@ fun AppTheme(
         else -> LightThemeColors
     }.animated()
 
-    val systemUiController = rememberSystemUiController()
+    if (updateSystemBars) {
+        val systemUiController = rememberSystemUiController()
 
-    SideEffect {
-        systemUiController.setStatusBarColor(
-            color = colorScheme.background,
-            darkIcons = !darkTheme,
-        )
-        systemUiController.setNavigationBarColor(
-            color = colorScheme.surfaceVariant,
-            darkIcons = !darkTheme,
-        )
+        SideEffect {
+            systemUiController.setStatusBarColor(
+                color = colorScheme.background,
+                darkIcons = !darkTheme,
+            )
+            systemUiController.setNavigationBarColor(
+                color = colorScheme.surfaceVariant,
+                darkIcons = !darkTheme,
+            )
+        }
     }
 
     MaterialTheme(
