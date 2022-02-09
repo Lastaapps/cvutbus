@@ -111,3 +111,11 @@ class PIDRepoImpl(private val database: PIDDatabase) : PIDRepo {
         )
     }
 }
+
+fun List<DepartureInfo>.dropOld(limit: LocalDateTime): List<DepartureInfo> {
+    var list = this
+    while (list.isNotEmpty()) {
+        list = list.first().takeIf { it.dateTime <= limit }?.let { list.drop(1) } ?: break
+    }
+    return list
+}

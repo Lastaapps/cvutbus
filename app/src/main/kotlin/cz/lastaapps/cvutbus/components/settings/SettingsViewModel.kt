@@ -25,6 +25,7 @@ import cz.lastaapps.cvutbus.components.settings.modules.*
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+import kotlin.time.Duration
 
 @HiltViewModel
 class SettingsViewModel @Inject constructor(
@@ -58,6 +59,30 @@ class SettingsViewModel @Inject constructor(
     fun setTimeShowMode(mode: TimeShowMode) {
         viewModelScope.launch {
             store.setTimeShowMode(mode)
+        }
+    }
+
+    fun setNotificationHide(delay: Duration) {
+        viewModelScope.launch {
+            store.setNotificationHide(delay)
+        }
+    }
+
+    fun setNotificationStartMode(mode: NotificationStartup) {
+        viewModelScope.launch {
+            store.setNotificationStartup(mode)
+        }
+    }
+
+    fun setNotificationStartTime(time: Duration) {
+        viewModelScope.launch {
+            store.setNotificationStartTime(time)
+        }
+    }
+
+    fun setNotificationWorkDaysOnly(only: Boolean) {
+        viewModelScope.launch {
+            store.setNotificationWorkDaysOnly(only)
         }
     }
 }

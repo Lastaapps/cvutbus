@@ -27,10 +27,10 @@ import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.longPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
+import cz.lastaapps.cvutbus.format
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlinx.datetime.LocalDate
-import kotlinx.datetime.toJavaLocalDate
 import kotlinx.datetime.toKotlinLocalDate
 import java.time.format.DateTimeFormatter
 import javax.inject.Inject
@@ -66,8 +66,8 @@ class DatabaseInfoStore @Inject constructor(app: Application) {
     suspend fun setDatabaseInfo(databaseInfo: DatabaseInfo) {
         store.edit {
             it[minAppVersion] = databaseInfo.minAppVersion
-            it[dataReleaseDate] = databaseInfo.dataReleaseDate.toJavaLocalDate().format(dateFormat)
-            it[dataValidUntil] = databaseInfo.dataValidUntil.toJavaLocalDate().format(dateFormat)
+            it[dataReleaseDate] = databaseInfo.dataReleaseDate.format(dateFormat)
+            it[dataValidUntil] = databaseInfo.dataValidUntil.format(dateFormat)
             it[fileSize] = databaseInfo.fileSize
         }
     }

@@ -17,23 +17,21 @@
  * along with ČVUT Bus.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package cz.lastaapps.cvutbus.navigation
+package cz.lastaapps.cvutbus.di
 
-interface Dests {
-    object Routes {
+import android.content.Context
+import androidx.annotation.Keep
+import androidx.startup.Initializer
 
-        const val pid = "pid"
-        const val settings = "settings"
-        const val osturak = "osturak"
-        const val license = "license"
-        const val privacyPolicy = "privacy_policy"
+@Keep
+class DependencyGraphInitializer : Initializer<Unit> {
 
-        const val starting = pid
+    override fun create(context: Context) {
+        //this will lazily initialize ApplicationComponent before Application's `onCreate`
+        InitializerEntryPoint.resolve(context)
     }
 
-    //object Args
-}
-
-fun String.routesEquals(other: String): Boolean {
-    return substringBeforeLast("?") == (other.substringBeforeLast("?"))
+    override fun dependencies(): List<Class<out Initializer<*>>> {
+        return emptyList()
+    }
 }

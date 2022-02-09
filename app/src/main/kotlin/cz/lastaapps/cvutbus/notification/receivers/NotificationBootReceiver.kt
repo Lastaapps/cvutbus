@@ -17,23 +17,26 @@
  * along with ČVUT Bus.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package cz.lastaapps.cvutbus.navigation
+package cz.lastaapps.cvutbus.notification.receivers
 
-interface Dests {
-    object Routes {
+import android.content.BroadcastReceiver
+import android.content.Context
+import android.content.Intent
+import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.runBlocking
+import javax.inject.Inject
 
-        const val pid = "pid"
-        const val settings = "settings"
-        const val osturak = "osturak"
-        const val license = "license"
-        const val privacyPolicy = "privacy_policy"
+@AndroidEntryPoint
+class NotificationBootReceiver : BroadcastReceiver() {
 
-        const val starting = pid
+    @Inject
+    lateinit var registerModule: RegisterModule
+
+    override fun onReceive(context: Context, intent: Intent) {
+        if (intent.action == Intent.ACTION_BOOT_COMPLETED) {
+            runBlocking {
+                registerModule.update()
+            }
+        }
     }
-
-    //object Args
-}
-
-fun String.routesEquals(other: String): Boolean {
-    return substringBeforeLast("?") == (other.substringBeforeLast("?"))
 }

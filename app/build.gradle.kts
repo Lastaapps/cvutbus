@@ -24,6 +24,7 @@ plugins {
     id(Plugins.KSP)
     id(Plugins.KAPT)
     id(Plugins.ABOUT_LIBRARIES)
+    id("org.jetbrains.kotlin.android")
 }
 
 android {
@@ -96,13 +97,17 @@ dependencies {
     implementation(Libs.MATERIAL)
     implementation(Libs.CORE)
     implementation(Libs.LIFECYCLE)
-    implementation(Libs.WINDOW_MANAGER)
+    implementation(Libs.LIFECYCLE_LIVEDATA)
+    implementation(Libs.STARTUP)
     implementation(Libs.VECTOR_DRAWABLES)
+    implementation(Libs.WINDOW_MANAGER)
+    implementation(Libs.WORK)
 
     implementation(Libs.DAGGER_HILT)
     implementation(Libs.DATASTORE)
     implementation(Libs.HILT_COMMON)
     implementation(Libs.HILT_VIEWMODEL)
+    implementation(Libs.HILT_WORK)
     implementation(Libs.HILT_NAVIGATION_COMPOSE)
     kapt(Libs.DAGGER_HILT_COMPILER)
     kapt(Libs.HILT_COMPILER)

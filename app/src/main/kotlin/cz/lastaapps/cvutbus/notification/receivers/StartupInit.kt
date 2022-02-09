@@ -17,20 +17,33 @@
  * along with ČVUT Bus.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package cz.lastaapps.cvutbus.components.settings
+package cz.lastaapps.cvutbus.notification.receivers
 
-import android.app.Application
 import android.content.Context
-import androidx.datastore.preferences.preferencesDataStore
+import androidx.annotation.Keep
+import androidx.startup.Initializer
+import cz.lastaapps.cvutbus.di.DependencyGraphInitializer
+import cz.lastaapps.cvutbus.di.InitializerEntryPoint
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import javax.inject.Inject
-import javax.inject.Singleton
 
-@Singleton
-class SettingsStore @Inject constructor(val app: Application) {
+@Keep
+class StartupInit : Initializer<Unit> {
 
-    companion object {
-        private val Context.settingsDataStore by preferencesDataStore("settings_store")
+    @Inject
+    lateinit var registerModule: RegisterModule
+
+    override fun create(context: Context) {
+
+        InitializerEntryPoint.resolve(context).inject(this)
+
+        CoroutineScope(Dispatchers.Main).launch {
+            registerModule.update()
+        }
     }
 
-    val store = app.settingsDataStore
+    override fun dependencies(): List<Class<out Initializer<*>>> =
+        listOf(DependencyGraphInitializer::class.java)
 }

@@ -1,4 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?><!--
+<?xml version="1.0" encoding="utf-8"?>
+<!--
   ~ Copyright 2022, Petr Laštovička as Lasta apps, All rights reserved
   ~
   ~ This file is part of ČVUT Bus.
@@ -23,6 +24,7 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
     <application
             android:name=".App"
@@ -35,16 +37,63 @@
             android:supportsRtl="true"
             android:theme="@style/AppTheme.Starting"
             tools:targetApi="s">
+
         <activity
                 android:name=".MainActivity"
                 android:exported="true"
                 android:theme="@style/AppTheme.Starting">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+                <action android:name="android.service.quicksettings.action.QS_TILE_PREFERENCES" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-    </application>
 
+        <service
+                android:name=".notification.tile.NotificationTileService"
+                android:enabled="true"
+                android:exported="true"
+                android:icon="@drawable/tile_icon"
+                android:label="@string/notification_tile_name"
+                android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
+            <intent-filter>
+                <action android:name="android.service.quicksettings.action.QS_TILE" />
+            </intent-filter>
+        </service>
+
+        <receiver
+                android:name=".notification.receivers.NotificationBootReceiver"
+                android:enabled="true"
+                android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
+        <receiver
+                android:name=".notification.receivers.RegisteredReceiver"
+                android:enabled="true"
+                android:exported="true"
+                tools:ignore="ExportedReceiver" />
+        <receiver
+                android:name=".notification.receivers.ChangeDirectionReceiver"
+                android:enabled="true"
+                android:exported="true"
+                tools:ignore="ExportedReceiver" />
+
+        <provider
+                android:name="androidx.startup.InitializationProvider"
+                android:authorities="${applicationId}.androidx-startup"
+                android:exported="false"
+                tools:node="merge">
+            <meta-data
+                    android:name="cz.lastaapps.cvutbus.notification.receivers.StartupInit"
+                    android:value="androidx.startup" />
+            <!-- Using Hilts own initializer -->
+            <meta-data
+                    android:name="androidx.work.WorkManagerInitializer"
+                    android:value="androidx.startup"
+                    tools:node="remove" />
+        </provider>
+    </application>
 </manifest>

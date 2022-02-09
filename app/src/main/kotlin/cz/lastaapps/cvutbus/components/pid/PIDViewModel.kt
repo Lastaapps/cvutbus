@@ -27,15 +27,15 @@ import cz.lastaapps.cvutbus.components.settings.modules.*
 import cz.lastaapps.cvutbus.getRoundedNow
 import cz.lastaapps.cvutbus.secondTicker
 import cz.lastaapps.entity.utils.CET
-import cz.lastaapps.repo.DepartureInfo
-import cz.lastaapps.repo.Direction
-import cz.lastaapps.repo.StopPair
-import cz.lastaapps.repo.TransportConnection
+import cz.lastaapps.repo.*
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ObsoleteCoroutinesApi
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
-import kotlinx.datetime.*
+import kotlinx.datetime.Clock
+import kotlinx.datetime.DateTimeUnit
+import kotlinx.datetime.minus
+import kotlinx.datetime.toLocalDateTime
 import javax.inject.Inject
 
 @HiltViewModel
@@ -142,13 +142,5 @@ class PIDViewModel @Inject constructor(
                 trySend(list)
             }
         }
-    }
-
-    private fun List<DepartureInfo>.dropOld(limit: LocalDateTime): List<DepartureInfo> {
-        var list = this
-        while (list.isNotEmpty()) {
-            list = list.first().takeIf { it.dateTime <= limit }?.let { list.drop(1) } ?: break
-        }
-        return list
     }
 }

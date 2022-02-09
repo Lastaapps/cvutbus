@@ -35,7 +35,7 @@ import androidx.compose.ui.unit.dp
 fun <T> DropDownMenu(
     expanded: Boolean,
     onExpanded: (Boolean) -> Unit,
-    label: String,
+    label: String?,
     options: List<Pair<T, String>>,
     selected: Int,
     onItemSelected: (T) -> Unit,
@@ -43,7 +43,8 @@ fun <T> DropDownMenu(
     defaultItem: String? = null,
 ) {
     Column(modifier, verticalArrangement = Arrangement.spacedBy(8.dp)) {
-        Text(label, style = MaterialTheme.typography.titleMedium)
+        if (label != null)
+            Text(label, style = MaterialTheme.typography.titleMedium)
 
         ExposedDropdownMenuBox(
             modifier = Modifier.fillMaxWidth(),

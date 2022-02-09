@@ -25,11 +25,34 @@ import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant
 
 suspend fun secondTicker(getNow: () -> Instant = ::getRoundedNow, onTick: (Instant) -> Unit) {
+    secondTickerStopAble(getNow) { onTick(it); true }
+}
+
+suspend fun secondTickerStopAble(
+    getNow: () -> Instant = ::getRoundedNow,
+    onTick: (Instant) -> Boolean
+) {
     val safetyOffset = 10
-    onTick(getNow())
-    while (true) {
+    var keep = onTick(getNow())
+    while (keep) {
         delay(1000 - System.currentTimeMillis() % 1000 + safetyOffset)
-        onTick(getNow())
+        keep = onTick(getNow())
+    }
+}
+
+suspend fun minuteTicker(getNow: () -> Instant = ::getRoundedNow, onTick: (Instant) -> Unit) {
+    minuteTickerStopAble(getNow) { onTick(it); true }
+}
+
+suspend fun minuteTickerStopAble(
+    getNow: () -> Instant = ::getRoundedNow,
+    onTick: (Instant) -> Boolean
+) {
+    val safetyOffset = 10
+    var keep = onTick(getNow())
+    while (keep) {
+        delay(60_000 - System.currentTimeMillis() % 60_000 + safetyOffset)
+        keep = onTick(getNow())
     }
 }
 

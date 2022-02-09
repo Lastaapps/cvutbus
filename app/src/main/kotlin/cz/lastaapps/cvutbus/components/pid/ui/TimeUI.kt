@@ -19,7 +19,6 @@
 
 package cz.lastaapps.cvutbus.components.pid.ui
 
-import android.text.format.DateFormat
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.*
@@ -39,14 +38,14 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import cz.lastaapps.cvutbus.api.DatabaseInfo
 import cz.lastaapps.cvutbus.components.pid.PIDViewModel
+import cz.lastaapps.cvutbus.countdownFormat
 import cz.lastaapps.cvutbus.getRoundedNow
+import cz.lastaapps.cvutbus.localizedFormat
 import cz.lastaapps.cvutbus.secondTicker
 import cz.lastaapps.entity.utils.CET
 import cz.lastaapps.repo.DepartureInfo
 import kotlinx.datetime.Instant
 import kotlinx.datetime.toInstant
-import kotlinx.datetime.toJavaLocalDateTime
-import java.time.format.DateTimeFormatter
 
 @Composable
 fun TimeUI(
@@ -83,7 +82,7 @@ private fun ShowData(
     val now = rememberNow(data)
 
     val following by remember(data) {
-        derivedStateOf { data.take(96 + 1).drop(1).chunked(2) }
+        derivedStateOf { data.take(42 + 1).drop(1).chunked(2) }
     }
 
     Column(
@@ -183,22 +182,10 @@ private fun createTimeText(showCounter: Boolean, now: Instant, info: DepartureIn
                 val useMinus = infoDate < now
                 val duration = if (!useMinus) infoDate - now else (now - infoDate)
 
-                val mainText = if (duration.inWholeHours > 0) {
-                    "%d:%02d:%02d".format(
-                        duration.inWholeHours,
-                        duration.inWholeMinutes % 60,
-                        duration.inWholeSeconds % 60
-                    )
-                } else {
-                    "%d:%02d".format(duration.inWholeMinutes % 60, duration.inWholeSeconds % 60)
-                }
+                val mainText = duration.countdownFormat(true)
                 if (useMinus) "- $mainText" else mainText
             } else {
-                val use24: Boolean = DateFormat.is24HourFormat(context)
-                val patter = if (use24) "H:mm" else "h:mm a"
-                val formatter = DateTimeFormatter.ofPattern(patter)
-
-                info.dateTime.toJavaLocalDateTime().format(formatter)
+                info.dateTime.localizedFormat(context)
             }
         }
     }.value

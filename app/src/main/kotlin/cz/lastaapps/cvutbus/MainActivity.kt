@@ -20,17 +20,17 @@
 package cz.lastaapps.cvutbus
 
 import android.os.Bundle
-import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import androidx.fragment.app.FragmentActivity
 import cz.lastaapps.cvutbus.components.pid.PIDViewModel
 import cz.lastaapps.cvutbus.components.settings.SettingsViewModel
 import cz.lastaapps.cvutbus.ui.root.AppLayout
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class MainActivity : ComponentActivity() {
+class MainActivity : FragmentActivity() {
 
     private val pidViewModel: PIDViewModel by viewModels()
     private val settingsViewModel: SettingsViewModel by viewModels()

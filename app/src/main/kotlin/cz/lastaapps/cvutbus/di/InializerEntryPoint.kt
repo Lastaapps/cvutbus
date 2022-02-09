@@ -17,20 +17,29 @@
  * along with ČVUT Bus.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package cz.lastaapps.cvutbus.components.settings
+package cz.lastaapps.cvutbus.di
 
-import android.app.Application
 import android.content.Context
-import androidx.datastore.preferences.preferencesDataStore
-import javax.inject.Inject
-import javax.inject.Singleton
+import cz.lastaapps.cvutbus.notification.receivers.StartupInit
+import dagger.hilt.EntryPoint
+import dagger.hilt.InstallIn
+import dagger.hilt.android.EntryPointAccessors
+import dagger.hilt.components.SingletonComponent
 
-@Singleton
-class SettingsStore @Inject constructor(val app: Application) {
+@EntryPoint
+@InstallIn(SingletonComponent::class)
+interface InitializerEntryPoint {
+
+    fun inject(notificationStartupInit: StartupInit)
 
     companion object {
-        private val Context.settingsDataStore by preferencesDataStore("settings_store")
+        //a helper method to resolve the InitializerEntryPoint from the context
+        fun resolve(context: Context): InitializerEntryPoint {
+            val appContext = context.applicationContext ?: throw IllegalStateException()
+            return EntryPointAccessors.fromApplication(
+                appContext,
+                InitializerEntryPoint::class.java
+            )
+        }
     }
-
-    val store = app.settingsDataStore
 }
