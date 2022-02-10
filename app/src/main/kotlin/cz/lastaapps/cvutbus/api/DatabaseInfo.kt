@@ -35,6 +35,7 @@ data class DatabaseInfo(
     companion object {
         private const val supportedJsonVersion = 1L
 
+        @Throws(UnsupportedConfigVersion::class)
         fun fromJson(jsonString: String): DatabaseInfo {
             val json = JSONObject(jsonString)
 
@@ -56,5 +57,4 @@ data class DatabaseInfo(
             return java.time.LocalDate.parse(this, DateTimeFormatter.ISO_DATE).toKotlinLocalDate()
         }
     }
-
 }

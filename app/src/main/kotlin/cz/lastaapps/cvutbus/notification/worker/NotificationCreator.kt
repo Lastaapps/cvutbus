@@ -20,7 +20,6 @@
 package cz.lastaapps.cvutbus.notification.worker
 
 import android.app.Notification
-import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
@@ -52,11 +51,19 @@ class NotificationCreator(private val appContext: Context, private val workerId:
     }
 
     fun createTimeNotification(data: List<DepartureInfo>): Notification {
-        return setupBuilder(
-            data.first().connection.to.name,
-            createTimeTitle(data.first()),
-            createTimeDescription(data.drop(1)),
-        ).build()
+        return if (data.isEmpty()) {
+            setupBuilder(
+                null,
+                "No data available",
+                "Try to update data or contact the app developer",
+            ).build()
+        } else {
+            setupBuilder(
+                data.first().connection.to.name,
+                createTimeTitle(data.first()),
+                createTimeDescription(data.drop(1)),
+            ).build()
+        }
     }
 
     private fun createTimeTitle(info: DepartureInfo): String {
@@ -138,7 +145,7 @@ class NotificationCreator(private val appContext: Context, private val workerId:
         NotificationManagerCompat.from(appContext).createNotificationChannel(
             with(
                 NotificationChannelCompat.Builder(
-                    channelId, NotificationManager.IMPORTANCE_DEFAULT
+                    channelId, NotificationManagerCompat.IMPORTANCE_DEFAULT
                 )
             ) {
                 setName("TODO")

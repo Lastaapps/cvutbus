@@ -24,7 +24,6 @@ plugins {
     id(Plugins.KSP)
     id(Plugins.KAPT)
     id(Plugins.ABOUT_LIBRARIES)
-    id("org.jetbrains.kotlin.android")
 }
 
 android {
@@ -114,6 +113,8 @@ dependencies {
 
     implementation(Libs.KOTLINX_DATETIME)
     implementation(Libs.ABOUT_LIBRARIES_CORE)
+    implementation(Libs.KTOR_CORE)
+    implementation(Libs.KTOR_CIO)
 
     initCompose(useMaterial2 = true)
 }

@@ -134,17 +134,18 @@ class PIDViewModel @Inject constructor(
     fun getData(): Flow<List<DepartureInfo>> = channelFlow {
         val repo = provider.provide()
         transportConnection.collectLatest { connection ->
-
-            var list = getRoundedNow().toLocalDateTime(CET).let { now ->
-                repo.getData(now, connection).dropOld(now)
-            }
-
-            secondTicker { now ->
-                val showLimit =
-                    now.minus(showPastForSeconds, DateTimeUnit.SECOND).toLocalDateTime(CET)
-                list = list.dropOld(showLimit)
-                trySend(list)
-            }
+            val start = getRoundedNow().toLocalDateTime(CET)
+            repo.getData(start, connection)
+                .map { it.dropOld(start) }
+                .collectLatest { dbList ->
+                    var list = dbList
+                    secondTicker { now ->
+                        val showLimit =
+                            now.minus(showPastForSeconds, DateTimeUnit.SECOND).toLocalDateTime(CET)
+                        list = list.dropOld(showLimit)
+                        trySend(list)
+                    }
+                }
         }
     }
 }

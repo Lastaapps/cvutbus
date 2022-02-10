@@ -19,12 +19,17 @@
 
 package cz.lastaapps.repo
 
+import com.squareup.sqldelight.runtime.coroutines.asFlow
+import com.squareup.sqldelight.runtime.coroutines.mapToList
 import cz.lastaapps.database.PIDDatabase
 import cz.lastaapps.entity.hasDay
 import cz.lastaapps.entity.utils.ServiceDayTime
 import io.kotest.matchers.ints.shouldBeGreaterThanOrEqual
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import kotlinx.datetime.*
 import org.lighthousegames.logging.logging
+import pid.GetAllForDays
 
 class PIDRepoImpl(private val database: PIDDatabase) : PIDRepo {
 
@@ -45,27 +50,35 @@ class PIDRepoImpl(private val database: PIDDatabase) : PIDRepo {
 
     override suspend fun getData(
         fromDateTime: LocalDateTime, connection: TransportConnection,
-    ): List<DepartureInfo> {
+    ): Flow<List<DepartureInfo>> {
 
         log.i { "Loading data from $fromDateTime for connection $connection" }
 
         val maxStartDate = fromDateTime.date.plus(generateForDays, DateTimeUnit.DAY)
         val maxEndDate = fromDateTime.date.minus(1, DateTimeUnit.DAY)
 
+        //is a little bit slower
+        //val rows = database.queriesQueries.getAll(connection.from, connection.to)
+
         // get data for the both directions
         val rows = database.queriesQueries.getAllForDays(
             connection.from, connection.to, maxStartDate, maxEndDate,
-        ).executeAsList()
-        //is a little bit slower
-        //val rows = database.queriesQueries.getAll(connection.from, connection.to).executeAsList()
+        )
 
+        return rows.asFlow().mapToList().map { it.getForRows(fromDateTime, connection) }
+    }
+
+    private fun List<GetAllForDays>.getForRows(
+        fromDateTime: LocalDateTime,
+        connection: TransportConnection
+    ): List<DepartureInfo> {
         // we need to start 1 day before, service day can have up to 47 hours
         val startDate = fromDateTime.date.minus(1, DateTimeUnit.DAY)
         // caching, creating objects just once
         val dayShifts = List(generateForDays) { startDate.plus(it.toLong(), DateTimeUnit.DAY) }
 
         val times = mutableListOf<DepartureInfo>()
-        rows.forEach { row ->
+        this.forEach { row ->
             // select the correct direction
             if (row.startArrivalTime < row.endArrivalTime) {
                 dayShifts.forEach { date ->

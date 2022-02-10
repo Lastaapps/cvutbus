@@ -24,6 +24,7 @@ import cz.lastaapps.database.MemoryDriverFactory
 import cz.lastaapps.database.PIDDatabase
 import cz.lastaapps.database.createDatabase
 import cz.lastaapps.entity.StopName
+import cz.lastaapps.entity.utils.CET
 import cz.lastaapps.generator.parsers.*
 import io.ktor.client.*
 import io.ktor.client.engine.cio.*
@@ -32,6 +33,7 @@ import io.ktor.client.statement.*
 import io.ktor.http.*
 import io.ktor.utils.io.core.*
 import kotlinx.coroutines.runBlocking
+import kotlinx.datetime.toJavaZoneId
 import org.lighthousegames.logging.logging
 import java.io.*
 import java.time.Instant
@@ -40,25 +42,6 @@ import java.time.format.DateTimeFormatter
 import java.util.zip.ZipEntry
 import java.util.zip.ZipInputStream
 import kotlin.system.exitProcess
-
-/*
- * Copyright 2022, Petr Laštovička as Lasta apps, All rights reserved
- *
- * This file is part of ČVUT Bus.
- *
- * Menza is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * ČVUT Bus is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with ČVUT Bus.  If not, see <https://www.gnu.org/licenses/>.
- */
 
 val genLog = logging("General")
 val downLog = logging("Download")
@@ -169,14 +152,15 @@ fun main(): Unit = runBlocking {
     jsonLog.i { "Creating json configuration" }
     val json = File(dir, jsonName)
     val jsonOut = PrintWriter(OutputStreamWriter(json.outputStream()))
+    val now = LocalDate.now(CET.toJavaZoneId())
     jsonOut.print(
         """
         |{
-        |   jsonVersion: 1,
-        |   minAppVersion: 1,
-        |   dataReleaseDate: ${LocalDate.now().format(DateTimeFormatter.ISO_DATE)},
-        |   dataValidity: ${LocalDate.now().plusDays(10).format(DateTimeFormatter.ISO_DATE)},
-        |   fileSize: ${databaseFile.length()}
+        |   "jsonVersion": 1,
+        |   "minAppVersion": 1,
+        |   "dataReleaseDate": "${now.format(DateTimeFormatter.ISO_DATE)}",
+        |   "dataValidity": "${now.plusDays(10).format(DateTimeFormatter.ISO_DATE)}",
+        |   "fileSize": ${databaseFile.length()}
         |}
     """.trimMargin()
     )

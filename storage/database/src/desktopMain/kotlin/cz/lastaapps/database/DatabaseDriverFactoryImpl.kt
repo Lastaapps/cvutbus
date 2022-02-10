@@ -22,7 +22,7 @@ package cz.lastaapps.database
 import com.squareup.sqldelight.db.SqlDriver
 import java.io.File
 
-actual class DatabaseDriverFactoryImpl(private val file: File) : MenzaDriverFactory {
+actual class DatabaseDriverFactoryImpl(private val file: File) : DriverFactory {
     @Suppress("UNREACHABLE_CODE")
     actual override fun createDriver(): SqlDriver {
         return JvmSqliteDriver(PIDDatabase.Schema, file.absolutePath)

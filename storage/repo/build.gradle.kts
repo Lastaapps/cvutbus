@@ -58,6 +58,7 @@ kotlin {
                 api(Libs.KOTLINX_DATETIME)
                 api(Libs.KM_LOGGING)
                 implementation(Tests.KOTEST_ASSERTION)
+                implementation(Libs.KOTLIN_COROUTINES)
             }
         }
         val commonTest by getting {

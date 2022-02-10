@@ -21,6 +21,6 @@ package cz.lastaapps.database
 
 import com.squareup.sqldelight.db.SqlDriver
 
-expect class MemoryDriverFactory : MenzaDriverFactory {
+expect class MemoryDriverFactory : DriverFactory {
     override fun createDriver(): SqlDriver
 }

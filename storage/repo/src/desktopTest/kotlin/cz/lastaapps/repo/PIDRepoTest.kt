@@ -24,6 +24,7 @@ import cz.lastaapps.database.PIDDatabase
 import cz.lastaapps.database.createDatabase
 import io.kotest.matchers.collections.shouldContainInOrder
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runTest
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.LocalDateTime
@@ -57,8 +58,8 @@ class PIDRepoTest {
         val toDejvickaConnection = TransportConnections.strahovDejvicka(true)
         val toStrahovConnection = TransportConnections.strahovDejvicka(false)
 
-        val toDejvicka = repo.getData(dateTime, toDejvickaConnection).take(5)
-        val toStrahov = repo.getData(dateTime, toStrahovConnection).take(5)
+        val toDejvicka = repo.getData(dateTime, toDejvickaConnection).first().take(5)
+        val toStrahov = repo.getData(dateTime, toStrahovConnection).first().take(5)
 
         toDejvicka shouldContainInOrder listOf(
             DepartureInfo(
@@ -117,8 +118,8 @@ class PIDRepoTest {
         val toDejvickaConnection = TransportConnections.strahovDejvicka(true)
         val toStrahovConnection = TransportConnections.strahovDejvicka(false)
 
-        val toDejvicka = repo.getData(dateTime, toDejvickaConnection).take(5)
-        val toStrahov = repo.getData(dateTime, toStrahovConnection).take(5)
+        val toDejvicka = repo.getData(dateTime, toDejvickaConnection).first().take(5)
+        val toStrahov = repo.getData(dateTime, toStrahovConnection).first().take(5)
 
         toDejvicka shouldContainInOrder listOf(
             DepartureInfo(

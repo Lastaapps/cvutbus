@@ -22,6 +22,7 @@ package cz.lastaapps.cvutbus
 import android.app.Application
 import androidx.hilt.work.HiltWorkerFactory
 import androidx.work.Configuration
+import cz.lastaapps.cvutbus.api.worker.UpdateManager
 import dagger.hilt.android.HiltAndroidApp
 import org.lighthousegames.logging.logging
 import javax.inject.Inject
@@ -39,8 +40,14 @@ class App : Application(), Configuration.Provider {
             .setWorkerFactory(workerFactory)
             .build()
 
+
+    @Inject
+    lateinit var updateManager: UpdateManager
+
     override fun onCreate() {
         super.onCreate()
         log.i { "Creating Activity" }
+
+        updateManager.schedule()
     }
 }

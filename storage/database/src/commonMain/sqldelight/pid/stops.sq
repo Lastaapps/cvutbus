@@ -8,8 +8,12 @@ CREATE TABLE stops (
 
 CREATE INDEX stops_index ON stops(stop_id, stop_name);
 
-getAllStops:
+getAll:
     SELECT * FROM stops;
+
+insertObj:
+    INSERT OR IGNORE INTO stops
+    VALUES ?;
 
 getStopsByName:
     SELECT * FROM stops

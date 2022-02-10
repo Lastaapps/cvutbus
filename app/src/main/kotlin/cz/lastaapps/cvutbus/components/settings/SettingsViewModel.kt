@@ -21,6 +21,8 @@ package cz.lastaapps.cvutbus.components.settings
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import cz.lastaapps.cvutbus.api.DatabaseStore
+import cz.lastaapps.cvutbus.api.worker.UpdateManager
 import cz.lastaapps.cvutbus.components.settings.modules.*
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -30,6 +32,8 @@ import kotlin.time.Duration
 @HiltViewModel
 class SettingsViewModel @Inject constructor(
     val store: SettingsStore,
+    val databaseStore: DatabaseStore,
+    val updateManager: UpdateManager,
 ) : ViewModel() {
 
     fun setAppTheme(theme: AppThemeMode) {

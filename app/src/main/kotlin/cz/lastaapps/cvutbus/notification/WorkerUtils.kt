@@ -21,10 +21,7 @@ package cz.lastaapps.cvutbus.notification
 
 import android.content.Context
 import androidx.lifecycle.asFlow
-import androidx.work.ExistingWorkPolicy
-import androidx.work.OneTimeWorkRequestBuilder
-import androidx.work.OutOfQuotaPolicy
-import androidx.work.WorkManager
+import androidx.work.*
 import cz.lastaapps.cvutbus.notification.worker.NotificationWorker
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
@@ -44,7 +41,8 @@ class WorkerUtils(context: Context) {
         log.i { "Starting" }
         val work = with(OneTimeWorkRequestBuilder<NotificationWorker>()) {
             setExpedited(OutOfQuotaPolicy.RUN_AS_NON_EXPEDITED_WORK_REQUEST)
-        }.build()
+            build()
+        }
 
         manager.enqueueUniqueWork(NotificationWorker.workerKey, ExistingWorkPolicy.REPLACE, work)
     }
@@ -68,6 +66,6 @@ class WorkerUtils(context: Context) {
 
     fun isRunningFlow(): Flow<Boolean> {
         return manager.getWorkInfosForUniqueWorkLiveData(NotificationWorker.workerKey)
-            .asFlow().map { it.firstOrNull()?.state?.isFinished ?: true }.map { !it }
+            .asFlow().map { it.firstOrNull()?.state == WorkInfo.State.RUNNING }
     }
 }

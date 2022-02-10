@@ -37,26 +37,24 @@ class DatabaseProvider {
 
     @Suppress("JoinDeclarationAndAssignment")
     private val app: Application
-    private val store: DatabaseInfoStore
+    private val store: DatabaseStore
     private val dispatcher: CoroutineDispatcher
 
     constructor(
-        app: Application, store: DatabaseInfoStore, dispatcher: CoroutineDispatcher,
+        app: Application, store: DatabaseStore, dispatcher: CoroutineDispatcher,
     ) {
         this.app = app; this.store = store; this.dispatcher = dispatcher
     }
 
     @Inject
     constructor(
-        app: Application, store: DatabaseInfoStore,
+        app: Application, store: DatabaseStore,
     ) : this(app, store, Dispatchers.IO)
 
     companion object {
         private const val assetName = "piddatabase.db"
         private const val assetJsonName = "config.json"
         private const val databaseName = "piddatabase.db"
-        private const val newDatabaseName = "piddatabase_new.db"
-        private const val newJsonName = "config_new.json"
 
         private val log = logging()
     }
@@ -71,23 +69,17 @@ class DatabaseProvider {
             databaseCache?.let { return@withContext it }
 
             val databaseFile = app.getDatabasePath(databaseName)
-            val newDatabaseFile = app.getDatabasePath(newDatabaseName)
 
-            if (newDatabaseFile.exists()) {
-                log.i { "New database exists, replacing" }
+//            if (BuildConfig.DEBUG && databaseFile.exists()) {
+//                databaseFile.delete()
+//            }
 
-                val jsonText =
-                    app.getFileStreamPath(newJsonName).inputStream().bufferedReader().readText()
-                store.setDatabaseInfo(DatabaseInfo.fromJson(jsonText))
-
-                databaseFile.delete()
-                newDatabaseFile.renameTo(databaseFile)
-
-            } else if (!databaseFile.exists()) {
-                log.i { "There is no database" }
+            if (!databaseFile.exists()) {
+                log.i { "There is no database, loading from assets" }
 
                 val jsonText = app.assets.open(assetJsonName).bufferedReader().readText()
                 store.setDatabaseInfo(DatabaseInfo.fromJson(jsonText))
+                store.setLastUpdated()
 
                 val input = app.assets.open(assetName)
                 databaseFile.createNewFile()
@@ -98,10 +90,7 @@ class DatabaseProvider {
             }
 
             return@withContext createDatabase(
-                DatabaseDriverFactoryImpl(
-                    app,
-                    databaseName
-                )
+                DatabaseDriverFactoryImpl(app, databaseName)
             ).also { databaseCache = it }
         }
     }

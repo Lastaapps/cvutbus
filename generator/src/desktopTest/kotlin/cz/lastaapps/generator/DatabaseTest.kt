@@ -56,7 +56,7 @@ class DatabaseTest {
 
     @Test
     fun stopsTest() = runTest {
-        database.stopsQueries.getAllStops().executeAsList().shouldHaveSize(15594)
+        database.stopsQueries.getAll().executeAsList().shouldHaveSize(15594)
         database.stopsQueries.getStopsByName(listOf(strahov)).executeAsList().shouldHaveSize(2)
     }
 

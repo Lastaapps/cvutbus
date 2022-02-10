@@ -17,29 +17,29 @@
  * along with ČVUT Bus.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package cz.lastaapps.cvutbus.di
+package cz.lastaapps.cvutbus.api.worker
 
-/*
-@Module
-@InstallIn(SingletonComponent::class)
-object DatabaseModule {
+import android.content.BroadcastReceiver
+import android.content.Context
+import android.content.Intent
+import dagger.hilt.android.AndroidEntryPoint
+import org.lighthousegames.logging.logging
+import javax.inject.Inject
 
-    @Provides
-    @Singleton
-    fun provideDatabaseInfoStore(app: Application): DatabaseInfoStore {
-        return DatabaseInfoStore(app)
+@AndroidEntryPoint
+class UpdateBootReceiver : BroadcastReceiver() {
+
+    companion object {
+        private val log = logging()
     }
 
-    @Provides
-    @Singleton
-    fun provideDatabaseProvider(app: Application, store: DatabaseInfoStore): DatabaseProvider {
-        return DatabaseProvider(app, store, Dispatchers.IO)
-    }
+    @Inject
+    lateinit var updateManager: UpdateManager
 
-    @Provides
-    @Singleton
-    fun provideRepoProvider(databaseProvider: DatabaseProvider): PIDRepoProvider {
-        return PIDRepoProvider(databaseProvider)
+    override fun onReceive(context: Context, intent: Intent) {
+        if (intent.action == Intent.ACTION_BOOT_COMPLETED) {
+            log.i { "Received" }
+            updateManager.schedule()
+        }
     }
 }
- */

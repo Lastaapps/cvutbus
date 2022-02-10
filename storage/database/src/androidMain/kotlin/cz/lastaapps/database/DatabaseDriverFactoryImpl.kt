@@ -24,7 +24,7 @@ import com.squareup.sqldelight.android.AndroidSqliteDriver
 import com.squareup.sqldelight.db.SqlDriver
 
 actual class DatabaseDriverFactoryImpl(private val context: Context, private val name: String) :
-    MenzaDriverFactory {
+    DriverFactory {
     actual override fun createDriver(): SqlDriver {
         return AndroidSqliteDriver(PIDDatabase.Schema, context, name)
     }

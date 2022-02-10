@@ -58,6 +58,8 @@ fun SettingsUI(
         NotificationStartSelection(settingsViewModel)
         NotificationHideSelection(settingsViewModel)
 
+        UpdateUI(settingsViewModel)
+
         Buttons(navController, showAbout, onAboutClicked)
     }
 }

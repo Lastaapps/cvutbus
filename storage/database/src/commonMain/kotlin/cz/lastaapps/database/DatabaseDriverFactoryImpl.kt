@@ -23,19 +23,23 @@ import com.squareup.sqldelight.db.SqlDriver
 import org.lighthousegames.logging.logging
 import pid.*
 
-interface MenzaDriverFactory {
+interface DriverFactory {
     fun createDriver(): SqlDriver
 }
 
-expect class DatabaseDriverFactoryImpl : MenzaDriverFactory {
+expect class DatabaseDriverFactoryImpl : DriverFactory {
     override fun createDriver(): SqlDriver
 }
 
-fun createDatabase(driverFactory: MenzaDriverFactory): PIDDatabase {
+fun createDatabase(factory: DriverFactory): PIDDatabase {
+    val driver = factory.createDriver()
+    return createDatabase(driver)
+}
+
+fun createDatabase(driver: SqlDriver): PIDDatabase {
 
     logging("Database").i { "Creating database" }
 
-    val driver = driverFactory.createDriver()
     val cl = ColumnConvertors
 
     return PIDDatabase(

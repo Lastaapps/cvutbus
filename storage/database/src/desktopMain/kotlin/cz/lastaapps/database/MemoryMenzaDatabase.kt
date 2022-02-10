@@ -22,7 +22,7 @@ package cz.lastaapps.database
 import com.squareup.sqldelight.db.SqlDriver
 import com.squareup.sqldelight.sqlite.driver.JdbcSqliteDriver
 
-actual class MemoryDriverFactory : MenzaDriverFactory {
+actual class MemoryDriverFactory : DriverFactory {
     actual override fun createDriver(): SqlDriver {
         val driver = JdbcSqliteDriver(JdbcSqliteDriver.IN_MEMORY)
         PIDDatabase.Schema.create(driver)

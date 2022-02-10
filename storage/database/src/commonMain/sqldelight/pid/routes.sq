@@ -9,6 +9,13 @@ CREATE TABLE routes (
 
 CREATE INDEX routes_index ON routes(route_id);
 
+getAll:
+    SELECT * FROM routes;
+
+insertObj:
+    INSERT OR IGNORE INTO routes
+    VALUES ?;
+
 insert:
     INSERT OR IGNORE INTO routes(route_id,route_short_name,route_long_name)
     VALUES (:routeId,:shortName, :longName);

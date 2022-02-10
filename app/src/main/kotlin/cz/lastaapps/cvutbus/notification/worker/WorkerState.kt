@@ -87,10 +87,13 @@ class WorkerState @Inject constructor(
 
     fun getData(): Flow<List<DepartureInfo>> = channelFlow {
         connection.collectLatest { connection ->
-            var data = repo.getData(getRoundedNow().toLocalDateTime(CET), connection)
-            minuteTicker { now ->
-                data = data.dropOld(now.toLocalDateTime(CET))
-                trySend(data)
+            repo.getData(getRoundedNow().toLocalDateTime(CET), connection).collectLatest { dbData ->
+                var data = dbData
+
+                minuteTicker { now ->
+                    data = data.dropOld(now.toLocalDateTime(CET))
+                    trySend(data)
+                }
             }
         }
     }

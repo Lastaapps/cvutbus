@@ -28,16 +28,17 @@ import androidx.datastore.preferences.core.longPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import cz.lastaapps.cvutbus.format
-import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.toKotlinLocalDate
+import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class DatabaseInfoStore @Inject constructor(app: Application) {
+class DatabaseStore @Inject constructor(app: Application) {
 
     companion object {
         private val Context.infoStore: DataStore<Preferences> by preferencesDataStore("database_info")
@@ -48,20 +49,24 @@ class DatabaseInfoStore @Inject constructor(app: Application) {
         private val fileSize = longPreferencesKey("file_size")
 
         private val dateFormat = DateTimeFormatter.ISO_DATE
+
+        private const val defaultDataSourceDir =
+            "https://raw.githubusercontent.com/Lastaapps/ctubus/cloud_data/cloud_data/"
+        private const val configFileName = "config.json"
+        private const val databaseFileName = "piddatabase.db"
     }
 
     private val store = app.infoStore
 
-    suspend fun getDatabaseInfo(): DatabaseInfo? {
-        return store.data.map {
+    val databaseInfo: Flow<DatabaseInfo?>
+        get() = store.data.map {
             DatabaseInfo(
                 it[minAppVersion] ?: return@map null,
                 it[dataReleaseDate]?.toDate() ?: return@map null,
                 it[dataValidUntil]?.toDate() ?: return@map null,
                 it[fileSize] ?: return@map null,
             )
-        }.first()
-    }
+        }
 
     suspend fun setDatabaseInfo(databaseInfo: DatabaseInfo) {
         store.edit {
@@ -74,4 +79,26 @@ class DatabaseInfoStore @Inject constructor(app: Application) {
 
     private fun String.toDate(): LocalDate =
         java.time.LocalDate.parse(this, dateFormat).toKotlinLocalDate()
+
+
+    private val dataSourceKey = stringPreferencesKey("data_source_config")
+    private val dataSourceDir: Flow<String>
+        get() = store.data.map { it[dataSourceKey] ?: defaultDataSourceDir }
+
+    val dataSourceConfig: Flow<String>
+        get() = dataSourceDir.map { it + configFileName }
+    val dataSourceDatabase: Flow<String>
+        get() = dataSourceDir.map { it + databaseFileName }
+
+
+    private val lastUpdatedKey = stringPreferencesKey("last_updated")
+    private val lastUpdatedDateFormat = DateTimeFormatter.ISO_DATE_TIME
+    val lastUpdated: Flow<ZonedDateTime?>
+        get() = store.data.map { pref ->
+            pref[lastUpdatedKey]?.let { ZonedDateTime.parse(it, lastUpdatedDateFormat) }
+        }
+
+    suspend fun setLastUpdated(date: ZonedDateTime = ZonedDateTime.now()) {
+        store.edit { it[lastUpdatedKey] = date.format(lastUpdatedDateFormat) }
+    }
 }

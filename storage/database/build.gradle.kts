@@ -59,8 +59,8 @@ kotlin {
                 api(Libs.KOTLINX_DATETIME)
                 implementation(Tests.KOTEST_ASSERTION)
 
-                implementation(Libs.SQLDELIGHT_RUNTIME)
-                implementation(Libs.SQLDELIGHT_COROUTINES)
+                api(Libs.SQLDELIGHT_RUNTIME)
+                api(Libs.SQLDELIGHT_COROUTINES)
                 implementation(Libs.KM_LOGGING)
             }
         }

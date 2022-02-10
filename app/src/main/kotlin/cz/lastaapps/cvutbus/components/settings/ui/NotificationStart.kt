@@ -125,8 +125,9 @@ private fun SelectTime(time: Duration, onTime: (Duration) -> Unit, modifier: Mod
             setHour(time.toHours())
             setMinute(time.toMinutes())
             setTitleText("Startup time")
+            build()
         }
-            .build().apply {
+            .apply {
                 addOnPositiveButtonClickListener {
                     onTime((hour * 60 + minute).minutes)
                 }

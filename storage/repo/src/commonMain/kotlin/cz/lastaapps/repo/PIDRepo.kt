@@ -19,11 +19,12 @@
 
 package cz.lastaapps.repo
 
+import kotlinx.coroutines.flow.Flow
 import kotlinx.datetime.LocalDateTime
 
 interface PIDRepo {
     suspend fun getData(
         fromDateTime: LocalDateTime,
         connection: TransportConnection,
-    ): List<DepartureInfo>
+    ): Flow<List<DepartureInfo>>
 }
