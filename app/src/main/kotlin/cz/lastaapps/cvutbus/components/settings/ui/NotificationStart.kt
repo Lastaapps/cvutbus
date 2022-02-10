@@ -36,12 +36,17 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import com.google.android.material.timepicker.MaterialTimePicker
 import com.google.android.material.timepicker.TimeFormat
-import cz.lastaapps.cvutbus.*
+import cz.lastaapps.cvutbus.MainActivity
 import cz.lastaapps.cvutbus.components.settings.SettingsViewModel
 import cz.lastaapps.cvutbus.components.settings.modules.NotificationStartup
 import cz.lastaapps.cvutbus.components.settings.modules.notificationStartTime
 import cz.lastaapps.cvutbus.components.settings.modules.notificationStartup
 import cz.lastaapps.cvutbus.components.settings.modules.notificationWorkDaysOnly
+import cz.lastaapps.cvutbus.localizedFormat
+import cz.lastaapps.cvutbus.toLocalTime
+import cz.lastaapps.cvutbus.uses24Hour
+import cz.lastaapps.entity.utils.toHours
+import cz.lastaapps.entity.utils.toMinutes
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.minutes
 

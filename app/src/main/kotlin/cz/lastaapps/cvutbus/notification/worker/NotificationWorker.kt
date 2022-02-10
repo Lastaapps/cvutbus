@@ -78,6 +78,9 @@ class NotificationWorker @AssistedInject constructor(
                                 true
                             }
                         }
+                        showAutoHideNotification()
+                        delay(10_000)
+
                         dismissNotification()
                         while (job == null) delay(1)
                         job!!.cancel()
@@ -97,6 +100,10 @@ class NotificationWorker @AssistedInject constructor(
 
     private fun updateNotification(data: List<DepartureInfo>) {
         notificationManager.notify(notificationId, notificationCreator.createTimeNotification(data))
+    }
+
+    private fun showAutoHideNotification() {
+        notificationManager.notify(notificationId, notificationCreator.createAutoHideNotification())
     }
 
     private fun dismissNotification() {

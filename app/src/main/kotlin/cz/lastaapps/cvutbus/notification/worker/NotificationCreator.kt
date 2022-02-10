@@ -48,7 +48,7 @@ class NotificationCreator(private val appContext: Context, private val workerId:
     }
 
     fun createPlaceholderNotification(): Notification {
-        return setupBuilder("", "Wait a minute", "Let me think").build()
+        return setupBuilder(null, "Wait a minute", "Let me think").build()
     }
 
     fun createTimeNotification(data: List<DepartureInfo>): Notification {
@@ -79,8 +79,16 @@ class NotificationCreator(private val appContext: Context, private val workerId:
         }
     }
 
+    fun createAutoHideNotification(): Notification {
+        return setupBuilder(
+            null,
+            "Auto hide limit reached",
+            "Notification is going to be dismissed",
+        ).build()
+    }
+
     private fun setupBuilder(
-        header: String,
+        header: String?,
         title: String,
         description: String,
     ): NotificationCompat.Builder {
@@ -106,7 +114,9 @@ class NotificationCreator(private val appContext: Context, private val workerId:
 
         return with(NotificationCompat.Builder(appContext, channelId)) {
             setContentTitle(title)
-            setSubText(header)
+            header?.let {
+                setSubText(header)
+            }
             setContentText(description)
             setTicker(title)
             //setStyle(NotificationCompat.BigTextStyle())

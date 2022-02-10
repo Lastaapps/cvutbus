@@ -47,6 +47,6 @@ object StopTimesParser {
     private val patter = "(\\d{1,2}):(\\d{1,2}):(\\d{1,2})".toRegex()
     private fun String.toServiceDayTime(): ServiceDayTime {
         val (hour, minute, second) = patter.find(this)!!.destructured
-        return ServiceDayTime(hour.toInt(), minute.toInt(), second.toInt())
+        return ServiceDayTime.of(hour.toInt(), minute.toInt(), second.toInt())
     }
 }

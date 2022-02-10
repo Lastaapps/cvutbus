@@ -92,7 +92,7 @@ internal object ColumnConvertors {
         }
 
         override fun encode(value: ServiceDayTime): Long {
-            return value.toDaySeconds().toLong()
+            return value.daySeconds
         }
     }
 

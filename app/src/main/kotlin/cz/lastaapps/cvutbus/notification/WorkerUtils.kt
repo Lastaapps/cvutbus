@@ -59,6 +59,11 @@ class WorkerUtils(context: Context) {
         if (!isRunning()) start() else cancel()
     }
 
+    suspend fun restart() {
+        log.i { "Restarting" }
+        if (isRunning()) start()
+    }
+
     suspend fun isRunning(): Boolean = isRunningFlow().first()
 
     fun isRunningFlow(): Flow<Boolean> {

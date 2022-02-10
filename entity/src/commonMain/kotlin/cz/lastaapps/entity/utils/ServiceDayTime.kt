@@ -20,35 +20,38 @@
 
 package cz.lastaapps.entity.utils
 
-import io.kotest.matchers.ints.shouldBeInRange
+import kotlin.time.Duration
+import kotlin.time.Duration.Companion.seconds
 
 /**
  * Represents time in service day described by gtfs specification
  * https://developers.google.com/transit/gtfs/reference/#term_definitions
  */
-data class ServiceDayTime(val hours: Int, val minutes: Int, val seconds: Int) {
+@JvmInline
+value class ServiceDayTime(val duration: Duration) : Comparable<ServiceDayTime> {
 
     init {
-        hours shouldBeInRange 0..47
-        minutes shouldBeInRange 0..59
-        seconds shouldBeInRange 0..59
+//        hours shouldBeInRange 0..47
+//        minutes shouldBeInRange 0..59
+//        seconds shouldBeInRange 0..59
     }
 
-    fun toDaySeconds(): Int {
-        return hours * 3600 + minutes * 60 + seconds
-    }
+    val hours: Int get() = duration.toHours()
+    val minutes: Int get() = duration.toMinutes()
+    val seconds: Int get() = duration.toSeconds()
+
+    val daySeconds: Long get() = duration.inWholeSeconds
 
     companion object {
-
-        fun fromDaySeconds(total: Int): ServiceDayTime {
-            var mTotal = total
-            val hours: Int = mTotal / 3600
-            mTotal -= hours * 3600
-            val minutes: Int = mTotal / 60
-            mTotal -= minutes * 60
-            val seconds: Int = mTotal
-
-            return ServiceDayTime(hours, minutes, seconds)
+        fun fromDaySeconds(seconds: Int): ServiceDayTime {
+            return ServiceDayTime(seconds.seconds)
         }
+
+        fun of(hours: Int, minutes: Int, seconds: Int): ServiceDayTime =
+            ServiceDayTime((hours * 3600 + minutes * 60 + seconds).seconds)
+    }
+
+    override fun compareTo(other: ServiceDayTime): Int {
+        return duration.compareTo(other.duration)
     }
 }

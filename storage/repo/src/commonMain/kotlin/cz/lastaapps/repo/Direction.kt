@@ -20,8 +20,13 @@
 package cz.lastaapps.repo
 
 sealed class Direction(private val isIn: Boolean) {
-    object Outbound : Direction(false)
-    object Inbound : Direction(true)
+    object Outbound : Direction(false) {
+        override fun toString(): String = "Outbound"
+    }
+
+    object Inbound : Direction(true) {
+        override fun toString(): String = "Inbound"
+    }
 
     val toBool get() = isIn
 

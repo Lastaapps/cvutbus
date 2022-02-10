@@ -21,6 +21,9 @@ package cz.lastaapps.cvutbus
 
 import android.content.Context
 import android.text.format.DateFormat
+import cz.lastaapps.entity.utils.toHours
+import cz.lastaapps.entity.utils.toMinutes
+import cz.lastaapps.entity.utils.toSeconds
 import kotlinx.datetime.toJavaLocalDate
 import kotlinx.datetime.toJavaLocalDateTime
 import java.time.LocalTime
@@ -57,9 +60,6 @@ fun java.time.LocalDateTime.localizedFormat(use24: Boolean): String =
     toLocalTime().localizedFormat(use24)
 
 
-fun kotlin.time.Duration.toHours() = inWholeHours.toInt()
-fun kotlin.time.Duration.toMinutes() = (inWholeMinutes % 60).toInt()
-fun kotlin.time.Duration.toSeconds() = (inWholeSeconds % 60).toInt()
 
 fun kotlin.time.Duration.countdownFormat(showSeconds: Boolean): String {
     val hours = toHours()
@@ -80,5 +80,3 @@ fun kotlin.time.Duration.countdownFormat(showSeconds: Boolean): String {
 fun kotlin.time.Duration.toLocalTime(): LocalTime = LocalTime.of(
     toHours(), toMinutes(), toSeconds()
 )
-
-

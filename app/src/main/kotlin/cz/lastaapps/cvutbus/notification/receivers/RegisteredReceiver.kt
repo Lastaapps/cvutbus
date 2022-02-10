@@ -22,6 +22,8 @@ package cz.lastaapps.cvutbus.notification.receivers
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
+import android.widget.Toast
+import cz.lastaapps.cvutbus.BuildConfig
 import cz.lastaapps.cvutbus.components.settings.SettingsStore
 import cz.lastaapps.cvutbus.components.settings.modules.notificationWorkDaysOnly
 import cz.lastaapps.cvutbus.notification.WorkerUtils
@@ -55,9 +57,17 @@ class RegisteredReceiver : BroadcastReceiver() {
 
     override fun onReceive(context: Context, intent: Intent) {
         log.i { "Received" }
+        if (BuildConfig.DEBUG) {
+            Toast.makeText(context, "Alarm received", Toast.LENGTH_LONG).show()
+        }
         runBlocking {
-            if (shouldStart(intent))
+            if (shouldStart(intent)) {
+                log.i { "Starting worker" }
+                if (BuildConfig.DEBUG) {
+                    Toast.makeText(context, "Notification started", Toast.LENGTH_LONG).show()
+                }
                 WorkerUtils(context).start()
+            }
 
             log.i { "Updating" }
             registerModule.update()

@@ -22,6 +22,7 @@ package cz.lastaapps.cvutbus.components.settings.modules
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.intPreferencesKey
 import cz.lastaapps.cvutbus.components.settings.SettingsStore
+import cz.lastaapps.cvutbus.notification.WorkerUtils
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import kotlin.time.Duration
@@ -34,8 +35,9 @@ val SettingsStore.notificationHide: Flow<Duration>
     get() = store.data.map { it[notificationHideKey]?.seconds ?: defaultNotificationHide }
 
 suspend fun SettingsStore.setNotificationHide(delay: Duration) {
+    log.i { "Storing notification hide delay ${delay.inWholeSeconds}" }
     store.edit {
         it[notificationHideKey] = delay.inWholeSeconds.toInt()
     }
-    log.i { "Storing notification hide delay ${delay.inWholeSeconds}" }
+    WorkerUtils(app).restart()
 }

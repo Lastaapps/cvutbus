@@ -67,7 +67,7 @@ class PIDRepoImpl(private val database: PIDDatabase) : PIDRepo {
         val times = mutableListOf<DepartureInfo>()
         rows.forEach { row ->
             // select the correct direction
-            if (row.startArrivalTime.toDaySeconds() < row.endArrivalTime.toDaySeconds()) {
+            if (row.startArrivalTime < row.endArrivalTime) {
                 dayShifts.forEach { date ->
                     // is time valid
                     if (row.startDate <= date && date <= row.endDate && row.days.hasDay(date)) {
@@ -109,9 +109,10 @@ class PIDRepoImpl(private val database: PIDDatabase) : PIDRepo {
     }
 
     private fun serviceToNormalDateTime(date: LocalDate, time: ServiceDayTime): LocalDateTime {
-        val plusDays = time.hours / 24
+        val hours = time.hours
+        val plusDays = hours / 24
         val newDate = date.plus(plusDays, DateTimeUnit.DAY)
-        val newHours = time.hours - plusDays * 24
+        val newHours = hours - plusDays * 24
         return LocalDateTime(
             newDate.year, newDate.month, newDate.dayOfMonth,
             newHours, time.minutes, time.seconds, 0

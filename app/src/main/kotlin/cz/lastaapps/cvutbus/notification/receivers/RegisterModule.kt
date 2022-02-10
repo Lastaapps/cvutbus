@@ -25,6 +25,8 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.os.Build
+import android.widget.Toast
+import cz.lastaapps.cvutbus.BuildConfig
 import cz.lastaapps.cvutbus.components.settings.SettingsStore
 import cz.lastaapps.cvutbus.components.settings.modules.NotificationStartup
 import cz.lastaapps.cvutbus.components.settings.modules.notificationStartTime
@@ -85,6 +87,14 @@ class RegisterModule @Inject constructor(
         val toExecute = ZonedDateTime.of(now.toLocalDate(), time, CET.toJavaZoneId())
 
         log.i { "Scheduling aram on ${toExecute.format(DateTimeFormatter.ISO_DATE_TIME)}, type: $type" }
+        if (BuildConfig.DEBUG) {
+            Toast.makeText(
+                context,
+                "Alarm registered on ${toExecute.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME)}",
+                Toast.LENGTH_LONG,
+            ).show()
+            Toast.makeText(context, "Alarm type is $type", Toast.LENGTH_LONG).show()
+        }
 
         manager.set(
             AlarmManager.RTC,

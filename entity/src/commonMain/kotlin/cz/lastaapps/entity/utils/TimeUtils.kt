@@ -77,3 +77,7 @@ internal fun LocalDate.toMonday(): LocalDate {
     }
     return tempDate
 }
+
+fun kotlin.time.Duration.toHours() = inWholeHours.toInt()
+fun kotlin.time.Duration.toMinutes() = (inWholeMinutes % 60).toInt()
+fun kotlin.time.Duration.toSeconds() = (inWholeSeconds % 60).toInt()
