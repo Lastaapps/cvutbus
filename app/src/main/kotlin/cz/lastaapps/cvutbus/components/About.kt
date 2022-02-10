@@ -19,8 +19,6 @@
 
 package cz.lastaapps.cvutbus.components
 
-import android.content.Intent
-import android.net.Uri
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.compose.foundation.Image
@@ -39,10 +37,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import cz.lastaapps.common.Communication
@@ -139,7 +137,7 @@ fun AboutUi(
 
 @Composable
 private fun DataSource(modifier: Modifier = Modifier) {
-    val context = LocalContext.current
+    val uriHandler = LocalUriHandler.current
 
     Column(modifier = modifier, horizontalAlignment = Alignment.CenterHorizontally) {
         Text(
@@ -150,22 +148,13 @@ private fun DataSource(modifier: Modifier = Modifier) {
         OutlinedButton(
             modifier = modifier.fillMaxWidth(),
             onClick = {
-                context.startActivity(
-                    Intent(
-                        Intent.ACTION_VIEW,
-                        Uri.parse("https://pid.cz/o-systemu/opendata")
-                    )
-                )
+                uriHandler.openUri("https://pid.cz/o-systemu/opendata")
             }
         ) {
             IconAndText({
                 Icon(Icons.Default.Language, null)
             }, {
-                Text(
-                    text = "pid.cz",
-                    style = LocalTextStyle.current.copy(textDecoration = TextDecoration.Underline),
-                    textAlign = TextAlign.Center,
-                )
+                Text(text = "pid.cz", textAlign = TextAlign.Center)
             })
         }
     }

@@ -22,6 +22,7 @@ package cz.lastaapps.cvutbus.api
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.toKotlinLocalDate
 import org.json.JSONObject
+import org.lighthousegames.logging.logging
 import java.time.format.DateTimeFormatter
 
 
@@ -37,7 +38,9 @@ data class DatabaseInfo(
         fun fromJson(jsonString: String): DatabaseInfo {
             val json = JSONObject(jsonString)
 
-            json.getLong("jsonVersion").takeIf { it != supportedJsonVersion }?.let {
+            json.getLong("jsonVersion").also {
+                logging("Parsing from json, version is $it")
+            }.takeIf { it != supportedJsonVersion }?.let {
                 throw UnsupportedConfigVersion(it)
             }
 

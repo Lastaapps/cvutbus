@@ -24,15 +24,21 @@ import android.content.Context
 import android.content.Intent
 import cz.lastaapps.cvutbus.notification.worker.WorkerState
 import dagger.hilt.android.AndroidEntryPoint
+import org.lighthousegames.logging.logging
 import javax.inject.Inject
 
 @AndroidEntryPoint
 class ChangeDirectionReceiver : BroadcastReceiver() {
 
+    companion object {
+        private val log = logging()
+    }
+
     @Inject
     lateinit var state: WorkerState
 
     override fun onReceive(context: Context, intent: Intent) {
+        log.i { "Changing direction" }
         state.reverseDirection()
     }
 }

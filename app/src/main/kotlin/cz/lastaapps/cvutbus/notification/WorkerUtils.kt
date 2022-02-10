@@ -29,12 +29,19 @@ import cz.lastaapps.cvutbus.notification.worker.NotificationWorker
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
+import org.lighthousegames.logging.logging
 
+@Suppress("MemberVisibilityCanBePrivate")
 class WorkerUtils(context: Context) {
+
+    companion object {
+        private val log = logging()
+    }
 
     private val manager = WorkManager.getInstance(context)
 
     fun start() {
+        log.i { "Starting" }
         val work = with(OneTimeWorkRequestBuilder<NotificationWorker>()) {
             setExpedited(OutOfQuotaPolicy.RUN_AS_NON_EXPEDITED_WORK_REQUEST)
         }.build()
@@ -43,10 +50,12 @@ class WorkerUtils(context: Context) {
     }
 
     fun cancel() {
+        log.i { "Canceling" }
         manager.cancelUniqueWork(NotificationWorker.workerKey)
     }
 
     suspend fun toggle() {
+        log.i { "Toggling" }
         if (!isRunning()) start() else cancel()
     }
 

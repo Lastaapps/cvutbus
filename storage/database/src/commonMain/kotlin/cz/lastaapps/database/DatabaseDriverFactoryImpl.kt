@@ -20,6 +20,7 @@
 package cz.lastaapps.database
 
 import com.squareup.sqldelight.db.SqlDriver
+import org.lighthousegames.logging.logging
 import pid.*
 
 interface MenzaDriverFactory {
@@ -31,6 +32,8 @@ expect class DatabaseDriverFactoryImpl : MenzaDriverFactory {
 }
 
 fun createDatabase(driverFactory: MenzaDriverFactory): PIDDatabase {
+
+    logging("Database").i { "Creating database" }
 
     val driver = driverFactory.createDriver()
     val cl = ColumnConvertors

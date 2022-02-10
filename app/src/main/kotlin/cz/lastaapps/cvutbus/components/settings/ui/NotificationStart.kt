@@ -110,7 +110,7 @@ private fun ModeDropdown(
 @Composable
 private fun SelectTime(time: Duration, onTime: (Duration) -> Unit, modifier: Modifier = Modifier) {
     val context = LocalContext.current
-    var pickerShown by rememberSaveable() { mutableStateOf(false) }
+    var pickerShown by rememberSaveable { mutableStateOf(false) }
 
     val picker = remember(context) {
         with(MaterialTimePicker.Builder()) {

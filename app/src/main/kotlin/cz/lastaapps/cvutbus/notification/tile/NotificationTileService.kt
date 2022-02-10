@@ -30,9 +30,14 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import org.lighthousegames.logging.logging
 
 @RequiresApi(Build.VERSION_CODES.N)
 class NotificationTileService : TileService() {
+
+    companion object {
+        private val log = logging()
+    }
 
     val details by lazy { WorkerUtils(this@NotificationTileService) }
 
@@ -42,13 +47,10 @@ class NotificationTileService : TileService() {
     override fun onClick() {
         super.onClick()
 
+        log.i { "Tile clicked" }
         scope.launch {
             details.toggle()
         }
-    }
-
-    override fun onTileAdded() {
-        super.onTileAdded()
     }
 
     override fun onTaskRemoved(rootIntent: Intent?) {
@@ -57,9 +59,12 @@ class NotificationTileService : TileService() {
 
     override fun onStartListening() {
         super.onStartListening()
+        log.i { "Started listening" }
+
         job?.cancel()
         job = scope.launch {
             details.isRunningFlow().collectLatest {
+                log.i { "Tile updating state" }
                 qsTile.state = if (it) Tile.STATE_ACTIVE else Tile.STATE_INACTIVE
                 qsTile.updateTile()
             }
@@ -68,6 +73,8 @@ class NotificationTileService : TileService() {
 
     override fun onStopListening() {
         super.onStopListening()
+        log.i { "Stopped listening" }
+
         job?.cancel()
         job = null
     }

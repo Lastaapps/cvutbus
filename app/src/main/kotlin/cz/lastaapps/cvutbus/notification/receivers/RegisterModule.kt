@@ -33,15 +33,21 @@ import cz.lastaapps.cvutbus.toLocalTime
 import cz.lastaapps.entity.utils.CET
 import kotlinx.coroutines.flow.first
 import kotlinx.datetime.toJavaZoneId
+import org.lighthousegames.logging.logging
 import java.time.Instant
 import java.time.LocalTime
 import java.time.ZonedDateTime
+import java.time.format.DateTimeFormatter
 import javax.inject.Inject
 
 class RegisterModule @Inject constructor(
     private val context: Application,
     private val store: SettingsStore,
 ) {
+    companion object {
+        private val log = logging()
+    }
+
     private val manager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
 
     suspend fun update() {
@@ -62,6 +68,7 @@ class RegisterModule @Inject constructor(
     }
 
     private fun cancel(pendingIntent: PendingIntent = createPendingIntent("")) {
+        log.i { "Canceling alarm" }
         manager.cancel(pendingIntent)
     }
 
@@ -77,6 +84,8 @@ class RegisterModule @Inject constructor(
         }
         val toExecute = ZonedDateTime.of(now.toLocalDate(), time, CET.toJavaZoneId())
 
+        log.i { "Scheduling aram on ${toExecute.format(DateTimeFormatter.ISO_DATE_TIME)}, type: $type" }
+
         manager.set(
             AlarmManager.RTC,
             toExecute.toEpochSecond() * 1000,
@@ -85,9 +94,12 @@ class RegisterModule @Inject constructor(
     }
 
     private fun getNextAlarm(): LocalTime? {
-        val nextAlarm = manager.nextAlarmClock?.triggerTime ?: return null
-        return ZonedDateTime.ofInstant(Instant.ofEpochMilli(nextAlarm), CET.toJavaZoneId())
-            .toLocalDateTime().toLocalTime()
+        return manager.nextAlarmClock?.triggerTime?.let { nextAlarm ->
+            ZonedDateTime.ofInstant(Instant.ofEpochMilli(nextAlarm), CET.toJavaZoneId())
+                .toLocalDateTime().toLocalTime()
+        }.also {
+            log.i { "Next alarm: $it" }
+        }
     }
 
     private fun createPendingIntent(type: String): PendingIntent {

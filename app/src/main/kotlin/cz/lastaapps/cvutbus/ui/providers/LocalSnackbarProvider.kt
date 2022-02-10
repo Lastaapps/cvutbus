@@ -17,7 +17,7 @@
  * along with ČVUT Bus.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package cz.lastaapps.cvutbus.ui
+package cz.lastaapps.cvutbus.ui.providers
 
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable

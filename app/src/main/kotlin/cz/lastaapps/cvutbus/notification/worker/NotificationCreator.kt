@@ -37,12 +37,14 @@ import cz.lastaapps.entity.utils.CET
 import cz.lastaapps.repo.DepartureInfo
 import kotlinx.datetime.Clock
 import kotlinx.datetime.toInstant
+import org.lighthousegames.logging.logging
 import java.util.*
 
 class NotificationCreator(private val appContext: Context, private val workerId: UUID) {
 
     companion object {
         private const val channelId = "notification_worker"
+        private val log = logging()
     }
 
     fun createPlaceholderNotification(): Notification {
@@ -82,6 +84,8 @@ class NotificationCreator(private val appContext: Context, private val workerId:
         title: String,
         description: String,
     ): NotificationCompat.Builder {
+        log.i { "Creating notification h: $header, t: $title, d: $description" }
+
         val cancelIntent = WorkManager.getInstance(appContext)
             .createCancelPendingIntent(workerId)
 

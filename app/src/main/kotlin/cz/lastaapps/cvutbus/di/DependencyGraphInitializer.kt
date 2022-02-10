@@ -22,11 +22,13 @@ package cz.lastaapps.cvutbus.di
 import android.content.Context
 import androidx.annotation.Keep
 import androidx.startup.Initializer
+import org.lighthousegames.logging.logging
 
 @Keep
 class DependencyGraphInitializer : Initializer<Unit> {
 
     override fun create(context: Context) {
+        logging().i { "Creating" }
         //this will lazily initialize ApplicationComponent before Application's `onCreate`
         InitializerEntryPoint.resolve(context)
     }

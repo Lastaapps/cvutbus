@@ -38,6 +38,7 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import com.mikepenz.aboutlibraries.entity.Library
 import com.mikepenz.aboutlibraries.entity.License
+import org.lighthousegames.logging.logging
 
 @Composable
 fun LibraryDetailWrapper(library: Library?, modifier: Modifier = Modifier) {
@@ -141,6 +142,10 @@ private fun Uri(
     val handler = LocalUriHandler.current
     Text(
         link, textDecoration = TextDecoration.Underline,
-        style = style, modifier = modifier.clickable { handler.openUri(link) },
+        style = style,
+        modifier = modifier.clickable {
+            logging("UriComposable").i { "Opening $link" }
+            handler.openUri(link)
+        },
     )
 }

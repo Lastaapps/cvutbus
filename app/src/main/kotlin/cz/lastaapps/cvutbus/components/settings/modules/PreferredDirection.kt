@@ -52,6 +52,7 @@ val SettingsStore.preferredDirection: Flow<PreferredDirection>
 
 suspend fun SettingsStore.setPreferredDirection(preferred: PreferredDirection) {
     store.edit { it[preferredDirectionKey] = preferred.id }
+    log.i { "Storing preferred direction $preferred" }
 }
 
 
@@ -62,4 +63,5 @@ val SettingsStore.latestDirection: Flow<Direction>
 
 suspend fun SettingsStore.setLatestDirection(direction: Direction) {
     store.edit { it[latestDirectionKey] = direction.toBool }
+    log.i { "Storing latest direction $direction" }
 }

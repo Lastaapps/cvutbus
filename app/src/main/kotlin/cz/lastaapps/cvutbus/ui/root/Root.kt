@@ -33,9 +33,9 @@ import cz.lastaapps.cvutbus.components.settings.SettingsViewModel
 import cz.lastaapps.cvutbus.components.settings.modules.AppThemeMode
 import cz.lastaapps.cvutbus.components.settings.modules.appTheme
 import cz.lastaapps.cvutbus.components.settings.modules.dynamicTheme
-import cz.lastaapps.cvutbus.ui.WithConnectivity
 import cz.lastaapps.cvutbus.ui.providers.*
 import cz.lastaapps.cvutbus.ui.theme.AppTheme
+import org.lighthousegames.logging.logging
 
 @Composable
 fun AppLayout(
@@ -51,7 +51,10 @@ fun AppLayout(
     if (appTheme == null || dynamic == null)
         return
 
-    SideEffect { onThemeReady() }
+    SideEffect {
+        logging("AppLayout").i { "Theme ready" }
+        onThemeReady()
+    }
 
     val expected = isSystemInDarkTheme()
     val darkState by remember(appTheme, expected) {

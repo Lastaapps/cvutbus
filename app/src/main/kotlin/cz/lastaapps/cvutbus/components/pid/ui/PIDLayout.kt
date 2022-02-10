@@ -63,7 +63,7 @@ private fun PIDLayoutCompact(pidViewModel: PIDViewModel, modifier: Modifier) {
                 .weight(1f)
                 .fillMaxWidth()
         )
-        PIDIcons(pidViewModel, Modifier.align(Alignment.Start))
+        PIDIcons(pidViewModel, false, Modifier.align(Alignment.Start))
     }
 }
 
@@ -92,7 +92,7 @@ private fun PIDLayoutExpanded(pidViewModel: PIDViewModel, modifier: Modifier) {
                     .fillMaxWidth()
                     .widthIn(max = 312.dp)
             )
-            PIDIcons(pidViewModel, Modifier.fillMaxWidth())
+            PIDIcons(pidViewModel, true, Modifier.fillMaxWidth())
         }
         TimeUI(
             pidViewModel,

@@ -23,6 +23,7 @@ import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.dialog
@@ -36,6 +37,8 @@ import cz.lastaapps.cvutbus.components.privacy.PrivacyDialogContent
 import cz.lastaapps.cvutbus.components.settings.SettingsViewModel
 import cz.lastaapps.cvutbus.components.settings.ui.SettingsLayout
 import cz.lastaapps.cvutbus.navigation.Dests
+import kotlinx.coroutines.flow.collectLatest
+import org.lighthousegames.logging.logging
 
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
@@ -45,6 +48,12 @@ fun AppNavigation(
     pidViewModel: PIDViewModel,
     settingsViewModel: SettingsViewModel,
 ) {
+    LaunchedEffect(navHostController) {
+        val log = logging("Navigation")
+        navHostController.currentBackStackEntryFlow.collectLatest {
+            log.i { "Navigation to ${it.destination.route}" }
+        }
+    }
     val contentModifier = Modifier.fillMaxSize()
     AnimatedNavHost(navHostController, startDestination = Dests.Routes.starting) {
         composable(Dests.Routes.pid) {

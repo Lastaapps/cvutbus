@@ -26,6 +26,7 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import org.lighthousegames.logging.logging
 import java.time.LocalDate
 import javax.inject.Inject
 
@@ -34,11 +35,16 @@ class PrivacyViewModel @Inject constructor(
     private val store: PrivacyStore,
 ) : ViewModel() {
 
+    companion object {
+        private val log = logging()
+    }
+
     val shouldShow = store.approved.map { it == null }
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(), null)
 
     fun onApprove() {
         viewModelScope.launch {
+            log.i { "Approving privacy policy" }
             store.setApproved(LocalDate.now())
         }
     }

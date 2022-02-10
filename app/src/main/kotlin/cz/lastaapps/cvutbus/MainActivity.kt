@@ -28,9 +28,14 @@ import cz.lastaapps.cvutbus.components.pid.PIDViewModel
 import cz.lastaapps.cvutbus.components.settings.SettingsViewModel
 import cz.lastaapps.cvutbus.ui.root.AppLayout
 import dagger.hilt.android.AndroidEntryPoint
+import org.lighthousegames.logging.logging
 
 @AndroidEntryPoint
 class MainActivity : FragmentActivity() {
+
+    companion object {
+        private val log = logging()
+    }
 
     private val pidViewModel: PIDViewModel by viewModels()
     private val settingsViewModel: SettingsViewModel by viewModels()
@@ -41,7 +46,11 @@ class MainActivity : FragmentActivity() {
         var composeReady = false
 
         val splash = installSplashScreen()
-        splash.setKeepOnScreenCondition { !(pidViewModel.isReady.value && composeReady) }
+        splash.setKeepOnScreenCondition {
+            (!(pidViewModel.isReady.value && composeReady)).also {
+                if (!it) log.i { "Dismissing splash screen" }
+            }
+        }
 
         setContent {
             AppLayout(this, this, pidViewModel, settingsViewModel) {

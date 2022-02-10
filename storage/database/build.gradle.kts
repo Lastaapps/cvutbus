@@ -61,6 +61,7 @@ kotlin {
 
                 implementation(Libs.SQLDELIGHT_RUNTIME)
                 implementation(Libs.SQLDELIGHT_COROUTINES)
+                implementation(Libs.KM_LOGGING)
             }
         }
         val commonTest by getting {

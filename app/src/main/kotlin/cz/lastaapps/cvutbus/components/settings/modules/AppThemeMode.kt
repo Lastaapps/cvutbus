@@ -45,7 +45,6 @@ val SettingsStore.appTheme: Flow<AppThemeMode>
     }
 
 suspend fun SettingsStore.setAppTheme(appTheme: AppThemeMode) {
-    store.edit {
-        it[appThemeKey] = appTheme.id
-    }
+    store.edit { it[appThemeKey] = appTheme.id }
+    log.i { "Storing app theme $appTheme" }
 }

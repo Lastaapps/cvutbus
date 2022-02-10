@@ -36,6 +36,7 @@ import kotlinx.datetime.Clock
 import kotlinx.datetime.DateTimeUnit
 import kotlinx.datetime.minus
 import kotlinx.datetime.toLocalDateTime
+import org.lighthousegames.logging.logging
 import javax.inject.Inject
 
 @HiltViewModel
@@ -46,6 +47,7 @@ class PIDViewModel @Inject constructor(
 
     companion object {
         private const val showPastForSeconds = 60
+        private val log = logging()
     }
 
     val isReady: StateFlow<Boolean>
@@ -94,6 +96,8 @@ class PIDViewModel @Inject constructor(
 
     init {
         viewModelScope.launch {
+            log.i { "Initializing" }
+
             val preferredDirection = store.preferredDirection.first()
             val latestDirection = store.latestDirection.first()
             val preferredStopPair = store.preferredStopPair.first()

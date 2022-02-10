@@ -35,6 +35,7 @@ import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.first
 import kotlinx.datetime.Clock
+import org.lighthousegames.logging.logging
 import kotlin.time.Duration
 
 @HiltWorker
@@ -48,12 +49,15 @@ class NotificationWorker @AssistedInject constructor(
     companion object {
         private const val notificationId = 42_221
         const val workerKey = "NotificationWorker"
+        private val log = logging()
     }
 
     private val notificationManager = NotificationManagerCompat.from(appContext)
     private val notificationCreator = NotificationCreator(appContext, id)
 
     override suspend fun doWork(): Result {
+        log.i { "Starting" }
+
         val started = Clock.System.now()
         val timeToStop = store.notificationHide.first().takeIf { it != Duration.ZERO }
             ?.let { started.plus(it) }
@@ -82,9 +86,11 @@ class NotificationWorker @AssistedInject constructor(
                 job.join()
             }
         } catch (cancellation: CancellationException) {
+            log.i { "Canceled" }
             dismissNotification()
         }
 
+        log.i { "Ending" }
         dismissNotification()
         return Result.success()
     }

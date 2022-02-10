@@ -24,16 +24,22 @@ import android.content.Context
 import android.content.Intent
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.runBlocking
+import org.lighthousegames.logging.logging
 import javax.inject.Inject
 
 @AndroidEntryPoint
 class NotificationBootReceiver : BroadcastReceiver() {
+
+    companion object {
+        private val log = logging()
+    }
 
     @Inject
     lateinit var registerModule: RegisterModule
 
     override fun onReceive(context: Context, intent: Intent) {
         if (intent.action == Intent.ACTION_BOOT_COMPLETED) {
+            log.i { "Received" }
             runBlocking {
                 registerModule.update()
             }

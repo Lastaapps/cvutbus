@@ -24,6 +24,7 @@ import cz.lastaapps.entity.hasDay
 import cz.lastaapps.entity.utils.ServiceDayTime
 import io.kotest.matchers.ints.shouldBeGreaterThanOrEqual
 import kotlinx.datetime.*
+import org.lighthousegames.logging.logging
 
 class PIDRepoImpl(private val database: PIDDatabase) : PIDRepo {
 
@@ -38,11 +39,15 @@ class PIDRepoImpl(private val database: PIDDatabase) : PIDRepo {
         init {
             generateForDays shouldBeGreaterThanOrEqual 3
         }
+
+        private val log = logging()
     }
 
     override suspend fun getData(
         fromDateTime: LocalDateTime, connection: TransportConnection,
     ): List<DepartureInfo> {
+
+        log.i { "Loading data from $fromDateTime for connection $connection" }
 
         val maxStartDate = fromDateTime.date.plus(generateForDays, DateTimeUnit.DAY)
         val maxEndDate = fromDateTime.date.minus(1, DateTimeUnit.DAY)
@@ -77,6 +82,7 @@ class PIDRepoImpl(private val database: PIDDatabase) : PIDRepo {
             }
         }
 
+        log.i { "Got ${times.size} results" }
         times.sort()
         val index = times.binarySearchBy(fromDateTime) { it.dateTime }
 
@@ -98,6 +104,7 @@ class PIDRepoImpl(private val database: PIDDatabase) : PIDRepo {
                 else emptyList()
             }
 
+        log.i { "Filtered to ${validTimes.size} results" }
         return validTimes
     }
 

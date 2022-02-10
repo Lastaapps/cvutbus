@@ -31,6 +31,7 @@ import androidx.navigation.NavController
 import cz.lastaapps.cvutbus.ui.providers.LocalWindowWidth
 import cz.lastaapps.cvutbus.ui.providers.WindowSizeClass
 import cz.lastaapps.cvutbus.ui.root.BackArrowAndHandler
+import org.lighthousegames.logging.logging
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -59,6 +60,7 @@ fun OsturakLayout(
     }
 
     BackArrowAndHandler {
+        logging("OsturakLayout").i { "Navigating up" }
         navController.navigateUp()
     }
 }

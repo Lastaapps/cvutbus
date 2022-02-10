@@ -37,4 +37,5 @@ suspend fun SettingsStore.setNotificationHide(delay: Duration) {
     store.edit {
         it[notificationHideKey] = delay.inWholeSeconds.toInt()
     }
+    log.i { "Storing notification hide delay ${delay.inWholeSeconds}" }
 }

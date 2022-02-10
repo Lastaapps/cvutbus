@@ -31,6 +31,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.SideEffect
 import androidx.compose.ui.platform.LocalContext
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
+import org.lighthousegames.logging.logging
 
 @Composable
 fun AppTheme(
@@ -51,6 +52,7 @@ fun AppTheme(
         val systemUiController = rememberSystemUiController()
 
         SideEffect {
+            logging("AppTheme").i { "Updating system bar colors" }
             systemUiController.setStatusBarColor(
                 color = colorScheme.background,
                 darkIcons = !darkTheme,

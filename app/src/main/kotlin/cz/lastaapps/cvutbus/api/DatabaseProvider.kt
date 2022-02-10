@@ -28,12 +28,14 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import kotlinx.coroutines.withContext
+import org.lighthousegames.logging.logging
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
 class DatabaseProvider {
 
+    @Suppress("JoinDeclarationAndAssignment")
     private val app: Application
     private val store: DatabaseInfoStore
     private val dispatcher: CoroutineDispatcher
@@ -55,6 +57,8 @@ class DatabaseProvider {
         private const val databaseName = "piddatabase.db"
         private const val newDatabaseName = "piddatabase_new.db"
         private const val newJsonName = "config_new.json"
+
+        private val log = logging()
     }
 
     private val mutex = Mutex()
@@ -70,6 +74,8 @@ class DatabaseProvider {
             val newDatabaseFile = app.getDatabasePath(newDatabaseName)
 
             if (newDatabaseFile.exists()) {
+                log.i { "New database exists, replacing" }
+
                 val jsonText =
                     app.getFileStreamPath(newJsonName).inputStream().bufferedReader().readText()
                 store.setDatabaseInfo(DatabaseInfo.fromJson(jsonText))
@@ -78,6 +84,8 @@ class DatabaseProvider {
                 newDatabaseFile.renameTo(databaseFile)
 
             } else if (!databaseFile.exists()) {
+                log.i { "There is no database" }
+
                 val jsonText = app.assets.open(assetJsonName).bufferedReader().readText()
                 store.setDatabaseInfo(DatabaseInfo.fromJson(jsonText))
 
@@ -85,6 +93,8 @@ class DatabaseProvider {
                 databaseFile.createNewFile()
                 databaseFile.writeBytes(input.readBytes())
                 input.close()
+            } else {
+                log.i { "Database is up to date" }
             }
 
             return@withContext createDatabase(

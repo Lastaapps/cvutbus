@@ -51,6 +51,7 @@ val SettingsStore.notificationStartup: Flow<NotificationStartup>
 suspend fun SettingsStore.setNotificationStartup(mode: NotificationStartup) {
     store.edit { it[notificationStartupKey] = mode.id }
     RegisterModule(app, this).update()
+    log.i { "Storing notification start mode $mode" }
 }
 
 
@@ -64,6 +65,7 @@ val SettingsStore.notificationStartTime: Flow<Duration>
 suspend fun SettingsStore.setNotificationStartTime(duration: Duration) {
     store.edit { it[notificationStartTimeKey] = duration.inWholeSeconds.toInt() }
     RegisterModule(app, this).update()
+    log.i { "Storing notification start time $duration" }
 }
 
 
@@ -75,4 +77,5 @@ val SettingsStore.notificationWorkDaysOnly: Flow<Boolean>
 
 suspend fun SettingsStore.setNotificationWorkDaysOnly(onlyWorkDays: Boolean) {
     store.edit { it[notificationWorkDaysOnlyKey] = onlyWorkDays }
+    log.i { "Storing work days only $onlyWorkDays" }
 }

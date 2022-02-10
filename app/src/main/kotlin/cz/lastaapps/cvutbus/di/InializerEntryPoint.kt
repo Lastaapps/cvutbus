@@ -25,6 +25,7 @@ import dagger.hilt.EntryPoint
 import dagger.hilt.InstallIn
 import dagger.hilt.android.EntryPointAccessors
 import dagger.hilt.components.SingletonComponent
+import org.lighthousegames.logging.logging
 
 @EntryPoint
 @InstallIn(SingletonComponent::class)
@@ -33,8 +34,10 @@ interface InitializerEntryPoint {
     fun inject(notificationStartupInit: StartupInit)
 
     companion object {
+        val log = logging()
         //a helper method to resolve the InitializerEntryPoint from the context
         fun resolve(context: Context): InitializerEntryPoint {
+            log.i { "Resolving" }
             val appContext = context.applicationContext ?: throw IllegalStateException()
             return EntryPointAccessors.fromApplication(
                 appContext,

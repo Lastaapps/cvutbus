@@ -49,6 +49,7 @@ val SettingsStore.timeShowMode: Flow<TimeShowMode>
 
 suspend fun SettingsStore.setTimeShowMode(mode: TimeShowMode) {
     store.edit { it[timeShowModeKey] = mode.id }
+    log.i { "Storing time mode $mode" }
 }
 
 val SettingsStore.latestWasCounter: Flow<Boolean>
@@ -56,4 +57,5 @@ val SettingsStore.latestWasCounter: Flow<Boolean>
 
 suspend fun SettingsStore.setWasCounter(wasCounter: Boolean) {
     store.edit { it[latestWasCounterKey] = wasCounter }
+    log.i { "Storing was counter $wasCounter" }
 }

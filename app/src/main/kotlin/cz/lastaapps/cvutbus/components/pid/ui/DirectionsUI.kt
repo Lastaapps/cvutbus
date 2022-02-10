@@ -42,46 +42,46 @@ import cz.lastaapps.cvutbus.components.pid.PIDViewModel
 fun DirectionsUI(pidViewModel: PIDViewModel, modifier: Modifier = Modifier) {
     val stops by pidViewModel.transportConnection.collectAsState(null)
 
-    if (stops != null) {
-        Surface(
-            modifier,
-            shape = RoundedCornerShape(8.dp),
-            tonalElevation = 8.dp,
-            shadowElevation = 8.dp,
+    if (stops == null) return
+
+    Surface(
+        modifier,
+        shape = RoundedCornerShape(8.dp),
+        tonalElevation = 8.dp,
+        shadowElevation = 8.dp,
+    ) {
+        Row(
+            Modifier.padding(top = 16.dp, bottom = 16.dp),
+            horizontalArrangement = Arrangement.spacedBy(8.dp, Alignment.CenterHorizontally),
+            verticalAlignment = Alignment.CenterVertically,
         ) {
-            Row(
-                Modifier.padding(top = 16.dp, bottom = 16.dp),
-                horizontalArrangement = Arrangement.spacedBy(8.dp, Alignment.CenterHorizontally),
-                verticalAlignment = Alignment.CenterVertically,
+            val iconModifier = Modifier
+                .rotate(270f)
+                .size(32.dp)
+            Icon(Icons.Default.DoubleArrow, null, iconModifier)
+
+            Column(
+                Modifier.height(IntrinsicSize.Min),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.spacedBy(8.dp),
             ) {
-                val iconModifier = Modifier
-                    .rotate(270f)
-                    .size(32.dp)
-                Icon(Icons.Default.DoubleArrow, null, iconModifier)
-
-                Column(
-                    Modifier.height(IntrinsicSize.Min),
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.spacedBy(8.dp),
-                ) {
-                    Text(
-                        stops!!.to.name,
-                        style = MaterialTheme.typography.headlineLarge,
-                        modifier = Modifier
-                            .weight(1f)
-                            .animateContentSize(tween())
-                    )
-                    Text(
-                        stops!!.from.name,
-                        style = MaterialTheme.typography.headlineSmall,
-                        modifier = Modifier
-                            .weight(1f)
-                            .animateContentSize(tween())
-                    )
-                }
-
-                Icon(Icons.Default.DoubleArrow, null, iconModifier)
+                Text(
+                    stops!!.to.name,
+                    style = MaterialTheme.typography.headlineLarge,
+                    modifier = Modifier
+                        .weight(1f)
+                        .animateContentSize(tween())
+                )
+                Text(
+                    stops!!.from.name,
+                    style = MaterialTheme.typography.headlineSmall,
+                    modifier = Modifier
+                        .weight(1f)
+                        .animateContentSize(tween())
+                )
             }
+
+            Icon(Icons.Default.DoubleArrow, null, iconModifier)
         }
     }
 }

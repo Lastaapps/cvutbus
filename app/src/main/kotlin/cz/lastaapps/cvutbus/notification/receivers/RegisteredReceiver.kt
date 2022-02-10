@@ -30,6 +30,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
 import kotlinx.datetime.toJavaZoneId
+import org.lighthousegames.logging.logging
 import java.time.DayOfWeek
 import java.time.LocalDate
 import java.time.LocalTime
@@ -42,6 +43,8 @@ class RegisteredReceiver : BroadcastReceiver() {
         const val EXTRA_TYPE = "type"
         const val TYPE_ALARM = "alarm"
         const val TYPE_TIME = "time"
+
+        private val log = logging()
     }
 
     @Inject
@@ -51,10 +54,12 @@ class RegisteredReceiver : BroadcastReceiver() {
     lateinit var store: SettingsStore
 
     override fun onReceive(context: Context, intent: Intent) {
+        log.i { "Received" }
         runBlocking {
             if (shouldStart(intent))
                 WorkerUtils(context).start()
 
+            log.i { "Updating" }
             registerModule.update()
         }
     }

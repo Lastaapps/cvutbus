@@ -32,6 +32,7 @@ import cz.lastaapps.repo.*
 import kotlinx.coroutines.flow.*
 import kotlinx.datetime.Clock
 import kotlinx.datetime.toLocalDateTime
+import org.lighthousegames.logging.logging
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -40,10 +41,15 @@ class WorkerState @Inject constructor(
     private val repoProvider: PIDRepoProvider,
     private val store: SettingsStore,
 ) {
+    companion object {
+        private val log = logging()
+    }
 
     private var isReady = false
     suspend fun prepareData() {
         if (isReady) return
+
+        log.i { "Initializing" }
 
         repo = repoProvider.provide()
 
@@ -64,6 +70,7 @@ class WorkerState @Inject constructor(
             TransportConnection.fromStopPair(preferredStopPair.stopPair, direction)
         )
 
+        log.i { "Ready" }
         isReady = true
     }
 

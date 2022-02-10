@@ -27,6 +27,7 @@ import cz.lastaapps.cvutbus.di.InitializerEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import org.lighthousegames.logging.logging
 import javax.inject.Inject
 
 @Keep
@@ -36,6 +37,7 @@ class StartupInit : Initializer<Unit> {
     lateinit var registerModule: RegisterModule
 
     override fun create(context: Context) {
+        logging().i { "Creating" }
 
         InitializerEntryPoint.resolve(context).inject(this)
 

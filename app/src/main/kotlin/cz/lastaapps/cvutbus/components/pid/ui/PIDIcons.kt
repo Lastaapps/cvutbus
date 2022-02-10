@@ -23,7 +23,9 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.HourglassBottom
@@ -31,34 +33,66 @@ import androidx.compose.material.icons.filled.Schedule
 import androidx.compose.material.icons.filled.SwapVert
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.unit.dp
 import cz.lastaapps.cvutbus.components.pid.PIDViewModel
 import cz.lastaapps.repo.Direction
+import org.lighthousegames.logging.logging
 
 @Composable
 fun PIDIcons(
     pidViewModel: PIDViewModel,
+    isLarge: Boolean,
     modifier: Modifier = Modifier,
 ) {
     val direction by pidViewModel.direction.collectAsState()
     val showCounter by pidViewModel.showCounter.collectAsState()
+    val log = remember { logging("PIDIcons") }
+    val onDirection: () -> Unit = {
+        log.i { "Switching direction from $direction" }
+        pidViewModel.setDirection(if (direction != Direction.Inbound) Direction.Inbound else Direction.Outbound)
+    }
+    val onCounter: () -> Unit = {
+        log.i { "Switching time mode from $showCounter" }
+        pidViewModel.setShowCounter(!showCounter)
+    }
 
-    Row(
-        modifier,
-        horizontalArrangement = Arrangement.spacedBy(8.dp, Alignment.CenterHorizontally),
-        verticalAlignment = Alignment.CenterVertically,
-    ) {
-        SwitchDirectionIcon(direction == Direction.Inbound) {
-            pidViewModel.setDirection(if (direction != Direction.Inbound) Direction.Inbound else Direction.Outbound)
+    if (isLarge) {
+        Column(
+            modifier,
+            verticalArrangement = Arrangement.spacedBy(0.dp, Alignment.CenterVertically),
+            horizontalAlignment = Alignment.CenterHorizontally,
+        ) {
+            Row(
+                Modifier.clickable(onClick = onDirection),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                SwitchDirectionIcon(direction == Direction.Inbound, onDirection)
+                Text("Switch direction")
+            }
+            Row(
+                Modifier.clickable(onClick = onCounter),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                ShowCounterIcon(showCounter, onCounter)
+                Text("Switch time mode")
+            }
         }
-        ShowCounterIcon(showCounter) {
-            pidViewModel.setShowCounter(!showCounter)
+    } else {
+        Row(
+            modifier,
+            horizontalArrangement = Arrangement.spacedBy(8.dp, Alignment.CenterHorizontally),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            SwitchDirectionIcon(direction == Direction.Inbound, onDirection)
+            ShowCounterIcon(showCounter, onCounter)
         }
     }
 }

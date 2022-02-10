@@ -32,6 +32,7 @@ import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.mikepenz.aboutlibraries.entity.Library
+import org.lighthousegames.logging.logging
 
 @Composable
 fun LibraryList(
@@ -58,6 +59,7 @@ private fun AppLicenseButton(modifier: Modifier = Modifier) {
     val url = LocalUriHandler.current
     OutlinedButton(
         onClick = {
+            logging("AppLicenseButton").i { "Opening app license" }
             url.openUri("https://github.com/Lastaapps/ctubus/LICENSE")
         },
         modifier = modifier

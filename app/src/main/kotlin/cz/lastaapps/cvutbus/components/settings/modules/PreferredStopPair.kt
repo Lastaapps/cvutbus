@@ -58,6 +58,7 @@ suspend fun SettingsStore.setPreferredStopPair(preferred: PreferredStopPair) {
             is PreferredStopPair.SpecifiedStopPair -> preferred.stopPair.id
         }
     }
+    log.i { "Storing $preferred" }
 }
 
 val SettingsStore.latestStopPair: Flow<Int>
@@ -65,4 +66,5 @@ val SettingsStore.latestStopPair: Flow<Int>
 
 suspend fun SettingsStore.setLatestStopPair(stopPair: StopPair) {
     store.edit { it[latestStopPairKey] = stopPair.id }
+    log.i { "Storing $stopPair" }
 }

@@ -33,4 +33,5 @@ val SettingsStore.dynamicTheme: Flow<Boolean>
 
 suspend fun SettingsStore.setDynamicTheme(enabled: Boolean) {
     store.edit { it[dynamicThemeKey] = enabled }
+    log.i { "Storing dynamic theme $enabled" }
 }

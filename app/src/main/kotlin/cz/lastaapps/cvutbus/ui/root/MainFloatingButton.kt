@@ -30,6 +30,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import cz.lastaapps.cvutbus.notification.WorkerUtils
 import kotlinx.coroutines.launch
+import org.lighthousegames.logging.logging
 
 @Composable
 fun MainFloatingButton() {
@@ -71,6 +72,7 @@ private fun onFabAction(): () -> Unit {
     val scope = rememberCoroutineScope()
     return {
         scope.launch {
+            logging("Fab").i { "Fab pressed" }
             WorkerUtils(context).toggle()
         }
     }
