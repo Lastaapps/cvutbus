@@ -41,7 +41,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import cz.lastaapps.cvutbus.R
 import cz.lastaapps.cvutbus.components.pid.PIDViewModel
 import cz.lastaapps.repo.Direction
 import org.lighthousegames.logging.logging
@@ -75,14 +77,14 @@ fun PIDIcons(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 SwitchDirectionIcon(direction == Direction.Inbound, onDirection)
-                Text("Switch direction")
+                Text(stringResource(R.string.pid_button_direction))
             }
             Row(
                 Modifier.clickable(onClick = onCounter),
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 ShowCounterIcon(showCounter, onCounter)
-                Text("Switch time mode")
+                Text(stringResource(R.string.pid_button_time_mode))
             }
         }
     } else {
@@ -102,7 +104,11 @@ private fun SwitchDirectionIcon(direction: Boolean, onClick: () -> Unit) {
     val rotation by animateFloatAsState(if (direction) 0f else 180f)
 
     IconButton(onClick = onClick) {
-        Icon(Icons.Default.SwapVert, "Swap directions", Modifier.rotate(rotation))
+        Icon(
+            Icons.Default.SwapVert,
+            stringResource(R.string.pid_icon_description_direction),
+            Modifier.rotate(rotation)
+        )
     }
 }
 
@@ -112,10 +118,18 @@ private fun ShowCounterIcon(showCounter: Boolean, onClick: () -> Unit) {
 
     IconButton(onClick = onClick) {
         AnimatedVisibility(showCounter, enter = fadeIn(), exit = fadeOut()) {
-            Icon(Icons.Default.HourglassBottom, "Show times", Modifier.rotate(rotation))
+            Icon(
+                Icons.Default.HourglassBottom,
+                stringResource(R.string.pid_icon_description_to_time),
+                Modifier.rotate(rotation)
+            )
         }
         AnimatedVisibility(!showCounter, enter = fadeIn(), exit = fadeOut()) {
-            Icon(Icons.Default.Schedule, "Show countdown", Modifier.rotate(rotation + 180f))
+            Icon(
+                Icons.Default.Schedule,
+                stringResource(R.string.pid_icon_description_to_counter),
+                Modifier.rotate(rotation + 180f)
+            )
         }
     }
 }

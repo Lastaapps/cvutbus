@@ -28,12 +28,14 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
+import cz.lastaapps.cvutbus.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MainTopBar() {
 
-    val title = "ČVUT Bus"
+    val title = stringResource(R.string.ui_top_bar_title)
 
     val decayAnimationSpec = rememberSplineBasedDecay<Float>()
     val scrollBehavior = remember(decayAnimationSpec) {
@@ -50,7 +52,10 @@ fun MainTopBar() {
                     IconButton(onClick = {
                         list.last().invoke()
                     }) {
-                        Icon(Icons.Default.ArrowBack, contentDescription = "Back")
+                        Icon(
+                            Icons.Default.ArrowBack,
+                            stringResource(R.string.ui_top_bar_back_arrow)
+                        )
                     }
                 }
             }

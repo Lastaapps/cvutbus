@@ -26,8 +26,10 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import cz.lastaapps.cvutbus.R
 import cz.lastaapps.cvutbus.components.settings.SettingsViewModel
 
 @Composable
@@ -45,7 +47,10 @@ fun SettingsUI(
             .padding(bottom = 64.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp),
     ) {
-        Text("Settings", style = MaterialTheme.typography.headlineMedium)
+        Text(
+            stringResource(R.string.settings_title),
+            style = MaterialTheme.typography.headlineMedium,
+        )
 
         DarkMode(settingsViewModel)
         UseDynamicTheme(settingsViewModel, Modifier.fillMaxWidth())

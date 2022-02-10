@@ -20,11 +20,14 @@
 package cz.lastaapps.cvutbus.api.worker
 
 import android.app.Notification
+import android.app.PendingIntent
 import android.content.Context
+import android.content.Intent
 import android.os.Build
 import androidx.core.app.NotificationChannelCompat
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
+import cz.lastaapps.cvutbus.MainActivity
 import cz.lastaapps.cvutbus.R
 import org.lighthousegames.logging.logging
 
@@ -37,35 +40,35 @@ class UpdateNotifications(private val context: Context) {
 
     fun createUpdatingNotification(): Notification {
         return setupBuilder(
-            "Updating offline data",
-            "So you wouldn't miss a thing"
+            R.string.update_notification_updating_title,
+            R.string.update_notification_updating_content,
         ).build()
     }
 
     fun createDoneNotification(): Notification {
         return setupBuilder(
-            "Data updated",
-            "Get ready for more adventures",
+            R.string.update_notification_done_title,
+            R.string.update_notification_done_content,
         ).build()
     }
 
     fun createFailedNotification(): Notification {
         return setupBuilder(
-            "Failed to update data",
-            "Connection may be inaccurate in few days",
+            R.string.update_notification_failed_title,
+            R.string.update_notification_failed_content,
         ).build()
     }
 
     fun createNoNewAvailableNotification(): Notification {
         return setupBuilder(
-            "No new data available",
-            "Try updating few days later",
+            R.string.update_notification_no_new_title,
+            R.string.update_notification_no_new_content,
         ).build()
     }
 
     private fun setupBuilder(
-        title: String,
-        description: String,
+        title: Int,
+        description: Int,
     ): NotificationCompat.Builder {
         log.i { "Creating notification t: $title, d: $description" }
 
@@ -74,11 +77,19 @@ class UpdateNotifications(private val context: Context) {
             createNotificationChannel()
         }
 
+        val contentIntent = Intent(context, MainActivity::class.java)
+        val contentPending = PendingIntent.getActivity(
+            context, 39221, contentIntent,
+            PendingIntent.FLAG_UPDATE_CURRENT or
+                    if (Build.VERSION.SDK_INT >= 31) PendingIntent.FLAG_MUTABLE else 0
+        )
+
         return with(NotificationCompat.Builder(context, channelId)) {
-            setContentTitle(title)
-            setContentText(description)
-            setTicker(title)
+            setContentTitle(context.getString(title))
+            setTicker(context.getString(title))
+            setContentText(context.getString(description))
             setSmallIcon(R.drawable.notification_icon)
+            setContentIntent(contentPending)
             setOngoing(false)
             setLocalOnly(true)
             setAutoCancel(false)
@@ -96,8 +107,8 @@ class UpdateNotifications(private val context: Context) {
                     channelId, NotificationManagerCompat.IMPORTANCE_DEFAULT
                 )
             ) {
-                setName("TODO")
-                setDescription("TODO")
+                setName(context.getString(R.string.update_notification_channel_name))
+                setDescription(context.getString(R.string.update_notification_channel_description))
                 setShowBadge(false)
                 setVibrationEnabled(false)
                 build()

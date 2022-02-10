@@ -34,8 +34,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.layout.Layout
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.dp
+import cz.lastaapps.cvutbus.R
 import cz.lastaapps.cvutbus.components.settings.SettingsViewModel
 import cz.lastaapps.cvutbus.components.settings.modules.AppThemeMode
 import cz.lastaapps.cvutbus.components.settings.modules.appTheme
@@ -49,7 +51,10 @@ fun DarkMode(settingsViewModel: SettingsViewModel, modifier: Modifier = Modifier
     if (mode == null) return
 
     Column(modifier) {
-        Text("App theme", style = MaterialTheme.typography.titleMedium)
+        Text(
+            stringResource(R.string.settings_app_theme_title),
+            style = MaterialTheme.typography.titleMedium
+        )
         Spacer(Modifier.height(8.dp))
         Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
             Icon(Icons.Default.LightMode, null)
@@ -80,9 +85,9 @@ fun DarkMode(settingsViewModel: SettingsViewModel, modifier: Modifier = Modifier
             steps = 1, modifier = Modifier.fillMaxWidth(),
         )
         Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
-            Text("Light")
-            Text("System")
-            Text("Dark")
+            Text(stringResource(R.string.settings_app_theme_light))
+            Text(stringResource(R.string.settings_app_theme_system))
+            Text(stringResource(R.string.settings_app_theme_dark))
         }
     }
 }
@@ -95,19 +100,22 @@ fun UseDynamicTheme(viewModel: SettingsViewModel, modifier: Modifier = Modifier)
     val isDynamic by viewModel.store.dynamicTheme.collectAsState(null)
 
     Column(modifier, verticalArrangement = Arrangement.spacedBy(8.dp)) {
-        Text("Color theme", style = MaterialTheme.typography.titleMedium)
+        Text(
+            stringResource(R.string.settings_dynamic_theme_title),
+            style = MaterialTheme.typography.titleMedium,
+        )
         Layout(
             content = {
                 AppTheme(darkTheme = false, useCustomTheme = false) {
                     ShowcaseCircle(
-                        text = "System",
+                        text = stringResource(R.string.settings_dynamic_theme_system),
                         selected = isDynamic == true,
                         onClick = { viewModel.setDynamicTheme(true) },
                     )
                 }
                 AppTheme(darkTheme = false, useCustomTheme = true) {
                     ShowcaseCircle(
-                        text = "ČVUT Bus",
+                        text = stringResource(R.string.settings_dynamic_theme_app),
                         selected = isDynamic == false,
                         onClick = { viewModel.setDynamicTheme(false) },
                     )

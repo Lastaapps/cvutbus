@@ -29,6 +29,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import cz.lastaapps.common.Communication
@@ -61,9 +62,13 @@ fun PrivacyDialogContent(
         ) {
             Text(
                 stringResource(R.string.privacy_title),
-                style = MaterialTheme.typography.titleLarge
+                style = MaterialTheme.typography.titleLarge,
+                textAlign = TextAlign.Center,
             )
-            Text(stringResource(R.string.privacy_text))
+            Text(
+                stringResource(R.string.privacy_text),
+                textAlign = TextAlign.Center,
+            )
 
             val context = LocalContext.current
             OutlinedButton(onClick = { Communication.openProjectsGithub(context, "ctubus") }) {

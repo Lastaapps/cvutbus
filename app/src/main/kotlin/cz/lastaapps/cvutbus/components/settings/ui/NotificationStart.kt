@@ -33,18 +33,17 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.google.android.material.timepicker.MaterialTimePicker
 import com.google.android.material.timepicker.TimeFormat
-import cz.lastaapps.cvutbus.MainActivity
+import cz.lastaapps.cvutbus.*
+import cz.lastaapps.cvutbus.R
 import cz.lastaapps.cvutbus.components.settings.SettingsViewModel
 import cz.lastaapps.cvutbus.components.settings.modules.NotificationStartup
 import cz.lastaapps.cvutbus.components.settings.modules.notificationStartTime
 import cz.lastaapps.cvutbus.components.settings.modules.notificationStartup
 import cz.lastaapps.cvutbus.components.settings.modules.notificationWorkDaysOnly
-import cz.lastaapps.cvutbus.localizedFormat
-import cz.lastaapps.cvutbus.toLocalTime
-import cz.lastaapps.cvutbus.uses24Hour
 import cz.lastaapps.entity.utils.toHours
 import cz.lastaapps.entity.utils.toMinutes
 import kotlin.time.Duration
@@ -58,7 +57,10 @@ fun NotificationStartSelection(viewModel: SettingsViewModel, modifier: Modifier 
     if (mode == null || time == null || workDays == null) return
 
     Column(modifier, verticalArrangement = Arrangement.spacedBy(8.dp)) {
-        Text("Auto start service in the morning", style = MaterialTheme.typography.titleMedium)
+        Text(
+            stringResource(R.string.settings_notification_start_title),
+            style = MaterialTheme.typography.titleMedium,
+        )
 
         Row(
             horizontalArrangement = Arrangement.spacedBy(8.dp),
@@ -94,9 +96,12 @@ private fun ModeDropdown(
     val context = LocalContext.current
     val timeString = remember(time, context) { time.toLocalTime().localizedFormat(context) }
     val options = listOf(
-        NotificationStartup.Disabled to "Disabled",
-        NotificationStartup.AlarmBased to "After a morning alarm",
-        NotificationStartup.TimeBased to "At selected time (${timeString})",
+        NotificationStartup.Disabled to
+                stringResource(R.string.settings_notification_start_disabled),
+        NotificationStartup.AlarmBased to
+                stringResource(R.string.settings_notification_start_alarm),
+        NotificationStartup.TimeBased to
+                stringResource(R.string.settings_notification_start_time).format(timeString),
     )
     val selected = options.map { it.first }.indexOf(mode)
 
@@ -124,7 +129,7 @@ private fun SelectTime(time: Duration, onTime: (Duration) -> Unit, modifier: Mod
             setTimeFormat(clockFormat)
             setHour(time.toHours())
             setMinute(time.toMinutes())
-            setTitleText("Startup time")
+            setTitleText(context.getString(R.string.settings_notification_start_picker_title))
             build()
         }
             .apply {
@@ -136,7 +141,10 @@ private fun SelectTime(time: Duration, onTime: (Duration) -> Unit, modifier: Mod
     }
 
     IconButton(onClick = { pickerShown = !pickerShown }, modifier) {
-        Icon(Icons.Default.Schedule, contentDescription = "Pick show time")
+        Icon(
+            Icons.Default.Schedule,
+            stringResource(R.string.settings_notification_start_picker_button_description),
+        )
     }
 
 
@@ -156,7 +164,7 @@ private fun SelectTime(time: Duration, onTime: (Duration) -> Unit, modifier: Mod
 @Composable
 private fun WeekDaysOnly(workDays: Boolean, onClick: () -> Unit, modifier: Modifier = Modifier) {
     Row(modifier.clickable { onClick() }, verticalAlignment = Alignment.CenterVertically) {
-        Checkbox(checked = !workDays, onCheckedChange = { onClick() })
-        Text(text = "Also start on weekend")
+        Checkbox(checked = workDays, onCheckedChange = { onClick() })
+        Text(text = stringResource(R.string.settings_notification_start_workdays_text))
     }
 }

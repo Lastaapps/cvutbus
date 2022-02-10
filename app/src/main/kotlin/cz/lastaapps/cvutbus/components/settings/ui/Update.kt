@@ -22,17 +22,16 @@ package cz.lastaapps.cvutbus.components.settings.ui
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Refresh
-import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.Text
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import cz.lastaapps.cvutbus.R
 import cz.lastaapps.cvutbus.components.settings.SettingsViewModel
 import cz.lastaapps.cvutbus.format
 import java.time.format.DateTimeFormatter
@@ -45,25 +44,42 @@ fun UpdateUI(viewModel: SettingsViewModel, modifier: Modifier = Modifier) {
     val isRunning by remember { viewModel.updateManager.isRunningFlow() }.collectAsState(null)
     if (lastUpdate == null || info == null || isRunning == null) return
 
-    Row(
-        modifier,
-        horizontalArrangement = Arrangement.spacedBy(8.dp),
-        verticalAlignment = Alignment.CenterVertically,
-    ) {
-        Column(Modifier.weight(1f)) {
-            val dateFormat = DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM)
-            Text("Released: " + info!!.dataReleaseDate.format(dateFormat))
-            Text("Valid until: " + info!!.dataValidUntil.format(dateFormat))
-            Text("Updated on: " + lastUpdate!!.format(dateFormat))
-        }
-
-        if (isRunning == true) {
-            Box(Modifier.size(48.dp), contentAlignment = Alignment.Center) {
-                CircularProgressIndicator(Modifier.size(24.dp))
+    Column(modifier, verticalArrangement = Arrangement.spacedBy(8.dp)) {
+        Text(
+            stringResource(R.string.settings_update_title),
+            style = MaterialTheme.typography.titleMedium
+        )
+        Row(
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            Column(Modifier.weight(1f)) {
+                val dateFormat = DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM)
+                Text(
+                    stringResource(R.string.settings_update_released) + ": "
+                            + info!!.dataReleaseDate.format(dateFormat)
+                )
+                Text(
+                    stringResource(R.string.settings_update_valid) + ": "
+                            + info!!.dataValidUntil.format(dateFormat)
+                )
+                Text(
+                    stringResource(R.string.settings_update_updated) + ": "
+                            + lastUpdate!!.format(dateFormat)
+                )
             }
-        } else {
-            IconButton(onClick = { viewModel.updateManager.startNow() }) {
-                Icon(Icons.Default.Refresh, contentDescription = "Update data")
+
+            if (isRunning == true) {
+                Box(Modifier.size(48.dp), contentAlignment = Alignment.Center) {
+                    CircularProgressIndicator(Modifier.size(24.dp))
+                }
+            } else {
+                IconButton(onClick = { viewModel.updateManager.startNow() }) {
+                    Icon(
+                        Icons.Default.Refresh,
+                        stringResource(R.string.settings_update_button_description),
+                    )
+                }
             }
         }
     }

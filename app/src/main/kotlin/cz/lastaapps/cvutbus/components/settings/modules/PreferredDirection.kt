@@ -32,6 +32,7 @@ sealed class PreferredDirection(val id: Int) {
     object Outbound : PreferredDirection(1)
     object Remember : PreferredDirection(2)
     object TimeBased : PreferredDirection(3)
+    object TimeBasedReversed : PreferredDirection(4)
 }
 
 private val preferredDirectionKey = intPreferencesKey("preferred_direction")
@@ -46,6 +47,7 @@ val SettingsStore.preferredDirection: Flow<PreferredDirection>
             PreferredDirection.Outbound.id -> PreferredDirection.Outbound
             PreferredDirection.Remember.id -> PreferredDirection.Remember
             PreferredDirection.TimeBased.id -> PreferredDirection.TimeBased
+            PreferredDirection.TimeBasedReversed.id -> PreferredDirection.TimeBasedReversed
             else -> defaultPreferredDirection
         }
     }

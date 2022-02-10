@@ -27,7 +27,9 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import cz.lastaapps.cvutbus.R
 import cz.lastaapps.cvutbus.notification.WorkerUtils
 import kotlinx.coroutines.launch
 import org.lighthousegames.logging.logging
@@ -61,9 +63,17 @@ private fun FloatingIcon(modifier: Modifier = Modifier) {
     }.collectAsState(initial = null)
 
     if (serviceRunning == false)
-        Icon(Icons.Default.NotificationAdd, "Start notification time", modifier)
+        Icon(
+            Icons.Default.NotificationAdd,
+            stringResource(R.string.ui_fab_notification_show),
+            modifier,
+        )
     else
-        Icon(Icons.Default.NotificationsOff, "Stop notification time", modifier)
+        Icon(
+            Icons.Default.NotificationsOff,
+            stringResource(R.string.ui_fab_notification_dismiss),
+            modifier,
+        )
 }
 
 @Composable

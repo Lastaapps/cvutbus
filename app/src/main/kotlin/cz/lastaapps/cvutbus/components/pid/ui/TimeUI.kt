@@ -34,14 +34,13 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import cz.lastaapps.cvutbus.*
+import cz.lastaapps.cvutbus.R
 import cz.lastaapps.cvutbus.api.DatabaseInfo
 import cz.lastaapps.cvutbus.components.pid.PIDViewModel
-import cz.lastaapps.cvutbus.countdownFormat
-import cz.lastaapps.cvutbus.getRoundedNow
-import cz.lastaapps.cvutbus.localizedFormat
-import cz.lastaapps.cvutbus.secondTicker
 import cz.lastaapps.entity.utils.CET
 import cz.lastaapps.repo.DepartureInfo
 import kotlinx.datetime.Instant
@@ -70,7 +69,11 @@ private fun Loading(modifier: Modifier = Modifier) {
 
 @Composable
 private fun NoItems(modifier: Modifier = Modifier) {
-    Text(text = "No connections found, try to update offline database", modifier)
+    Text(
+        text = stringResource(R.string.pid_no_connection),
+        textAlign = TextAlign.Center,
+        modifier = modifier,
+    )
 }
 
 @Composable

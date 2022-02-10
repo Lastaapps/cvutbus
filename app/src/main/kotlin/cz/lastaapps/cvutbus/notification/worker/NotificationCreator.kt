@@ -25,10 +25,12 @@ import android.content.Context
 import android.content.Intent
 import android.os.Build
 import androidx.annotation.RequiresApi
+import androidx.annotation.StringRes
 import androidx.core.app.NotificationChannelCompat
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.work.WorkManager
+import cz.lastaapps.cvutbus.MainActivity
 import cz.lastaapps.cvutbus.R
 import cz.lastaapps.cvutbus.localizedFormat
 import cz.lastaapps.cvutbus.notification.receivers.ChangeDirectionReceiver
@@ -39,7 +41,7 @@ import kotlinx.datetime.toInstant
 import org.lighthousegames.logging.logging
 import java.util.*
 
-class NotificationCreator(private val appContext: Context, private val workerId: UUID) {
+class NotificationCreator(private val context: Context, private val workerId: UUID) {
 
     companion object {
         private const val channelId = "notification_worker"
@@ -47,15 +49,19 @@ class NotificationCreator(private val appContext: Context, private val workerId:
     }
 
     fun createPlaceholderNotification(): Notification {
-        return setupBuilder(null, "Wait a minute", "Let me think").build()
+        return setupBuilder(
+            null,
+            R.string.notification_create_placeholder_title,
+            R.string.notification_create_placeholder_content,
+        ).build()
     }
 
     fun createTimeNotification(data: List<DepartureInfo>): Notification {
         return if (data.isEmpty()) {
             setupBuilder(
                 null,
-                "No data available",
-                "Try to update data or contact the app developer",
+                R.string.notification_create_time_no_data_title,
+                R.string.notification_create_time_no_data_content,
             ).build()
         } else {
             setupBuilder(
@@ -71,47 +77,68 @@ class NotificationCreator(private val appContext: Context, private val workerId:
 
         val time = if (duration.inWholeHours == 0L) {
             if (duration.inWholeMinutes == 0L)
-                "Now" else "${duration.inWholeMinutes} min"
+                context.getString(R.string.notification_create_time_data_now)
+            else
+                "${duration.inWholeMinutes} ${context.getString(R.string.notification_create_time_data_minutes_abbrev)}"
         } else {
             "%d:%02d".format(duration.inWholeHours, duration.inWholeMinutes % 60)
         }
         return "${info.routeShortName} ${
-            info.dateTime.localizedFormat(appContext)
+            info.dateTime.localizedFormat(context)
         } $time"
     }
 
     private fun createTimeDescription(data: List<DepartureInfo>): String {
         return data.joinToString(separator = ", ") {
-            it.dateTime.localizedFormat(appContext)
+            it.dateTime.localizedFormat(context)
         }
     }
 
     fun createAutoHideNotification(): Notification {
         return setupBuilder(
             null,
-            "Auto hide limit reached",
-            "Notification is going to be dismissed",
+            R.string.notification_create_hide_title,
+            R.string.notification_create_hide_content,
         ).build()
     }
+
+    private fun setupBuilder(
+        @StringRes header: Int?,
+        @StringRes title: Int,
+        @StringRes description: Int,
+    ): NotificationCompat.Builder = setupBuilder(
+        header?.let { context.getString(header) },
+        context.getString(title),
+        context.getString(description),
+    )
 
     private fun setupBuilder(
         header: String?,
         title: String,
         description: String,
     ): NotificationCompat.Builder {
-        log.i { "Creating notification h: $header, t: $title, d: $description" }
+        log.i {
+            "Creating notification h: $header, t: $title, d: $description"
+        }
 
-        val cancelIntent = WorkManager.getInstance(appContext)
+        val cancelIntent = WorkManager.getInstance(context)
             .createCancelPendingIntent(workerId)
 
         val reverse = PendingIntent.getBroadcast(
-            appContext,
+            context,
             23569,
-            Intent(appContext, ChangeDirectionReceiver::class.java),
+            Intent(context, ChangeDirectionReceiver::class.java),
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
                 PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
             } else
                 PendingIntent.FLAG_UPDATE_CURRENT
+        )
+
+        val contentIntent = Intent(context, MainActivity::class.java)
+        val contentPending = PendingIntent.getActivity(
+            context, 39221, contentIntent,
+            PendingIntent.FLAG_UPDATE_CURRENT or
+                    if (Build.VERSION.SDK_INT >= 31) PendingIntent.FLAG_MUTABLE else 0
         )
 
         // Create a Notification channel if necessary
@@ -119,17 +146,26 @@ class NotificationCreator(private val appContext: Context, private val workerId:
             createChannel()
         }
 
-        return with(NotificationCompat.Builder(appContext, channelId)) {
+        return with(NotificationCompat.Builder(context, channelId)) {
             setContentTitle(title)
+            setTicker(title)
             header?.let {
                 setSubText(header)
             }
             setContentText(description)
-            setTicker(title)
             //setStyle(NotificationCompat.BigTextStyle())
             setSmallIcon(R.drawable.notification_icon)
-            addAction(android.R.drawable.ic_menu_rotate, "Switch direction", reverse)
-            addAction(android.R.drawable.ic_delete, "Close", cancelIntent)
+            setContentIntent(contentPending)
+            addAction(
+                android.R.drawable.ic_menu_rotate,
+                context.getString(R.string.notification_button_direction),
+                reverse,
+            )
+            addAction(
+                android.R.drawable.ic_delete,
+                context.getString(R.string.notification_button_close),
+                cancelIntent,
+            )
             setOngoing(true)
             setLocalOnly(true)
             setAutoCancel(false)
@@ -142,14 +178,14 @@ class NotificationCreator(private val appContext: Context, private val workerId:
 
     @RequiresApi(Build.VERSION_CODES.O)
     private fun createChannel() {
-        NotificationManagerCompat.from(appContext).createNotificationChannel(
+        NotificationManagerCompat.from(context).createNotificationChannel(
             with(
                 NotificationChannelCompat.Builder(
                     channelId, NotificationManagerCompat.IMPORTANCE_DEFAULT
                 )
             ) {
-                setName("TODO")
-                setDescription("TODO")
+                setName(context.getString(R.string.notification_channel_name))
+                setDescription(context.getString(R.string.notification_channel_description))
                 setShowBadge(false)
                 setVibrationEnabled(false)
                 build()

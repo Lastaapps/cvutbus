@@ -22,6 +22,8 @@ package cz.lastaapps.cvutbus.components.settings.ui
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
+import cz.lastaapps.cvutbus.R
 import cz.lastaapps.cvutbus.components.settings.SettingsViewModel
 import cz.lastaapps.cvutbus.components.settings.modules.*
 import cz.lastaapps.repo.Direction
@@ -37,14 +39,16 @@ import cz.lastaapps.repo.TransportConnection
 fun PreferredStopPairSelection(
     viewModel: SettingsViewModel, modifier: Modifier = Modifier
 ) {
-    val options = mutableListOf(null as StopPair? to "Remember latest").also { startList ->
-        startList.addAll(StopPairs.allStops.map { it to "${it.stop1.name} - ${it.stop2.name}" })
-    }
+    val options =
+        mutableListOf(
+            null as StopPair? to stringResource(R.string.settings_preferred_stops_remember)
+        ).also { startList ->
+            startList.addAll(StopPairs.allStops.map { it to "${it.stop1.name} - ${it.stop2.name}" })
+        }
     val onSelected: (StopPair?) -> Unit = { pair ->
         viewModel.setPreferredStopPair(
-            if (pair == null) PreferredStopPair.Remember() else PreferredStopPair.SpecifiedStopPair(
-                pair
-            )
+            if (pair == null) PreferredStopPair.Remember()
+            else PreferredStopPair.SpecifiedStopPair(pair)
         )
     }
     val selectedItem by viewModel.store.preferredStopPair.collectAsState(initial = null)
@@ -62,7 +66,7 @@ fun PreferredStopPairSelection(
     DropDownMenu(
         expanded = expanded,
         onExpanded = { expanded = !expanded },
-        label = "Startup Connection",
+        label = stringResource(R.string.settings_preferred_stops_remember),
         options = options,
         selected = selectedIndex,
         onItemSelected = onSelected,
@@ -81,10 +85,16 @@ fun PreferredDirectionSelection(
     val outboundInfo = TransportConnection.fromStopPair(stopPair!!.stopPair, Direction.Outbound)
 
     val options = listOf(
-        PreferredDirection.Inbound to "to ${inboundInfo.to.name}",
-        PreferredDirection.Outbound to "to ${outboundInfo.to.name}",
-        PreferredDirection.Remember to "Remember latest",
-        PreferredDirection.TimeBased to "Change at noon",
+        PreferredDirection.Inbound to
+                stringResource(R.string.settings_preferred_direction_to).format(inboundInfo.to.name),
+        PreferredDirection.Outbound to
+                stringResource(R.string.settings_preferred_direction_to).format(outboundInfo.to.name),
+        PreferredDirection.Remember to
+                stringResource(R.string.settings_preferred_direction_remember),
+        PreferredDirection.TimeBased to
+                stringResource(R.string.settings_preferred_direction_noon),
+        PreferredDirection.TimeBasedReversed to
+                stringResource(R.string.settings_preferred_direction_noon_reversed),
     )
     val onSelected: (PreferredDirection) -> Unit = { direction ->
         viewModel.setPreferredDirection(direction)
@@ -99,7 +109,7 @@ fun PreferredDirectionSelection(
     DropDownMenu(
         expanded = expanded,
         onExpanded = { expanded = !expanded },
-        label = "Startup direction",
+        label = stringResource(R.string.settings_preferred_direction_title),
         options = options,
         selected = selectedIndex,
         onItemSelected = onSelected,
@@ -112,9 +122,9 @@ fun TimeShowModeSelection(
     viewModel: SettingsViewModel, modifier: Modifier = Modifier
 ) {
     val options = listOf(
-        TimeShowMode.Countdown to "Countdown",
-        TimeShowMode.Remember to "Remember",
-        TimeShowMode.Time to "Time",
+        TimeShowMode.Remember to stringResource(R.string.settings_preferred_time_mode_remember),
+        TimeShowMode.Countdown to stringResource(R.string.settings_preferred_time_mode_countdown),
+        TimeShowMode.Time to stringResource(R.string.settings_preferred_time_mode_time),
     )
     val onSelected: (TimeShowMode) -> Unit = { mode ->
         viewModel.setTimeShowMode(mode)
@@ -129,7 +139,7 @@ fun TimeShowModeSelection(
     DropDownMenu(
         expanded = expanded,
         onExpanded = { expanded = !expanded },
-        label = "Startup time mode",
+        label = stringResource(R.string.settings_preferred_time_mode_title),
         options = options,
         selected = selectedIndex,
         onItemSelected = onSelected,

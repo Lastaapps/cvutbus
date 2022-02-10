@@ -27,6 +27,8 @@
     <string name="privacy_text">
         This app doesn\'t collect or send any private data.
         If you don\'t trust it, you can check source code yourself.
+        This app is provided with no warranty what so ever!
+        I you miss a bus, it\'s your problem (but please report it).
     </string>
     <string name="privacy_view_source">View source code</string>
     <string name="privacy_accept">Accept</string>
@@ -61,10 +63,90 @@
     <string name="report_clipboard">Report text copied to clipboard</string>
     <string name="report_clipboard_title">ČVUT Bus problem report</string>
 
+    <string name="settings_title">Settings</string>
     <string name="settings_button_privacy_policy">Privacy policy</string>
     <string name="settings_button_about">About</string>
     <string name="settings_button_rate">Rate us!</string>
     <string name="settings_button_report">Report an error</string>
+    <string name="settings_preferred_stops_label">Preferred Connection</string>
+    <string name="settings_preferred_stops_remember">Remember latest</string>
+    <string name="settings_preferred_direction_title">Preferred Direction</string>
+    <string name="settings_preferred_direction_to">to %s</string>
+    <string name="settings_preferred_direction_remember">Remember latest</string>
+    <string name="settings_preferred_direction_noon">Change at noon</string>
+    <string name="settings_preferred_direction_noon_reversed">Change at noon (reversed)</string>
+    <string name="settings_preferred_time_mode_title">Preferred time mode</string>
+    <string name="settings_preferred_time_mode_countdown">Countdown</string>
+    <string name="settings_preferred_time_mode_remember">Remember</string>
+    <string name="settings_preferred_time_mode_time">Time</string>
+    <string name="settings_notification_start_title">Show notification in the morning</string>
+    <string name="settings_notification_start_disabled">Disable</string>
+    <string name="settings_notification_start_alarm">After a morning alarm</string>
+    <string name="settings_notification_start_time">At a given time (%s)</string>
+    <string name="settings_notification_start_picker_title">Start time</string>
+    <string name="settings_notification_start_picker_button_description">Pick show up time</string>
+    <string name="settings_notification_start_workdays_text">Workdays only</string>
+    <string name="settings_notification_hide_title">Notification auto hide after</string>
+    <string name="settings_notification_hide_never">Never</string>
+    <string name="settings_notification_hide_hours_abbrev">h</string>
+    <string name="settings_app_theme_title">App theme</string>
+    <string name="settings_app_theme_light">Light</string>
+    <string name="settings_app_theme_system">System</string>
+    <string name="settings_app_theme_dark">Dark</string>
+    <string name="settings_dynamic_theme_title">Colors</string>
+    <string name="settings_dynamic_theme_system">System</string>
+    <string name="settings_dynamic_theme_app">ČVUT Bus</string>
+    <string name="settings_update_title">Local database</string>
+    <string name="settings_update_released">Released</string>
+    <string name="settings_update_valid">Valid until</string>
+    <string name="settings_update_updated">Updated on</string>
+    <string name="settings_update_button_description">Force data refresh</string>
+
+    <string name="update_notification_updating_title">Updating offline data</string>
+    <string name="update_notification_updating_content">So you woun\'t miss a thing.</string>
+    <string name="update_notification_done_title">Data updated</string>
+    <string name="update_notification_done_content">Get ready for another adventure</string>
+    <string name="update_notification_failed_title">Failed to update data</string>
+    <string name="update_notification_failed_content">Internet may be inaccessible</string>
+    <string name="update_notification_no_new_title">No new data available</string>
+    <string name="update_notification_no_new_content">Try updating few days later</string>
+    <string name="update_notification_channel_name">Update offline database</string>
+    <string name="update_notification_channel_description">"         Show the progress of the local database update process     "</string>
+
+    <string name="license_this_app">ČVUT Bus is licensed under GNU GPL v3.0 license</string>
+    <string name="license_none_selected">No library selected</string>
+    <string name="license_detail_opensource_yes">Library is opensource</string>
+    <string name="license_detail_opensource_no">Library is not opensource</string>
+    <string name="license_detail_developer">Developer</string>
+    <string name="license_detail_link">Link</string>
+    <string name="license_detail_organization">Organization</string>
+    <string name="license_detail_description">Description</string>
+    <string name="license_detail_no_license">No license available</string>
+
+    <string name="pid_no_connection">No connections found, try to update offline database</string>
+    <string name="pid_button_direction">Switch direction</string>
+    <string name="pid_button_time_mode">Switch time mode</string>
+    <string name="pid_icon_description_direction">Switch direction</string>
+    <string name="pid_icon_description_to_time">Show time</string>
+    <string name="pid_icon_description_to_counter">Show counter</string>
+
     <string name="notification_tile_name">ČVUT Bus</string>
+    <string name="notification_create_placeholder_title">Wait a minute</string>
+    <string name="notification_create_placeholder_content">Let me think…</string>
+    <string name="notification_create_time_no_data_title">No data available</string>
+    <string name="notification_create_time_no_data_content">"Try to update data or contact the app developer"</string>
+    <string name="notification_create_time_data_minutes_abbrev">min</string>
+    <string name="notification_create_time_data_now">Now</string>
+    <string name="notification_create_hide_title">Auto hide limit has been just reached</string>
+    <string name="notification_create_hide_content">Notification is going to be dismissed in a moment</string>
+    <string name="notification_channel_name">Departures</string>
+    <string name="notification_channel_description">Shows next departures (time + remaining) with the option to change direction.</string>
+    <string name="notification_button_direction">Switch direction</string>
+    <string name="notification_button_close">Close</string>
+
+    <string name="ui_fab_notification_show">Show departures notification</string>
+    <string name="ui_fab_notification_dismiss">Dismiss departures notification</string>
+    <string name="ui_top_bar_title">ČVUT Bus</string>
+    <string name="ui_top_bar_back_arrow">Go back</string>
 
 </resources>

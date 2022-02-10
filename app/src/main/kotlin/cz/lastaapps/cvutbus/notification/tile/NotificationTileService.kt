@@ -19,17 +19,13 @@
 
 package cz.lastaapps.cvutbus.notification.tile
 
-import android.content.Intent
 import android.os.Build
 import android.service.quicksettings.Tile
 import android.service.quicksettings.TileService
 import androidx.annotation.RequiresApi
 import cz.lastaapps.cvutbus.notification.WorkerUtils
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
+import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.launch
 import org.lighthousegames.logging.logging
 
 @RequiresApi(Build.VERSION_CODES.N)
@@ -53,8 +49,16 @@ class NotificationTileService : TileService() {
         }
     }
 
-    override fun onTaskRemoved(rootIntent: Intent?) {
-        super.onTaskRemoved(rootIntent)
+    override fun onTileAdded() {
+        super.onTileAdded()
+
+        runBlocking {
+            details.isRunningFlow().collectLatest {
+                log.i { "Tile initializing state" }
+                qsTile.state = if (it) Tile.STATE_ACTIVE else Tile.STATE_INACTIVE
+                qsTile.updateTile()
+            }
+        }
     }
 
     override fun onStartListening() {

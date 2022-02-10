@@ -64,6 +64,9 @@ class WorkerState @Inject constructor(
             PreferredDirection.TimeBased ->
                 if (Clock.System.now().toLocalDateTime(CET).hour < 12)
                     Direction.Outbound else Direction.Inbound
+            PreferredDirection.TimeBasedReversed ->
+                if (Clock.System.now().toLocalDateTime(CET).hour >= 12)
+                    Direction.Outbound else Direction.Inbound
         }
 
         connection = MutableStateFlow(

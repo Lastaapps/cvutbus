@@ -23,6 +23,8 @@
     <string name="privacy_text">
         Tato aplikace neshromažďuje žádná (osobní) data.
         Pokud nevěříte, můžete si sami zkontrolovat zdrojový kód.
+        Aplikace je poskytována bez jakékoli zárkuky, pokud vám nepojede
+        autobus, nechoďte mi brečet na schody, ale chybu radši nahlašte.
     </string>
     <string name="privacy_view_source">Prohlédnout si zdrojový kód</string>
     <string name="privacy_accept">Přijímám</string>
@@ -55,5 +57,83 @@
     <string name="settings_button_about">O aplikaci</string>
     <string name="settings_button_rate">Ohodnoťte nás!</string>
     <string name="settings_button_report">Nahlásit chybu</string>
+    <string name="nav_pid">Jízdní řád</string>
+    <string name="nav_settings">Nastavení</string>
+    <string name="settings_title">Nastavení</string>
+    <string name="settings_preferred_stops_label">Preferovaný spoj</string>
+    <string name="settings_preferred_stops_remember">Použít poslední</string>
+    <string name="settings_preferred_direction_title">Preferovaný směr</string>
+    <string name="settings_preferred_direction_to">směr %s</string>
+    <string name="settings_preferred_direction_remember">Použít minulý</string>
+    <string name="settings_preferred_direction_noon">Změnit v poledne</string>
+    <string name="settings_preferred_direction_noon_reversed">Změnit v poledne (naopak)</string>
+    <string name="settings_preferred_time_mode_title">Preferované zobrazení času</string>
+    <string name="settings_preferred_time_mode_countdown">Odpočet</string>
+    <string name="settings_preferred_time_mode_remember">Zapamatovat z minule</string>
+    <string name="settings_preferred_time_mode_time">Čas</string>
+    <string name="settings_notification_start_title">Rání oznámení</string>
+    <string name="settings_notification_start_disabled">Vypnuto</string>
+    <string name="settings_notification_start_alarm">Po raním budíku</string>
+    <string name="settings_notification_start_time">V konkrétní čas (%s)</string>
+    <string name="settings_notification_start_picker_title">Čas spuštění</string>
+    <string name="settings_notification_start_picker_button_description">Vybrat čas zobrazení</string>
+    <string name="settings_notification_start_workdays_text">Pouze pracovní dny</string>
+    <string name="settings_notification_hide_title">Skrýt oznámení po</string>
+    <string name="settings_notification_hide_never">Nikdy</string>
+    <string name="settings_notification_hide_hours_abbrev">h</string>
+    <string name="settings_app_theme_title">Téma</string>
+    <string name="settings_app_theme_light">Světlé</string>
+    <string name="settings_app_theme_system">Systémové</string>
+    <string name="settings_app_theme_dark">Tmavé</string>
+    <string name="settings_dynamic_theme_title">Barvy</string>
+    <string name="settings_dynamic_theme_system">Systémové</string>
+    <string name="settings_dynamic_theme_app">ČVUT Bus</string>
+    <string name="settings_update_title">Lokální databáze</string>
+    <string name="settings_update_released">Vydáno</string>
+    <string name="settings_update_valid">Platné do</string>
+    <string name="settings_update_updated">Aktualizováno</string>
+    <string name="settings_update_button_description">Vynutit aktualizaci dat</string>
+    <string name="update_notification_updating_title">Aktualizuji lokální data</string>
+    <string name="update_notification_updating_content">Takže vám nic neunikne</string>
+    <string name="update_notification_done_title">Data jsou aktuální</string>
+    <string name="update_notification_done_content">Připravte se na další dobrodružství</string>
+    <string name="update_notification_failed_title">Nepodařilo se aktualizovat data</string>
+    <string name="update_notification_failed_content">Spoje mohou být nepřesné</string>
+    <string name="update_notification_no_new_title">Nejsou dosputná novější data</string>
+    <string name="update_notification_no_new_content">Zkuste to za pár dní</string>
+    <string name="update_notification_channel_name">Aktualizace lokální databáze</string>
+    <string name="update_notification_channel_description">Zobrazuje postup aktualizace dat</string>
+    <string name="license_this_app">ČVUT Bus je licencován pod GNU GPL v3.0 licencí</string>
+    <string name="license_none_selected">Není vybrána žádná knihovna</string>
+    <string name="license_detail_opensource_yes">Knihovna je opensource</string>
+    <string name="license_detail_opensource_no">Knihovna není opensource</string>
+    <string name="license_detail_developer">Vývojář</string>
+    <string name="license_detail_link">Odkaz</string>
+    <string name="license_detail_organization">Společnost</string>
+    <string name="license_detail_description">Popis</string>
+    <string name="license_detail_no_license">Není dostupná žádná licence</string>
+    <string name="pid_no_connection">Nebyl nalezen žádný spoj, zkuste aktualizovat lokální databázi</string>
+    <string name="pid_button_direction">Změnit směr</string>
+    <string name="pid_button_time_mode">Změnit zobrazení času</string>
+    <string name="pid_icon_description_direction">Změnit směr</string>
+    <string name="pid_icon_description_to_time">Zobrazit čas</string>
+    <string name="pid_icon_description_to_counter">Zobrazit odpočet</string>
+    <string name="notification_tile_name">ČVUT Bus</string>
+    <string name="notification_create_placeholder_title">Vteřinku</string>
+    <string name="notification_create_placeholder_content">Nekecáme, makáme</string>
+    <string name="notification_create_time_no_data_title">Nejsou dostupná žádná data</string>
+    <string name="notification_create_time_no_data_content">Zkuste aktualizovat lokální databázi nebo tuto chybu nahlásit vývojáři</string>
+    <string name="notification_create_time_data_minutes_abbrev">min</string>
+    <string name="notification_create_time_data_now">Nyní</string>
+    <string name="notification_create_hide_title">Limit oznámení vypršel</string>
+    <string name="notification_create_hide_content">Notifikace brzy zmizí</string>
+    <string name="notification_channel_name">Odjezdy</string>
+    <string name="notification_channel_description">Zobrazuje další odjezdy (čas a zbývající) a možnost změnit směr</string>
+    <string name="notification_button_direction">Změnit směr</string>
+    <string name="notification_button_close">Zavřít</string>
+    <string name="ui_fab_notification_show">Zobrazi oznámení s odjezdy</string>
+    <string name="ui_fab_notification_dismiss">Skrýt oznámení s odjezdy</string>
+    <string name="ui_top_bar_title">ČVUT Bus</string>
+    <string name="ui_top_bar_back_arrow">Zpět</string>
 
 </resources>

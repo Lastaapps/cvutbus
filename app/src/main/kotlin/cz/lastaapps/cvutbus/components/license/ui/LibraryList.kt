@@ -29,9 +29,11 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalUriHandler
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.mikepenz.aboutlibraries.entity.Library
+import cz.lastaapps.cvutbus.R
 import org.lighthousegames.logging.logging
 
 @Composable
@@ -65,7 +67,7 @@ private fun AppLicenseButton(modifier: Modifier = Modifier) {
         modifier = modifier
     ) {
         Text(
-            text = "ČVUT Bus is licensed under GNU GPL v3.0 license",
+            text = stringResource(R.string.license_this_app),
             style = MaterialTheme.typography.bodyLarge,
             textAlign = TextAlign.Center
         )

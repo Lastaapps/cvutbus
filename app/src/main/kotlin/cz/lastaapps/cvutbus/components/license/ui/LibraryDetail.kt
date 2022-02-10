@@ -33,18 +33,21 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalUriHandler
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import com.mikepenz.aboutlibraries.entity.Library
 import com.mikepenz.aboutlibraries.entity.License
+import cz.lastaapps.cvutbus.R
 import org.lighthousegames.logging.logging
 
 @Composable
 fun LibraryDetailWrapper(library: Library?, modifier: Modifier = Modifier) {
     if (library == null) {
         Box(modifier, contentAlignment = Alignment.Center) {
-            Text("No library selected")
+            Text(stringResource(R.string.license_none_selected), textAlign = TextAlign.Center)
         }
     } else {
         LibraryDetail(library, modifier)
@@ -63,14 +66,14 @@ fun LibraryDetail(library: Library, modifier: Modifier = Modifier) {
             Text(library.artifactId, style = titleStyle)
 
             if (library.openSource) {
-                Text("Library is opensource", style = bodyStyle)
+                Text(stringResource(R.string.license_detail_opensource_yes), style = bodyStyle)
             } else {
-                Text("Library is not opensource", style = bodyStyle)
+                Text(stringResource(R.string.license_detail_opensource_no), style = bodyStyle)
             }
 
             if (library.developers.isNotEmpty()) {
                 Column {
-                    Text("Developer", style = titleStyle)
+                    Text(stringResource(R.string.license_detail_developer), style = titleStyle)
                     library.developers.forEach { developer ->
                         developer.name?.let { Text(it, style = bodyStyle) }
                     }
@@ -79,27 +82,27 @@ fun LibraryDetail(library: Library, modifier: Modifier = Modifier) {
 
             library.website?.let { website ->
                 Column {
-                    Text("Link", style = titleStyle)
+                    Text(stringResource(R.string.license_detail_link), style = titleStyle)
                     Uri(website, style = bodyStyle)
                 }
             }
 
             library.organization?.let { organization ->
                 Column {
-                    Text("Organization", style = titleStyle)
+                    Text(stringResource(R.string.license_detail_organization), style = titleStyle)
                     Text(organization.name, style = bodyStyle)
                 }
             }
 
             library.description?.let { description ->
                 Column {
-                    Text("Description", style = titleStyle)
+                    Text(stringResource(R.string.license_detail_description), style = titleStyle)
                     Text(description, style = bodyStyle)
                 }
             }
 
             if (library.licenses.isEmpty()) {
-                Text("No license available")
+                Text(stringResource(R.string.license_detail_no_license))
             } else {
                 library.licenses.forEach { license ->
                     LicenseDetail(license, titleStyle = titleStyle, bodyStyle = bodyStyle)

@@ -29,6 +29,8 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
+import cz.lastaapps.cvutbus.R
 import cz.lastaapps.cvutbus.components.settings.SettingsViewModel
 import cz.lastaapps.cvutbus.components.settings.modules.notificationHide
 import cz.lastaapps.entity.utils.toHours
@@ -50,11 +52,17 @@ fun NotificationHideSelection(
     Column(modifier) {
         Row(Modifier.fillMaxWidth()) {
             Text(
-                "Notification auto hide after",
+                stringResource(R.string.notification_create_hide_title),
                 style = MaterialTheme.typography.titleMedium,
                 modifier = Modifier.weight(1f),
             )
-            if (slide == 0f) Text("Never") else Text(slide.toSeconds(max).hoursText() + " h")
+            if (slide == 0f)
+                Text(stringResource(R.string.settings_notification_hide_never))
+            else
+                Text(
+                    slide.toSeconds(max).hoursText() + " " +
+                            stringResource(R.string.settings_notification_hide_hours_abbrev)
+                )
         }
         Slider(
             value = slide,
