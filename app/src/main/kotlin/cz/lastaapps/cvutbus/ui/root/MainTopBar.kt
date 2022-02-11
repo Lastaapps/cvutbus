@@ -21,19 +21,27 @@ package cz.lastaapps.cvutbus.ui.root
 
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.rememberSplineBasedDecay
-import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.DirectionsBus
+import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import cz.lastaapps.cvutbus.R
+import cz.lastaapps.cvutbus.navigation.Dests
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MainTopBar() {
+fun MainTopBar(navController: NavController) {
 
     val title = stringResource(R.string.ui_top_bar_title)
 
@@ -42,12 +50,35 @@ fun MainTopBar() {
         TopAppBarDefaults.exitUntilCollapsedScrollBehavior(decayAnimationSpec)
     }
 
+    var mainPopupExpanded by rememberSaveable { mutableStateOf(false) }
+
     val list = LocalBackArrowProvider.current
 
-    SmallTopAppBar(
-        title = { Text(title) },
+    CenterAlignedTopAppBar(
+        title = {
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Box(Modifier.size(48.dp), contentAlignment = Alignment.Center) {
+                    Surface(
+                        Modifier.size(32.dp),
+                        color = colorResource(R.color.ic_launcher_background),
+                        shape = RoundedCornerShape(8.dp)
+                    ) {
+                        Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                            CompositionLocalProvider(LocalContentColor provides colorResource(R.color.ic_launcher_foreground)) {
+                                Icon(Icons.Default.DirectionsBus, null)
+                            }
+                        }
+                    }
+                }
+                Text(title)
+            }
+        },
         navigationIcon = {
-            Row(Modifier.animateContentSize()) {
+            Row(
+                Modifier
+                    .animateContentSize()
+                    .padding(start = 8.dp)
+            ) {
                 if (list.isNotEmpty()) {
                     IconButton(onClick = {
                         list.last().invoke()
@@ -61,19 +92,48 @@ fun MainTopBar() {
             }
         },
         actions = {
-            /*IconButton(onClick = {  }) {
-                Icon(
-                    imageVector = Icons.Filled.Favorite,
-                    contentDescription = "Localized description"
-                )
+            Box {
+                IconButton({ mainPopupExpanded = !mainPopupExpanded }) {
+                    Icon(
+                        Icons.Default.MoreVert,
+                        stringResource(R.string.ui_top_bar_action_description),
+                    )
+                }
+                TopBarPopup(mainPopupExpanded, { mainPopupExpanded = false }) {
+                    navController.navigate(it) {
+                        launchSingleTop = true
+                    }
+                }
             }
-            IconButton(onClick = {  }) {
-                Icon(
-                    imageVector = Icons.Filled.Favorite,
-                    contentDescription = "Localized description"
-                )
-            }*/
         },
         scrollBehavior = scrollBehavior
     )
+}
+
+@Composable
+private fun TopBarPopup(
+    expanded: Boolean, onDismissRequest: () -> Unit,
+    modifier: Modifier = Modifier,
+    navigateTo: (String) -> Unit,
+) {
+    DropdownMenu(expanded, onDismissRequest, modifier) {
+        DropdownMenuItem(
+            { Text(stringResource(R.string.ui_top_bar_action_privacy)) },
+            {
+                navigateTo(Dests.Routes.privacyPolicy)
+                onDismissRequest()
+            })
+        DropdownMenuItem(
+            { Text(stringResource(R.string.ui_top_bar_action_license)) },
+            {
+                navigateTo(Dests.Routes.license)
+                onDismissRequest()
+            })
+        DropdownMenuItem(
+            { Text(stringResource(R.string.ui_top_bar_action_osturak)) },
+            {
+                navigateTo(Dests.Routes.osturak)
+                onDismissRequest()
+            })
+    }
 }

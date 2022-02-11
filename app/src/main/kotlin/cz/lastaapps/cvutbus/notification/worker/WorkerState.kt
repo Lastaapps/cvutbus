@@ -30,6 +30,8 @@ import cz.lastaapps.cvutbus.minuteTicker
 import cz.lastaapps.entity.utils.CET
 import cz.lastaapps.repo.*
 import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
 import kotlinx.datetime.Clock
 import kotlinx.datetime.toLocalDateTime
 import org.lighthousegames.logging.logging
@@ -46,7 +48,9 @@ class WorkerState @Inject constructor(
     }
 
     private var isReady = false
-    suspend fun prepareData() {
+    private val mutex = Mutex()
+
+    suspend fun prepareData() = mutex.withLock {
         if (isReady) return
 
         log.i { "Initializing" }
@@ -80,15 +84,18 @@ class WorkerState @Inject constructor(
     private lateinit var repo: PIDRepo
     private lateinit var connection: MutableStateFlow<TransportConnection>
 
-    fun reverseDirection() {
+    suspend fun reverseDirection() {
+        prepareData()
         connection.value = connection.value.reversed
     }
 
-    fun setStopPair(stopPair: StopPair) {
+    suspend fun setStopPair(stopPair: StopPair) {
+        prepareData()
         connection.value = TransportConnection.fromStopPair(stopPair, connection.value.direction)
     }
 
     fun getData(): Flow<List<DepartureInfo>> = channelFlow {
+        prepareData()
         connection.collectLatest { connection ->
             repo.getData(getRoundedNow().toLocalDateTime(CET), connection).collectLatest { dbData ->
                 var data = dbData

@@ -51,7 +51,7 @@ class DatabaseStore @Inject constructor(app: Application) {
         private val dateFormat = DateTimeFormatter.ISO_DATE
 
         private const val defaultDataSourceDir =
-            "https://raw.githubusercontent.com/Lastaapps/ctubus/cloud_data/cloud_data/"
+            "https://raw.githubusercontent.com/Lastaapps/cvutbus/cloud_data/cloud_data/"
         private const val configFileName = "config.json"
         private const val databaseFileName = "piddatabase.db"
     }

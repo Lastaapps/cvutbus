@@ -63,7 +63,7 @@ fun PreferredStopPairSelection(
     }
 
     var expanded by rememberSaveable { mutableStateOf(false) }
-    DropDownMenu(
+    SettingsDropDown(
         expanded = expanded,
         onExpanded = { expanded = !expanded },
         label = stringResource(R.string.settings_preferred_stops_remember),
@@ -106,7 +106,7 @@ fun PreferredDirectionSelection(
     }
 
     var expanded by rememberSaveable { mutableStateOf(false) }
-    DropDownMenu(
+    SettingsDropDown(
         expanded = expanded,
         onExpanded = { expanded = !expanded },
         label = stringResource(R.string.settings_preferred_direction_title),
@@ -136,7 +136,7 @@ fun TimeShowModeSelection(
     }
 
     var expanded by rememberSaveable { mutableStateOf(false) }
-    DropDownMenu(
+    SettingsDropDown(
         expanded = expanded,
         onExpanded = { expanded = !expanded },
         label = stringResource(R.string.settings_preferred_time_mode_title),

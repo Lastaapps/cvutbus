@@ -49,6 +49,7 @@ import cz.lastaapps.common.R
 import cz.lastaapps.cvutbus.BuildConfig
 import cz.lastaapps.cvutbus.navigation.Dests
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AboutUi(
     navController: NavController,
@@ -61,26 +62,23 @@ fun AboutUi(
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
 
-            Surface(modifier = Modifier.fillMaxWidth()) {
-                Box(Modifier.padding(16.dp), contentAlignment = Alignment.Center) {
-                    Text(
-                        text = stringResource(cz.lastaapps.cvutbus.R.string.about_title),
-                        style = MaterialTheme.typography.headlineMedium,
-                        textAlign = TextAlign.Center,
-                    )
-                }
+            Box(Modifier.padding(16.dp), contentAlignment = Alignment.Center) {
+                Text(
+                    text = stringResource(cz.lastaapps.cvutbus.R.string.about_title),
+                    style = MaterialTheme.typography.headlineMedium,
+                    textAlign = TextAlign.Center,
+                )
             }
 
-            Surface(
+            ElevatedCard(
                 modifier = Modifier.fillMaxWidth(),
-                tonalElevation = 8.dp,
-                shadowElevation = 8.dp,
                 shape = RoundedCornerShape(8.dp),
             ) {
                 Column(
                     Modifier
                         .padding(16.dp)
-                        .width(IntrinsicSize.Max),
+                        .width(IntrinsicSize.Max)
+                        .align(Alignment.CenterHorizontally),
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.spacedBy(8.dp),
                 ) {
@@ -120,17 +118,13 @@ fun AboutUi(
                     ViewSource(Modifier.fillMaxWidth())
                 }
             }
-            Surface(
+            ElevatedCard(
                 modifier = Modifier.fillMaxWidth(),
-                tonalElevation = 8.dp,
-                shadowElevation = 8.dp,
                 shape = RoundedCornerShape(8.dp),
             ) {
                 Socials(Modifier.padding(16.dp))
             }
-            Surface(modifier = Modifier.fillMaxWidth()) {
-                AppInfo(modifier = Modifier.padding(8.dp))
-            }
+            AppInfo(modifier = Modifier.padding(8.dp))
         }
     }
 }
@@ -165,7 +159,7 @@ private fun ViewSource(modifier: Modifier = Modifier) {
     val context = LocalContext.current
     OutlinedButton(
         modifier = modifier,
-        onClick = { Communication.openProjectsGithub(context, "ctubus") },
+        onClick = { Communication.openProjectsGithub(context, "cvutbus") },
     ) {
         IconAndText(
             icon = {

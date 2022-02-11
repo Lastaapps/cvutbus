@@ -35,6 +35,7 @@ import cz.lastaapps.cvutbus.components.settings.SettingsViewModel
 import cz.lastaapps.cvutbus.components.settings.modules.notificationHide
 import cz.lastaapps.entity.utils.toHours
 import cz.lastaapps.entity.utils.toMinutes
+import kotlin.math.roundToInt
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.seconds
 
@@ -43,7 +44,10 @@ import kotlin.time.Duration.Companion.seconds
 fun NotificationHideSelection(
     viewModel: SettingsViewModel, modifier: Modifier = Modifier
 ) {
-    val max = 24 * 60 * 60
+    val max = 6 * 60 * 60
+    val steps = max / (15 * 60) - 1
+    val computeSteps = steps + 1
+
     val delay by viewModel.store.notificationHide.collectAsState(null)
     if (delay == null) return
 
@@ -60,15 +64,17 @@ fun NotificationHideSelection(
                 Text(stringResource(R.string.settings_notification_hide_never))
             else
                 Text(
-                    slide.toSeconds(max).hoursText() + " " +
+                    remember(slide) { slide.toSeconds(max, computeSteps).hoursText() } + " " +
                             stringResource(R.string.settings_notification_hide_hours_abbrev)
                 )
         }
         Slider(
             value = slide,
             onValueChange = { slide = it },
-            steps = max / (15 * 60) - 1,
-            onValueChangeFinished = { viewModel.setNotificationHide(slide.toSeconds(max)) },
+            steps = steps,
+            onValueChangeFinished = {
+                viewModel.setNotificationHide(slide.toSeconds(max, computeSteps))
+            },
             modifier = Modifier.fillMaxWidth(),
             colors = SliderDefaults.colors(
                 activeTickColor = Color.Transparent,
@@ -78,7 +84,11 @@ fun NotificationHideSelection(
     }
 }
 
-private fun Float.toSeconds(max: Int): Duration = (this * max).toInt().seconds
+private fun Float.toSeconds(max: Int, steps: Int): Duration {
+    val scaled = (this * steps).roundToInt() * 1f / steps
+    return (scaled * max).toInt().seconds
+}
+
 private fun Duration.hoursText(): String {
     return "%d:%02d".format(toHours(), toMinutes())
 }

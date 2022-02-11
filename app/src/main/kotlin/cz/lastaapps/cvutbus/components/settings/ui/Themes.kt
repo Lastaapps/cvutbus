@@ -21,6 +21,8 @@ package cz.lastaapps.cvutbus.components.settings.ui
 
 import android.os.Build
 import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Slider
@@ -147,6 +149,7 @@ fun UseDynamicTheme(viewModel: SettingsViewModel, modifier: Modifier = Modifier)
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun ShowcaseCircle(
     text: String, selected: Boolean, onClick: () -> Unit, modifier: Modifier = Modifier
@@ -160,16 +163,19 @@ private fun ShowcaseCircle(
     else
         MaterialTheme.colorScheme.surface
 
-    Surface(
-        color = surfaceColor,
+    val interaction = remember { MutableInteractionSource() }
+    Card(
+        containerColor = surfaceColor,
         shape = RoundedCornerShape(8.dp),
-        onClick = onClick,
-        modifier = modifier,
+        interactionSource = interaction,
+        modifier = modifier.clickable(interaction, null, onClick = onClick),
     ) {
         val selectedColor = LocalContentColor.current
 
         Column(
-            Modifier.padding(8.dp),
+            Modifier
+                .padding(8.dp)
+                .align(Alignment.CenterHorizontally),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             Canvas(Modifier.size(48.dp)) {

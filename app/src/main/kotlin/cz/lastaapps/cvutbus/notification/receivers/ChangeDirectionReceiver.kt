@@ -22,8 +22,10 @@ package cz.lastaapps.cvutbus.notification.receivers
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
+import cz.lastaapps.cvutbus.notification.WorkerUtils
 import cz.lastaapps.cvutbus.notification.worker.WorkerState
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.runBlocking
 import org.lighthousegames.logging.logging
 import javax.inject.Inject
 
@@ -39,6 +41,9 @@ class ChangeDirectionReceiver : BroadcastReceiver() {
 
     override fun onReceive(context: Context, intent: Intent) {
         log.i { "Changing direction" }
-        state.reverseDirection()
+        runBlocking {
+            WorkerUtils(context).start()
+            state.reverseDirection()
+        }
     }
 }

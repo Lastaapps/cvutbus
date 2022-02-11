@@ -106,7 +106,7 @@ private fun ModeDropdown(
     val selected = options.map { it.first }.indexOf(mode)
 
     var expanded by rememberSaveable { mutableStateOf(false) }
-    DropDownMenu(
+    SettingsDropDown(
         expanded = expanded,
         onExpanded = { expanded = !expanded },
         label = null,

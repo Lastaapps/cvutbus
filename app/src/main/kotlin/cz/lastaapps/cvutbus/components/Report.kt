@@ -212,7 +212,7 @@ private fun sendTelegram(context: Context, text: String) {
 
 private fun sendGitHub(context: Context, @Suppress("UNUSED_PARAMETER") text: String) {
     val intent =
-        Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/Lastaapps/ctubus/issues/new"))
+        Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/Lastaapps/cvutbus/issues/new"))
     context.startActivity(intent)
 }
 

@@ -71,7 +71,7 @@
     <string name="settings_preferred_stops_label">Preferred Connection</string>
     <string name="settings_preferred_stops_remember">Remember latest</string>
     <string name="settings_preferred_direction_title">Preferred Direction</string>
-    <string name="settings_preferred_direction_to">to %s</string>
+    <string name="settings_preferred_direction_to">To %s</string>
     <string name="settings_preferred_direction_remember">Remember latest</string>
     <string name="settings_preferred_direction_noon">Change at noon</string>
     <string name="settings_preferred_direction_noon_reversed">Change at noon (reversed)</string>
@@ -148,5 +148,9 @@
     <string name="ui_fab_notification_dismiss">Dismiss departures notification</string>
     <string name="ui_top_bar_title">ČVUT Bus</string>
     <string name="ui_top_bar_back_arrow">Go back</string>
+    <string name="ui_top_bar_action_description">Others</string>
+    <string name="ui_top_bar_action_privacy">Privacy policy</string>
+    <string name="ui_top_bar_action_license">License notices</string>
+    <string name="ui_top_bar_action_osturak" translatable="false">Ošťurák</string>
 
 </resources>

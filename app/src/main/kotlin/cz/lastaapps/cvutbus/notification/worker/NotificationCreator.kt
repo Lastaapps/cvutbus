@@ -166,7 +166,7 @@ class NotificationCreator(private val context: Context, private val workerId: UU
                 context.getString(R.string.notification_button_close),
                 cancelIntent,
             )
-            setOngoing(true)
+            setOngoing(false)
             setLocalOnly(true)
             setAutoCancel(false)
             setAllowSystemGeneratedContextualActions(false)

@@ -24,7 +24,7 @@ import cz.lastaapps.cvutbus.api.UnsupportedConfigVersion
 import cz.lastaapps.database.DatabaseDriverFactoryImpl
 import cz.lastaapps.database.createDatabase
 import cz.lastaapps.entity.utils.CET
-import io.ktor.client.features.*
+import io.ktor.client.plugins.*
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
 import kotlinx.coroutines.flow.first
@@ -43,22 +43,22 @@ suspend fun UpdateWorker.checkUpdateRequired(): Boolean {
 
 @Throws(UnsupportedConfigVersion::class)
 suspend fun UpdateWorker.fetchConfig(): DatabaseInfo {
-    val response = client.get<HttpResponse>(store.dataSourceConfig.first())
+    val response = client.get(store.dataSourceConfig.first()) {}
 
     if (response.status.value == 200) {
-        val json = response.readText()
+        val json = response.bodyAsText()
         return DatabaseInfo.fromJson(json)
     }
-    throw ResponseException(response, response.readText())
+    throw ResponseException(response, response.bodyAsText())
 }
 
 suspend fun UpdateWorker.downloadDatabase(): ByteArray {
-    val response = client.get<HttpResponse>(store.dataSourceDatabase.first())
+    val response = client.get(store.dataSourceDatabase.first())
 
     if (response.status.value == 200) {
         return response.readBytes()
     }
-    throw ResponseException(response, response.readText())
+    throw ResponseException(response, response.bodyAsText())
 }
 
 @Suppress("BlockingMethodInNonBlockingContext")

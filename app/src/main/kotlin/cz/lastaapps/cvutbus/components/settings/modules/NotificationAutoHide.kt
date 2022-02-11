@@ -26,10 +26,11 @@ import cz.lastaapps.cvutbus.notification.WorkerUtils
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import kotlin.time.Duration
+import kotlin.time.Duration.Companion.hours
 import kotlin.time.Duration.Companion.seconds
 
 private val notificationHideKey = intPreferencesKey("notification_hide")
-private val defaultNotificationHide = 0.seconds // Never
+private val defaultNotificationHide = 2.hours // 0 is Never
 
 val SettingsStore.notificationHide: Flow<Duration>
     get() = store.data.map { it[notificationHideKey]?.seconds ?: defaultNotificationHide }

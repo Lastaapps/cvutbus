@@ -22,7 +22,9 @@ package cz.lastaapps.cvutbus.components.privacy
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -56,7 +58,9 @@ fun PrivacyDialogContent(
 ) {
     Surface(shape = RoundedCornerShape(16.dp)) {
         Column(
-            modifier = Modifier.padding(16.dp),
+            modifier = Modifier
+                .padding(16.dp)
+                .verticalScroll(rememberScrollState()),
             verticalArrangement = Arrangement.spacedBy(8.dp, Alignment.CenterVertically),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
@@ -71,7 +75,7 @@ fun PrivacyDialogContent(
             )
 
             val context = LocalContext.current
-            OutlinedButton(onClick = { Communication.openProjectsGithub(context, "ctubus") }) {
+            OutlinedButton(onClick = { Communication.openProjectsGithub(context, "cvutbus") }) {
                 Text(stringResource(R.string.privacy_view_source))
             }
             if (showAccept)

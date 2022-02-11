@@ -112,6 +112,7 @@ fun LibraryDetail(library: Library, modifier: Modifier = Modifier) {
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun LicenseDetail(
     license: License,
@@ -119,9 +120,7 @@ private fun LicenseDetail(
     titleStyle: TextStyle = MaterialTheme.typography.titleMedium,
     bodyStyle: TextStyle = MaterialTheme.typography.bodyMedium,
 ) {
-    Surface(
-        tonalElevation = LocalAbsoluteTonalElevation.current + 8.dp,
-        shadowElevation = 8.dp,
+    ElevatedCard(
         shape = RoundedCornerShape(8.dp),
         modifier = modifier,
     ) {

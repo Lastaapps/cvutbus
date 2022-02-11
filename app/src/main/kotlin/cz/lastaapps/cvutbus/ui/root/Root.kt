@@ -21,6 +21,7 @@ package cz.lastaapps.cvutbus.ui.root
 
 import android.app.Activity
 import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.*
@@ -77,18 +78,19 @@ fun AppLayout(
     }
 }
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun ApplyProviders(
     activity: Activity, viewModelStoreOwner: ViewModelStoreOwner, content: @Composable () -> Unit,
 ) {
     CompositionLocalProvider(LocalActivityViewModelOwner provides viewModelStoreOwner) {
         WithLocalWindowSizes(activity) {
-            WithFoldingFeature(activity) {
-                ProvideWindowInsets {
-                    WithConnectivity {
-                        content()
-                    }
-                }
+            ProvideWindowInsets {
+                //WithFoldingFeature(activity) {
+                //WithConnectivity {
+                content()
+                //}
+                //}
             }
         }
     }

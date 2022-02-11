@@ -63,7 +63,7 @@
     <string name="settings_preferred_stops_label">Preferovaný spoj</string>
     <string name="settings_preferred_stops_remember">Použít poslední</string>
     <string name="settings_preferred_direction_title">Preferovaný směr</string>
-    <string name="settings_preferred_direction_to">směr %s</string>
+    <string name="settings_preferred_direction_to">Směr %s</string>
     <string name="settings_preferred_direction_remember">Použít minulý</string>
     <string name="settings_preferred_direction_noon">Změnit v poledne</string>
     <string name="settings_preferred_direction_noon_reversed">Změnit v poledne (naopak)</string>
@@ -135,5 +135,8 @@
     <string name="ui_fab_notification_dismiss">Skrýt oznámení s odjezdy</string>
     <string name="ui_top_bar_title">ČVUT Bus</string>
     <string name="ui_top_bar_back_arrow">Zpět</string>
+    <string name="ui_top_bar_action_description">Další</string>
+    <string name="ui_top_bar_action_privacy">Ochrana soukromí</string>
+    <string name="ui_top_bar_action_license">Použité knihovny</string>
 
 </resources>

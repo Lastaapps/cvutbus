@@ -43,7 +43,7 @@ fun AppLayoutCompact(
     Scaffold(
         Modifier.fillMaxSize(),
         topBar = {
-            MainTopBar()
+            MainTopBar(navController)
         },
         bottomBar = {
             MainBottomNav(navController)
@@ -78,7 +78,7 @@ fun AppLayoutMedium(
     Scaffold(
         Modifier.fillMaxSize(),
         topBar = {
-            MainTopBar()
+            MainTopBar(navController)
         },
         snackbarHost = {
             SnackbarHost(hostState = snackbarHostState)
@@ -113,7 +113,7 @@ fun AppLayoutExpanded(
     Scaffold(
         Modifier.fillMaxSize(),
         topBar = {
-            MainTopBar()
+            MainTopBar(navController)
         },
         snackbarHost = {
             SnackbarHost(hostState = snackbarHostState)

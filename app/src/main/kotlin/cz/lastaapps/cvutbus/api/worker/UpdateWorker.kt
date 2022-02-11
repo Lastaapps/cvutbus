@@ -63,7 +63,8 @@ class UpdateWorker @AssistedInject constructor(
     }
 
     private val isRequestedByUser = params.inputData.getBoolean(EXTRA_USER_REQUESTED, false)
-    private val showNotifications = isRequestedByUser || BuildConfig.DEBUG
+    private val alwaysDownload = false // for testing, where unit tests should be
+    private val showNotifications = isRequestedByUser || alwaysDownload
 
     val client = HttpClient(CIO)
     private val manager = NotificationManagerCompat.from(applicationContext)

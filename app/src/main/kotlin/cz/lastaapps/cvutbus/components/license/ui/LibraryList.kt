@@ -62,7 +62,7 @@ private fun AppLicenseButton(modifier: Modifier = Modifier) {
     OutlinedButton(
         onClick = {
             logging("AppLicenseButton").i { "Opening app license" }
-            url.openUri("https://github.com/Lastaapps/ctubus/LICENSE")
+            url.openUri("https://github.com/Lastaapps/cvutbus/LICENSE")
         },
         modifier = modifier
     ) {
