@@ -24,6 +24,10 @@ import androidx.hilt.work.HiltWorkerFactory
 import androidx.work.Configuration
 import cz.lastaapps.cvutbus.api.worker.UpdateManager
 import dagger.hilt.android.HiltAndroidApp
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import org.lighthousegames.logging.logging
 import javax.inject.Inject
 
@@ -31,6 +35,7 @@ import javax.inject.Inject
 class App : Application(), Configuration.Provider {
 
     private val log = logging()
+    val appScope = CoroutineScope(Dispatchers.Main)
 
     @Inject
     lateinit var workerFactory: HiltWorkerFactory
@@ -46,8 +51,11 @@ class App : Application(), Configuration.Provider {
 
     override fun onCreate() {
         super.onCreate()
-        log.i { "Creating Activity" }
+        log.i { "Creating App" }
 
-        updateManager.schedule()
+        appScope.launch {
+            delay(5000)
+            updateManager.schedule()
+        }
     }
 }

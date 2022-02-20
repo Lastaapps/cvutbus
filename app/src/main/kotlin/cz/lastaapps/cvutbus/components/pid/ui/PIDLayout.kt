@@ -20,36 +20,40 @@
 package cz.lastaapps.cvutbus.components.pid.ui
 
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import cz.lastaapps.cvutbus.components.pid.PIDViewModel
+import cz.lastaapps.cvutbus.components.settings.SettingsViewModel
 import cz.lastaapps.cvutbus.ui.providers.LocalWindowWidth
 import cz.lastaapps.cvutbus.ui.providers.WindowSizeClass
 
 @Composable
 fun PIDLayout(
     pidViewModel: PIDViewModel,
+    settingsViewModel: SettingsViewModel,
     modifier: Modifier = Modifier,
 ) {
     if (!pidViewModel.isReady.collectAsState().value)
         return
 
     when (LocalWindowWidth.current) {
-        WindowSizeClass.COMPACT -> PIDLayoutCompact(pidViewModel, modifier)
-        WindowSizeClass.MEDIUM -> PIDLayoutMedium(pidViewModel, modifier)
-        WindowSizeClass.EXPANDED -> PIDLayoutExpanded(pidViewModel, modifier)
+        WindowSizeClass.COMPACT -> PIDLayoutCompact(pidViewModel, settingsViewModel, modifier)
+        WindowSizeClass.MEDIUM -> PIDLayoutMedium(pidViewModel, settingsViewModel, modifier)
+        WindowSizeClass.EXPANDED -> PIDLayoutExpanded(pidViewModel, settingsViewModel, modifier)
     }
 }
 
 @Composable
-private fun PIDLayoutCompact(pidViewModel: PIDViewModel, modifier: Modifier) {
+private fun PIDLayoutCompact(
+    pidViewModel: PIDViewModel,
+    settingsViewModel: SettingsViewModel,
+    modifier: Modifier
+) {
     Column(
-        modifier.verticalScroll(rememberScrollState()),
+        modifier,
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(16.dp),
     ) {
@@ -63,17 +67,25 @@ private fun PIDLayoutCompact(pidViewModel: PIDViewModel, modifier: Modifier) {
                 .weight(1f)
                 .fillMaxWidth()
         )
-        PIDIcons(pidViewModel, false, Modifier.align(Alignment.Start))
+        PIDIcons(pidViewModel, settingsViewModel, false, Modifier.align(Alignment.Start))
     }
 }
 
 @Composable
-private fun PIDLayoutMedium(pidViewModel: PIDViewModel, modifier: Modifier) {
-    PIDLayoutExpanded(pidViewModel, modifier)
+private fun PIDLayoutMedium(
+    pidViewModel: PIDViewModel,
+    settingsViewModel: SettingsViewModel,
+    modifier: Modifier
+) {
+    PIDLayoutExpanded(pidViewModel, settingsViewModel, modifier)
 }
 
 @Composable
-private fun PIDLayoutExpanded(pidViewModel: PIDViewModel, modifier: Modifier) {
+private fun PIDLayoutExpanded(
+    pidViewModel: PIDViewModel,
+    settingsViewModel: SettingsViewModel,
+    modifier: Modifier
+) {
     Row(
         modifier,
         verticalAlignment = Alignment.CenterVertically,
@@ -92,7 +104,7 @@ private fun PIDLayoutExpanded(pidViewModel: PIDViewModel, modifier: Modifier) {
                     .fillMaxWidth()
                     .widthIn(max = 312.dp)
             )
-            PIDIcons(pidViewModel, true, Modifier.fillMaxWidth())
+            PIDIcons(pidViewModel, settingsViewModel, true, Modifier.fillMaxWidth())
         }
         TimeUI(
             pidViewModel,

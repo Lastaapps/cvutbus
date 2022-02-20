@@ -24,11 +24,14 @@ import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.fragment.app.FragmentActivity
+import androidx.lifecycle.lifecycleScope
 import cz.lastaapps.cvutbus.components.pid.PIDViewModel
 import cz.lastaapps.cvutbus.components.settings.SettingsViewModel
+import cz.lastaapps.cvutbus.notification.receivers.RegisterModule
 import cz.lastaapps.cvutbus.ui.root.AppLayout
 import dagger.hilt.android.AndroidEntryPoint
 import org.lighthousegames.logging.logging
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : FragmentActivity() {
@@ -37,6 +40,9 @@ class MainActivity : FragmentActivity() {
         private val log = logging()
     }
 
+    @Inject
+    lateinit var registerModule: RegisterModule
+
     private val pidViewModel: PIDViewModel by viewModels()
     private val settingsViewModel: SettingsViewModel by viewModels()
 
@@ -44,6 +50,10 @@ class MainActivity : FragmentActivity() {
         super.onCreate(savedInstanceState)
 
         var composeReady = false
+
+        lifecycleScope.launchWhenCreated {
+            registerModule.update()
+        }
 
         val splash = installSplashScreen()
         splash.setKeepOnScreenCondition {

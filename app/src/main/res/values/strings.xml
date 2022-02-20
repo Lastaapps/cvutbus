@@ -81,7 +81,9 @@
     <string name="settings_preferred_time_mode_time">Time</string>
     <string name="settings_notification_start_title">Show notification in the morning</string>
     <string name="settings_notification_start_disabled">Disable</string>
-    <string name="settings_notification_start_alarm">After a morning alarm</string>
+    <string name="settings_notification_start_alarm">After a morning alarm (next %s)</string>
+    <string name="settings_notification_start_alarm_none">None scheduled</string>
+    <string name="settings_notification_start_alarm_refresh">Find alarms</string>
     <string name="settings_notification_start_time">At a given time (%s)</string>
     <string name="settings_notification_start_picker_title">Start time</string>
     <string name="settings_notification_start_picker_button_description">Pick show up time</string>
@@ -126,9 +128,21 @@
     <string name="pid_no_connection">No connections found, try to update offline database</string>
     <string name="pid_button_direction">Switch direction</string>
     <string name="pid_button_time_mode">Switch time mode</string>
+    <string name="pid_button_battery">Disable battery optimization</string>
     <string name="pid_icon_description_direction">Switch direction</string>
     <string name="pid_icon_description_to_time">Show time</string>
     <string name="pid_icon_description_to_counter">Show counter</string>
+    <string name="pid_icon_description_battery">Disable battery optimization</string>
+
+    <string name="battery_text_title">Battery optimization</string>
+    <string name="battery_text_explanation">
+        While the app is battery optimized, there may occur some problems like
+        a notification not showing in the morning / at a selected time or
+        the notification not updating every minute.
+        To play it safe, please opt out of the system battery optimization. Thanks.
+    </string>
+    <string name="battery_button_grant">Opt out</string>
+    <string name="battery_button_dismiss">I don\'t mind</string>
 
     <string name="notification_tile_name">ČVUT Bus</string>
     <string name="notification_create_placeholder_title">Wait a minute</string>

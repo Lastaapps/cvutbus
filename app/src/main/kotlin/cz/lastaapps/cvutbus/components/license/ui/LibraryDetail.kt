@@ -50,14 +50,19 @@ fun LibraryDetailWrapper(library: Library?, modifier: Modifier = Modifier) {
             Text(stringResource(R.string.license_none_selected), textAlign = TextAlign.Center)
         }
     } else {
-        LibraryDetail(library, modifier)
+        Surface(modifier, shape = RoundedCornerShape(16.dp)) {
+            LibraryDetail(library, Modifier.verticalScroll(rememberScrollState()))
+        }
     }
 }
 
 @Composable
 fun LibraryDetail(library: Library, modifier: Modifier = Modifier) {
-    SelectionContainer(modifier.verticalScroll(rememberScrollState())) {
-        Column(Modifier, verticalArrangement = Arrangement.spacedBy(8.dp)) {
+    SelectionContainer(modifier) {
+        Column(
+            Modifier,
+            verticalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
 
             val titleStyle = MaterialTheme.typography.titleMedium
             val bodyStyle = MaterialTheme.typography.bodyMedium
@@ -89,14 +94,20 @@ fun LibraryDetail(library: Library, modifier: Modifier = Modifier) {
 
             library.organization?.let { organization ->
                 Column {
-                    Text(stringResource(R.string.license_detail_organization), style = titleStyle)
+                    Text(
+                        stringResource(R.string.license_detail_organization),
+                        style = titleStyle
+                    )
                     Text(organization.name, style = bodyStyle)
                 }
             }
 
             library.description?.let { description ->
                 Column {
-                    Text(stringResource(R.string.license_detail_description), style = titleStyle)
+                    Text(
+                        stringResource(R.string.license_detail_description),
+                        style = titleStyle
+                    )
                     Text(description, style = bodyStyle)
                 }
             }

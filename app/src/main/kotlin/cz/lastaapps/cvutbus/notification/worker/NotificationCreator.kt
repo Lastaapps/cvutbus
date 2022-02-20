@@ -181,7 +181,7 @@ class NotificationCreator(private val context: Context, private val workerId: UU
         NotificationManagerCompat.from(context).createNotificationChannel(
             with(
                 NotificationChannelCompat.Builder(
-                    channelId, NotificationManagerCompat.IMPORTANCE_DEFAULT
+                    channelId, NotificationManagerCompat.IMPORTANCE_HIGH
                 )
             ) {
                 setName(context.getString(R.string.notification_channel_name))

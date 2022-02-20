@@ -23,8 +23,10 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -45,12 +47,14 @@ fun LibraryList(
     Column(modifier, verticalArrangement = Arrangement.spacedBy(8.dp)) {
         AppLicenseButton(Modifier.fillMaxWidth())
 
-        LazyColumn(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(8.dp)) {
-            items(libraries) { library ->
-                LicenseItem(library, Modifier.clickable { onLibrarySelected(library) })
-            }
-            item {
-                Spacer(modifier = Modifier.height(64.dp))
+        Surface(Modifier.weight(1f), shape = RoundedCornerShape(16.dp)) {
+            LazyColumn(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                items(libraries) { library ->
+                    LicenseItem(library, Modifier.clickable { onLibrarySelected(library) })
+                }
+                item {
+                    Spacer(modifier = Modifier.height(64.dp))
+                }
             }
         }
     }

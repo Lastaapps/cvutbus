@@ -20,6 +20,7 @@
 package cz.lastaapps.cvutbus.components.pid.ui
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.Crossfade
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -28,34 +29,40 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.BatteryAlert
 import androidx.compose.material.icons.filled.HourglassBottom
 import androidx.compose.material.icons.filled.Schedule
 import androidx.compose.material.icons.filled.SwapVert
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import cz.lastaapps.cvutbus.R
+import cz.lastaapps.cvutbus.components.battery.BatteryChoiceDialog
+import cz.lastaapps.cvutbus.components.battery.shouldShowBattery
 import cz.lastaapps.cvutbus.components.pid.PIDViewModel
+import cz.lastaapps.cvutbus.components.settings.SettingsViewModel
 import cz.lastaapps.repo.Direction
 import org.lighthousegames.logging.logging
 
 @Composable
 fun PIDIcons(
     pidViewModel: PIDViewModel,
+    settingsViewModel: SettingsViewModel,
     isLarge: Boolean,
     modifier: Modifier = Modifier,
 ) {
     val direction by pidViewModel.direction.collectAsState()
     val showCounter by pidViewModel.showCounter.collectAsState()
+    val battery = shouldShowBattery(settingsViewModel)
+    var batteryDialog by rememberSaveable { mutableStateOf(false) }
+
     val log = remember { logging("PIDIcons") }
     val onDirection: () -> Unit = {
         log.i { "Switching direction from $direction" }
@@ -64,6 +71,10 @@ fun PIDIcons(
     val onCounter: () -> Unit = {
         log.i { "Switching time mode from $showCounter" }
         pidViewModel.setShowCounter(!showCounter)
+    }
+    val onBattery: () -> Unit = {
+        log.i { "Opening battery" }
+        batteryDialog = true
     }
 
     if (isLarge) {
@@ -86,6 +97,13 @@ fun PIDIcons(
                 ShowCounterIcon(showCounter, onCounter)
                 Text(stringResource(R.string.pid_button_time_mode))
             }
+            Row(
+                Modifier.clickable(onClick = onCounter),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                BatteryOptimization(battery, onBattery)
+                Text(stringResource(R.string.pid_button_battery))
+            }
         }
     } else {
         Row(
@@ -95,8 +113,11 @@ fun PIDIcons(
         ) {
             SwitchDirectionIcon(direction == Direction.Inbound, onDirection)
             ShowCounterIcon(showCounter, onCounter)
+            BatteryOptimization(battery, onBattery)
         }
     }
+
+    ShowBatteryDialog(batteryDialog, settingsViewModel) { batteryDialog = false }
 }
 
 @Composable
@@ -117,19 +138,44 @@ private fun ShowCounterIcon(showCounter: Boolean, onClick: () -> Unit) {
     val rotation by animateFloatAsState(if (showCounter) 0f else 180f)
 
     IconButton(onClick = onClick) {
-        AnimatedVisibility(showCounter, enter = fadeIn(), exit = fadeOut()) {
-            Icon(
-                Icons.Default.HourglassBottom,
-                stringResource(R.string.pid_icon_description_to_time),
-                Modifier.rotate(rotation)
-            )
+        Crossfade(targetState = showCounter) {
+            if (it) {
+                Icon(
+                    Icons.Default.HourglassBottom,
+                    stringResource(R.string.pid_icon_description_to_time),
+                    Modifier.rotate(rotation)
+                )
+            } else {
+
+                Icon(
+                    Icons.Default.Schedule,
+                    stringResource(R.string.pid_icon_description_to_counter),
+                    Modifier.rotate(rotation + 180f)
+                )
+            }
         }
-        AnimatedVisibility(!showCounter, enter = fadeIn(), exit = fadeOut()) {
+    }
+}
+
+@Composable
+private fun BatteryOptimization(shouldShow: Boolean, onClick: () -> Unit) {
+    AnimatedVisibility(visible = shouldShow, enter = fadeIn(), exit = fadeOut()) {
+        IconButton(onClick = onClick) {
             Icon(
-                Icons.Default.Schedule,
-                stringResource(R.string.pid_icon_description_to_counter),
-                Modifier.rotate(rotation + 180f)
+                Icons.Default.BatteryAlert,
+                stringResource(R.string.pid_icon_description_battery),
             )
         }
     }
+}
+
+@Composable
+private fun ShowBatteryDialog(
+    shown: Boolean,
+    settingsViewModel: SettingsViewModel,
+    onDismissRequest: () -> Unit,
+) {
+    if (!shown) return
+
+    BatteryChoiceDialog(settingsViewModel, onDismissRequest)
 }

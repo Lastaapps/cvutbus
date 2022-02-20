@@ -21,6 +21,7 @@ package cz.lastaapps.cvutbus.components.pid.ui
 
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.tween
+import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
@@ -53,11 +54,18 @@ fun TimeUI(
 ) {
     val data by pidViewModel.getData().collectAsState(null)
 
-    Box(contentAlignment = Alignment.Center, modifier = modifier) {
+    Box(
+        contentAlignment = Alignment.Center,
+        modifier = modifier,
+    ) {
         when (data) {
             null -> Loading()
             emptyList<DatabaseInfo>() -> NoItems()
-            else -> ShowData(data!!, pidViewModel.showCounter.collectAsState().value)
+            else -> ShowData(
+                data!!,
+                pidViewModel.showCounter.collectAsState().value,
+                Modifier.heightIn(max = 690.dp),
+            )
         }
     }
 }
@@ -80,28 +88,44 @@ private fun NoItems(modifier: Modifier = Modifier) {
 private fun ShowData(
     data: List<DepartureInfo>,
     showCounter: Boolean,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    scroll: ScrollState = rememberScrollState(),
+    chunkSize: Int = 2,
 ) {
     val now = rememberNow(data)
 
-    val following by remember(data) {
-        derivedStateOf { data.take(42 + 1).drop(1).chunked(2) }
+    val following by remember(data, chunkSize) {
+        derivedStateOf { data.take(42 + 1).drop(1).chunked(chunkSize) }
     }
 
-    Column(
-        modifier.verticalScroll(rememberScrollState()),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(16.dp),
-    ) {
-        TimeHeader(showCounter, now, data.first())
+    // so scrolling effects are also rounded
+    Surface(modifier, shape = RoundedCornerShape(16.dp)) {
         Column(
-            Modifier.width(IntrinsicSize.Max),
-            verticalArrangement = Arrangement.spacedBy(8.dp),
+            Modifier
+                .verticalScroll(scroll)
+                .fillMaxWidth(),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.spacedBy(16.dp),
         ) {
-            following.forEach { chunk ->
-                Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(16.dp)) {
-                    chunk.forEach { info ->
-                        TimeItem(showCounter, now, info, Modifier.weight(1f))
+            TimeHeader(showCounter, now, data.first())
+            Column(
+                Modifier.width(IntrinsicSize.Max),
+                verticalArrangement = Arrangement.spacedBy(8.dp),
+            ) {
+                following.forEach { chunk ->
+                    Row(
+                        Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.spacedBy(16.dp)
+                    ) {
+                        chunk.forEach { info ->
+                            TimeItem(showCounter, now, info, Modifier.weight(1f))
+                        }
+                        // to fill empty cells at the end
+                        if (chunk.size != chunkSize) {
+                            for (i in chunk.size until chunkSize) {
+                                Box(Modifier.weight(1f))
+                            }
+                        }
                     }
                 }
             }

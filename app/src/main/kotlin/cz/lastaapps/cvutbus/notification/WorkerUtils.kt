@@ -44,7 +44,7 @@ class WorkerUtils(context: Context) {
             build()
         }
 
-        manager.enqueueUniqueWork(NotificationWorker.workerKey, ExistingWorkPolicy.REPLACE, work)
+        manager.enqueueUniqueWork(NotificationWorker.workerKey, ExistingWorkPolicy.KEEP, work)
     }
 
     fun cancel() {

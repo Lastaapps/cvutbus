@@ -55,76 +55,47 @@ fun AboutUi(
     navController: NavController,
     modifier: Modifier = Modifier,
 ) {
-    Box(modifier.verticalScroll(rememberScrollState()), contentAlignment = Alignment.TopCenter) {
-        Column(
-            modifier = Modifier.width(IntrinsicSize.Max),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(8.dp)
+    Surface(modifier, shape = RoundedCornerShape(16.dp)) {
+        Box(
+            modifier.verticalScroll(rememberScrollState()),
+            contentAlignment = Alignment.TopCenter
         ) {
-
-            Box(Modifier.padding(16.dp), contentAlignment = Alignment.Center) {
-                Text(
-                    text = stringResource(cz.lastaapps.cvutbus.R.string.about_title),
-                    style = MaterialTheme.typography.headlineMedium,
-                    textAlign = TextAlign.Center,
-                )
-            }
-
-            ElevatedCard(
-                modifier = Modifier.fillMaxWidth(),
-                shape = RoundedCornerShape(8.dp),
+            Column(
+                modifier = Modifier.width(IntrinsicSize.Max),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
-                Column(
-                    Modifier
-                        .padding(16.dp)
-                        .width(IntrinsicSize.Max)
-                        .align(Alignment.CenterHorizontally),
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.spacedBy(8.dp),
-                ) {
-                    DataSource(Modifier.fillMaxWidth())
 
-                    OutlinedButton(
-                        modifier = Modifier.fillMaxWidth(),
-                        onClick = {
-                            navController.navigate(Dests.Routes.license)
-                        }
-                    ) {
-                        IconAndText({
-                            Icon(Icons.Default.Description, null)
-                        }, {
-                            Text(
-                                text = stringResource(cz.lastaapps.cvutbus.R.string.about_license_notices),
-                                textAlign = TextAlign.Center
-                            )
-                        })
-                    }
-                    OutlinedButton(
-                        modifier = Modifier.fillMaxWidth(),
-                        onClick = {
-                            navController.navigate(Dests.Routes.osturak)
-                        }
-                    ) {
-                        IconAndText({
-                            Icon(Icons.Default.LocalFireDepartment, null)
-                        }, {
-                            Text(
-                                text = stringResource(cz.lastaapps.cvutbus.R.string.about_osturak),
-                                textAlign = TextAlign.Center,
-                                maxLines = 1
-                            )
-                        })
-                    }
-                    ViewSource(Modifier.fillMaxWidth())
+                Box(Modifier.padding(16.dp), contentAlignment = Alignment.Center) {
+                    Text(
+                        text = stringResource(cz.lastaapps.cvutbus.R.string.about_title),
+                        style = MaterialTheme.typography.headlineMedium,
+                        textAlign = TextAlign.Center,
+                    )
                 }
+
+                ElevatedCard {
+                    Column(
+                        Modifier
+                            .padding(16.dp)
+                            .align(Alignment.CenterHorizontally),
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        verticalArrangement = Arrangement.spacedBy(8.dp),
+                    ) {
+                        DataSource(Modifier.fillMaxWidth())
+                        LicenseButton(navController, Modifier.fillMaxWidth())
+                        OsturakButton(navController, Modifier.fillMaxWidth())
+                        ViewSource(Modifier.fillMaxWidth())
+                    }
+                }
+                ElevatedCard(
+                    modifier = Modifier.fillMaxWidth(),
+                    shape = RoundedCornerShape(8.dp),
+                ) {
+                    Socials(Modifier.padding(16.dp))
+                }
+                AppInfo(modifier = Modifier.padding(8.dp))
             }
-            ElevatedCard(
-                modifier = Modifier.fillMaxWidth(),
-                shape = RoundedCornerShape(8.dp),
-            ) {
-                Socials(Modifier.padding(16.dp))
-            }
-            AppInfo(modifier = Modifier.padding(8.dp))
         }
     }
 }
@@ -151,6 +122,44 @@ private fun DataSource(modifier: Modifier = Modifier) {
                 Text(text = "pid.cz", textAlign = TextAlign.Center)
             })
         }
+    }
+}
+
+@Composable
+private fun LicenseButton(navController: NavController, modifier: Modifier = Modifier) {
+    OutlinedButton(
+        modifier = modifier,
+        onClick = {
+            navController.navigate(Dests.Routes.license)
+        }
+    ) {
+        IconAndText({
+            Icon(Icons.Default.Description, null)
+        }, {
+            Text(
+                text = stringResource(cz.lastaapps.cvutbus.R.string.about_license_notices),
+                textAlign = TextAlign.Center
+            )
+        })
+    }
+}
+
+@Composable
+private fun OsturakButton(navController: NavController, modifier: Modifier = Modifier) {
+    OutlinedButton(
+        modifier = modifier,
+        onClick = {
+            navController.navigate(Dests.Routes.osturak)
+        }
+    ) {
+        IconAndText({
+            Icon(Icons.Default.LocalFireDepartment, null)
+        }, {
+            Text(
+                text = stringResource(cz.lastaapps.cvutbus.R.string.about_osturak),
+                textAlign = TextAlign.Center,
+            )
+        })
     }
 }
 

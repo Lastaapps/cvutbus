@@ -29,8 +29,8 @@ import cz.lastaapps.cvutbus.components.settings.modules.notificationWorkDaysOnly
 import cz.lastaapps.cvutbus.notification.WorkerUtils
 import cz.lastaapps.entity.utils.CET
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.runBlocking
 import kotlinx.datetime.toJavaZoneId
 import org.lighthousegames.logging.logging
 import java.time.DayOfWeek
@@ -71,6 +71,11 @@ class RegisteredReceiver : BroadcastReceiver() {
 
             log.i { "Updating" }
             registerModule.update()
+
+            CoroutineScope(Dispatchers.Default).launch {
+                delay(5000) // next alarm may be still null
+                registerModule.update()
+            }
         }
     }
 

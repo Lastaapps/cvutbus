@@ -26,6 +26,7 @@ import androidx.annotation.RequiresApi
 import cz.lastaapps.cvutbus.notification.WorkerUtils
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.first
 import org.lighthousegames.logging.logging
 
 @RequiresApi(Build.VERSION_CODES.N)
@@ -53,11 +54,10 @@ class NotificationTileService : TileService() {
         super.onTileAdded()
 
         runBlocking {
-            details.isRunningFlow().collectLatest {
-                log.i { "Tile initializing state" }
-                qsTile.state = if (it) Tile.STATE_ACTIVE else Tile.STATE_INACTIVE
-                qsTile.updateTile()
-            }
+            log.i { "Tile initializing state" }
+            val state = details.isRunningFlow().first()
+            qsTile.state = if (state) Tile.STATE_ACTIVE else Tile.STATE_INACTIVE
+            qsTile.updateTile()
         }
     }
 
@@ -81,5 +81,10 @@ class NotificationTileService : TileService() {
 
         job?.cancel()
         job = null
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        scope.cancel()
     }
 }

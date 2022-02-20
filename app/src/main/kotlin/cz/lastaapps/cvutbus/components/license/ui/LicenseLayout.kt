@@ -23,7 +23,9 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -54,7 +56,7 @@ fun LicenseLayout(
     }
 
     var selectedArtifactUniqueId by rememberSaveable { mutableStateOf<String?>(null) }
-    val selectedLibrary = remember(selectedArtifactUniqueId) {
+    val selectedLibrary = remember(libraries, selectedArtifactUniqueId) {
         libraries?.libraries?.firstOrNull { it.uniqueId == selectedArtifactUniqueId }
     }
     val onLibrarySelected: (Library?) -> Unit = { selectedArtifactUniqueId = it?.uniqueId }
@@ -95,7 +97,12 @@ private fun LicenseLayoutCompact(
 
     if (selectedLibrary != null) {
         Dialog(onDismissRequest = { onLibrarySelected(null) }) {
-            Surface(shape = RoundedCornerShape(16.dp)) {
+            Surface(
+                Modifier
+                    .verticalScroll(rememberScrollState())
+                    .padding(8.dp),
+                shape = RoundedCornerShape(16.dp)
+            ) {
                 LibraryDetail(library = selectedLibrary, Modifier.padding(16.dp))
             }
         }

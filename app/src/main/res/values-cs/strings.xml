@@ -38,7 +38,7 @@
     </string>
     <string name="osturak_brought_by">Přináší Svědci Ošťurákovi</string>
     <string name="osturak_source">Zdroj</string>
-    <string name="about_title">Menza ČVUT</string>
+    <string name="about_title">ČVUT Bus</string>
     <string name="about_license_notices">Použité knihovny</string>
     <string name="about_osturak">Informace o ošťuráku</string>
     <string name="about_data_source">Zdroj dat</string>
@@ -73,7 +73,9 @@
     <string name="settings_preferred_time_mode_time">Čas</string>
     <string name="settings_notification_start_title">Rání oznámení</string>
     <string name="settings_notification_start_disabled">Vypnuto</string>
-    <string name="settings_notification_start_alarm">Po raním budíku</string>
+    <string name="settings_notification_start_alarm">Po raním budíku (další %s)</string>
+    <string name="settings_notification_start_alarm_none">Budík nenalezen</string>
+    <string name="settings_notification_start_alarm_refresh">Najít budíky</string>
     <string name="settings_notification_start_time">V konkrétní čas (%s)</string>
     <string name="settings_notification_start_picker_title">Čas spuštění</string>
     <string name="settings_notification_start_picker_button_description">Vybrat čas zobrazení</string>
@@ -115,9 +117,21 @@
     <string name="pid_no_connection">Nebyl nalezen žádný spoj, zkuste aktualizovat lokální databázi</string>
     <string name="pid_button_direction">Změnit směr</string>
     <string name="pid_button_time_mode">Změnit zobrazení času</string>
+    <string name="pid_button_battery">Vypnout optimalizaci baterie</string>
     <string name="pid_icon_description_direction">Změnit směr</string>
     <string name="pid_icon_description_to_time">Zobrazit čas</string>
     <string name="pid_icon_description_to_counter">Zobrazit odpočet</string>
+    <string name="pid_icon_description_battery">Vypnout optimalizaci baterie</string>
+    <string name="battery_text_title">Optimalizace baterie</string>
+    <string name="battery_text_explanation">
+        Pokud je aplikace optimalizovaná, můžou se vyskytnout různé problémy.
+        Například se vám ráno nebo ve vybraný čas nezobrazí oznámení nebo
+        se v oznámení nebude dostatečně často aktualizovat čas.
+        Když vám proto něco ujede, na mě to neni.
+        Takže pro jistotu prosím vypněte optimalizaci baterie pro tuto aplikaci. Díky.
+    </string>
+    <string name="battery_button_grant">Vypnout</string>
+    <string name="battery_button_dismiss">Přežiji to</string>
     <string name="notification_tile_name">ČVUT Bus</string>
     <string name="notification_create_placeholder_title">Vteřinku</string>
     <string name="notification_create_placeholder_content">Nekecáme, makáme</string>

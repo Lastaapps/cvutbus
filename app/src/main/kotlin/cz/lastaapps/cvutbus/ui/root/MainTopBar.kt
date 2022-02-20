@@ -59,14 +59,13 @@ fun MainTopBar(navController: NavController) {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Box(Modifier.size(48.dp), contentAlignment = Alignment.Center) {
                     Surface(
-                        Modifier.size(32.dp),
+                        modifier = Modifier.size(32.dp),
                         color = colorResource(R.color.ic_launcher_background),
-                        shape = RoundedCornerShape(8.dp)
+                        shape = RoundedCornerShape(8.dp),
+                        contentColor = colorResource(R.color.ic_launcher_foreground),
                     ) {
                         Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                            CompositionLocalProvider(LocalContentColor provides colorResource(R.color.ic_launcher_foreground)) {
-                                Icon(Icons.Default.DirectionsBus, null)
-                            }
+                            Icon(Icons.Default.DirectionsBus, null)
                         }
                     }
                 }

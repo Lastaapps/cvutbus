@@ -26,6 +26,7 @@ import cz.lastaapps.cvutbus.di.DependencyGraphInitializer
 import cz.lastaapps.cvutbus.di.InitializerEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.lighthousegames.logging.logging
 import javax.inject.Inject
@@ -42,6 +43,7 @@ class StartupInit : Initializer<Unit> {
         InitializerEntryPoint.resolve(context).inject(this)
 
         CoroutineScope(Dispatchers.Main).launch {
+            delay(5000)
             registerModule.update()
         }
     }

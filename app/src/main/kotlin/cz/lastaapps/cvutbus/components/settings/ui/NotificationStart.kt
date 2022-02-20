@@ -26,6 +26,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.filled.Schedule
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -52,6 +53,7 @@ import kotlin.time.Duration.Companion.minutes
 @Composable
 fun NotificationStartSelection(viewModel: SettingsViewModel, modifier: Modifier = Modifier) {
     val mode by viewModel.store.notificationStartup.collectAsState(null)
+    val nextAlarm by viewModel.getAlarms().collectAsState(null)
     val time by viewModel.store.notificationStartTime.collectAsState(null)
     val workDays by viewModel.store.notificationWorkDaysOnly.collectAsState(null)
     if (mode == null || time == null || workDays == null) return
@@ -69,13 +71,19 @@ fun NotificationStartSelection(viewModel: SettingsViewModel, modifier: Modifier 
             ModeDropdown(
                 mode!!,
                 { viewModel.setNotificationStartMode(it) },
-                time!!,
+                nextAlarm, time!!,
                 Modifier
                     .weight(1f)
                     .animateContentSize(),
             )
-            if (mode == NotificationStartup.TimeBased) {
-                SelectTime(time!!, { viewModel.setNotificationStartTime(it) })
+            when (mode) {
+                NotificationStartup.AlarmBased -> {
+                    UpdateAlarm(viewModel)
+                }
+                NotificationStartup.TimeBased -> {
+                    SelectTime(time!!, { viewModel.setNotificationStartTime(it) })
+                }
+                else -> {}
             }
         }
         if (mode != NotificationStartup.Disabled) {
@@ -90,16 +98,23 @@ fun NotificationStartSelection(viewModel: SettingsViewModel, modifier: Modifier 
 
 @Composable
 private fun ModeDropdown(
-    mode: NotificationStartup, onMode: (NotificationStartup) -> Unit, time: Duration,
+    mode: NotificationStartup,
+    onMode: (NotificationStartup) -> Unit,
+    nextAlarm: Duration?,
+    time: Duration,
     modifier: Modifier = Modifier
 ) {
     val context = LocalContext.current
+    val nextAlarmString =
+        remember(nextAlarm, context) { nextAlarm?.toLocalTime()?.localizedFormat(context) }
+            ?: stringResource(R.string.settings_notification_start_alarm_none)
     val timeString = remember(time, context) { time.toLocalTime().localizedFormat(context) }
+
     val options = listOf(
         NotificationStartup.Disabled to
                 stringResource(R.string.settings_notification_start_disabled),
         NotificationStartup.AlarmBased to
-                stringResource(R.string.settings_notification_start_alarm),
+                stringResource(R.string.settings_notification_start_alarm).format(nextAlarmString),
         NotificationStartup.TimeBased to
                 stringResource(R.string.settings_notification_start_time).format(timeString),
     )
@@ -115,6 +130,16 @@ private fun ModeDropdown(
         onItemSelected = onMode,
         modifier = modifier,
     )
+}
+
+@Composable
+private fun UpdateAlarm(viewModel: SettingsViewModel, modifier: Modifier = Modifier) {
+    IconButton(onClick = { viewModel.updateNextAlarm() }, modifier) {
+        Icon(
+            Icons.Default.Refresh,
+            stringResource(R.string.settings_notification_start_alarm_refresh)
+        )
+    }
 }
 
 @Composable

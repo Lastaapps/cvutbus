@@ -33,8 +33,10 @@ android {
         applicationId = App.APP_ID
         minSdk = App.MIN_SDK
         targetSdk = App.TARGET_SDK
-        versionCode = App.VERSION_CODE
-        versionName = App.VERSION_NAME
+
+        //have to be specified explicitly for FDroid to work
+        versionCode = 1000000 // 1x major . 2x minor . 2x path . 2x build diff
+        versionName = "1.0.0"
 
         resourceConfigurations += setOf("en", "cs")
 

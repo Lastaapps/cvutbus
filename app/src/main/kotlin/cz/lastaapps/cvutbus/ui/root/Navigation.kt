@@ -57,7 +57,7 @@ fun AppNavigation(
     val contentModifier = Modifier.fillMaxSize()
     AnimatedNavHost(navHostController, startDestination = Dests.Routes.starting) {
         composable(Dests.Routes.pid) {
-            PIDLayout(pidViewModel, contentModifier)
+            PIDLayout(pidViewModel, settingsViewModel, contentModifier)
         }
         composable(Dests.Routes.settings) {
             SettingsLayout(navHostController, settingsViewModel, contentModifier)

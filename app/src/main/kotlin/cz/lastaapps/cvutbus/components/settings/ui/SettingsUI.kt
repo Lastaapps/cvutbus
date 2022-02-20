@@ -21,8 +21,10 @@ package cz.lastaapps.cvutbus.components.settings.ui
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -30,6 +32,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import cz.lastaapps.cvutbus.R
+import cz.lastaapps.cvutbus.components.battery.BatteryWaring
 import cz.lastaapps.cvutbus.components.settings.SettingsViewModel
 
 @Composable
@@ -40,32 +43,36 @@ fun SettingsUI(
     modifier: Modifier = Modifier,
     onAboutClicked: () -> Unit = {},
 ) {
-    Column(
-        modifier
-            .widthIn(max = 256.dp)
-            .verticalScroll(rememberScrollState())
-            .padding(bottom = 64.dp),
-        verticalArrangement = Arrangement.spacedBy(16.dp),
-    ) {
-        Text(
-            stringResource(R.string.settings_title),
-            style = MaterialTheme.typography.headlineMedium,
-        )
+    Surface(modifier, shape = RoundedCornerShape(16.dp)) {
+        Column(
+            Modifier
+                .widthIn(max = 256.dp)
+                .verticalScroll(rememberScrollState())
+                .padding(bottom = 64.dp),
+            verticalArrangement = Arrangement.spacedBy(16.dp),
+        ) {
+            Text(
+                stringResource(R.string.settings_title),
+                style = MaterialTheme.typography.headlineMedium,
+            )
 
-        DarkMode(settingsViewModel)
-        UseDynamicTheme(settingsViewModel, Modifier.fillMaxWidth())
+            DarkMode(settingsViewModel)
+            UseDynamicTheme(settingsViewModel, Modifier.fillMaxWidth())
 
-        // disabled until more connections are added
-        //PreferredStopPairSelection(settingsViewModel, Modifier.fillMaxWidth())
-        PreferredDirectionSelection(settingsViewModel, Modifier.fillMaxWidth())
-        TimeShowModeSelection(settingsViewModel)
+            BatteryWaring(settingsViewModel, Modifier.fillMaxWidth())
 
-        NotificationStartSelection(settingsViewModel)
-        NotificationHideSelection(settingsViewModel)
+            // disabled until more connections are added
+            //PreferredStopPairSelection(settingsViewModel, Modifier.fillMaxWidth())
+            PreferredDirectionSelection(settingsViewModel, Modifier.fillMaxWidth())
+            TimeShowModeSelection(settingsViewModel)
 
-        UpdateUI(settingsViewModel)
+            NotificationStartSelection(settingsViewModel)
+            NotificationHideSelection(settingsViewModel)
 
-        Buttons(navController, showAbout, onAboutClicked)
+            UpdateUI(settingsViewModel)
+
+            Buttons(navController, showAbout, onAboutClicked)
+        }
     }
 }
 

@@ -19,21 +19,35 @@
 
 package cz.lastaapps.cvutbus.components.settings
 
+import android.app.AlarmManager
+import android.app.Application
+import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import cz.lastaapps.cvutbus.api.DatabaseStore
 import cz.lastaapps.cvutbus.api.worker.UpdateManager
 import cz.lastaapps.cvutbus.components.settings.modules.*
+import cz.lastaapps.cvutbus.minuteTicker
+import cz.lastaapps.cvutbus.notification.receivers.RegisterModule
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import java.time.Instant
+import java.time.ZoneId
+import java.time.ZonedDateTime
 import javax.inject.Inject
 import kotlin.time.Duration
+import kotlin.time.Duration.Companion.hours
+import kotlin.time.Duration.Companion.minutes
 
 @HiltViewModel
 class SettingsViewModel @Inject constructor(
+    private val app: Application,
     val store: SettingsStore,
     val databaseStore: DatabaseStore,
     val updateManager: UpdateManager,
+    private val registerModule: RegisterModule,
 ) : ViewModel() {
 
     fun setAppTheme(theme: AppThemeMode) {
@@ -88,5 +102,38 @@ class SettingsViewModel @Inject constructor(
         viewModelScope.launch {
             store.setNotificationWorkDaysOnly(only)
         }
+    }
+
+    fun setBatteryDismissed(dismissed: Boolean) {
+        viewModelScope.launch { store.setBatteryDismissed(dismissed) }
+    }
+
+
+    private val alarmFlow = MutableStateFlow(getNextAlarmTime())
+
+    init {
+        viewModelScope.launch {
+            minuteTicker {
+                updateNextAlarm()
+            }
+        }
+    }
+
+    fun updateNextAlarm() {
+        viewModelScope.launch {
+            registerModule.update()
+            alarmFlow.emit(getNextAlarmTime())
+        }
+    }
+
+    fun getAlarms(): StateFlow<Duration?> = alarmFlow
+
+    private fun getNextAlarmTime(): Duration? {
+        val manager = app.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+        val instant = Instant.ofEpochMilli(manager.nextAlarmClock?.triggerTime ?: return null)
+        val dateTime = ZonedDateTime.ofInstant(instant, ZoneId.systemDefault())
+        return dateTime.hour.hours + dateTime.minute.minutes +
+                //some alarm app schedule one ore alarm about 20 before the real one
+                if (dateTime.second > 0) 1.minutes else Duration.ZERO
     }
 }

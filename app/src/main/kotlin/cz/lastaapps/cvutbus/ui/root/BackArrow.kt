@@ -32,10 +32,12 @@ val LocalBackArrowProvider = compositionLocalOf { mutableStateListOf<() -> Unit>
  * Shows a back arrow in the app bar
  */
 @Composable
-fun BackArrow(action: () -> Unit) {
+fun BackArrow(enabled: Boolean = true, action: () -> Unit) {
     val list = LocalBackArrowProvider.current
-    DisposableEffect(action) {
-        list.add(action)
+    DisposableEffect(action, enabled) {
+        if (enabled)
+            list.add(action)
+
         onDispose {
             list.remove(action)
         }
@@ -43,7 +45,7 @@ fun BackArrow(action: () -> Unit) {
 }
 
 @Composable
-fun BackArrowAndHandler(action: () -> Unit) {
-    BackHandler(true, action)
-    BackArrow(action)
+fun BackArrowAndHandler(enabled: Boolean = true, action: () -> Unit) {
+    BackHandler(enabled, action)
+    BackArrow(enabled, action)
 }

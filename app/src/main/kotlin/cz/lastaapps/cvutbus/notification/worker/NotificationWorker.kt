@@ -57,6 +57,7 @@ class NotificationWorker @AssistedInject constructor(
 
     override suspend fun doWork(): Result {
         log.i { "Starting" }
+        postLoadingNotification()
 
         val started = Clock.System.now()
         val timeToStop = store.notificationHide.first().takeIf { it != Duration.ZERO }
@@ -96,6 +97,13 @@ class NotificationWorker @AssistedInject constructor(
         log.i { "Ending" }
         dismissNotification()
         return Result.success()
+    }
+
+    private fun postLoadingNotification() {
+        notificationManager.notify(
+            notificationId,
+            notificationCreator.createPlaceholderNotification()
+        )
     }
 
     private fun updateNotification(data: List<DepartureInfo>) {

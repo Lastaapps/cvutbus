@@ -21,8 +21,10 @@ package cz.lastaapps.cvutbus.components.osturak
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -65,59 +67,64 @@ fun OsturakLayout(
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun OsturakLayoutCompact(
     modifier: Modifier = Modifier,
 ) {
-    Box(modifier, contentAlignment = Alignment.Center) {
-        Column(
-            modifier = Modifier.verticalScroll(rememberScrollState()),
-            verticalArrangement = Arrangement.spacedBy(16.dp)
-        ) {
-            OsturakText()
-            OsturakImages(Modifier.fillMaxWidth())
+    Surface(modifier, shape = RoundedCornerShape(16.dp)) {
+        Box(Modifier, contentAlignment = Alignment.Center) {
+            Column(
+                modifier = Modifier.verticalScroll(rememberScrollState()),
+                verticalArrangement = Arrangement.spacedBy(16.dp)
+            ) {
+                OsturakText()
+                OsturakImages(Modifier.fillMaxWidth())
+            }
         }
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun OsturakLayoutMedium(
     modifier: Modifier = Modifier,
 ) {
-    Box(modifier, contentAlignment = Alignment.Center) {
-        Column(
-            modifier = Modifier.verticalScroll(rememberScrollState()),
-            verticalArrangement = Arrangement.spacedBy(8.dp),
-        ) {
-            OsturakText()
-            OsturakImages(Modifier.fillMaxWidth())
+    Surface(modifier, shape = RoundedCornerShape(16.dp)) {
+        Box(Modifier, contentAlignment = Alignment.Center) {
+            Column(
+                modifier = Modifier.verticalScroll(rememberScrollState()),
+                verticalArrangement = Arrangement.spacedBy(8.dp),
+            ) {
+                OsturakText()
+                OsturakImages(Modifier.fillMaxWidth())
+            }
         }
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun OsturakLayoutExpanded(
     modifier: Modifier = Modifier,
 ) {
     Row(modifier, horizontalArrangement = Arrangement.spacedBy(16.dp)) {
-        Box(
+        Surface(
             modifier = Modifier
                 .weight(1f)
                 .verticalScroll(rememberScrollState()),
-            contentAlignment = Alignment.Center
+            shape = RoundedCornerShape(16.dp),
         ) {
-            OsturakText()
+            Box(Modifier, contentAlignment = Alignment.Center) {
+                OsturakText()
+            }
         }
-        Box(
+        Surface(
             modifier = Modifier
                 .weight(1f)
                 .verticalScroll(rememberScrollState()),
-            contentAlignment = Alignment.Center
+            shape = RoundedCornerShape(16.dp),
         ) {
-            OsturakImages()
+            Box(Modifier, contentAlignment = Alignment.Center) {
+                OsturakImages()
+            }
         }
     }
 }

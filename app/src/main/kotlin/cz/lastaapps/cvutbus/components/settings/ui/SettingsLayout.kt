@@ -19,6 +19,7 @@
 
 package cz.lastaapps.cvutbus.components.settings.ui
 
+import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -74,17 +75,19 @@ private fun SettingsLayoutCompact(
     showAbout: Boolean, onShowAbout: () -> Unit,
     modifier: Modifier,
 ) {
-    if (!showAbout) {
-        SettingsUI(
-            navController,
-            settingsViewModel,
-            true,
-            onAboutClicked = onShowAbout,
-            modifier = modifier
-        )
-    } else {
-        AboutUi(navController, modifier = modifier)
-        BackArrowAndHandler(onShowAbout)
+    Crossfade(targetState = showAbout) {
+        if (!it) {
+            SettingsUI(
+                navController,
+                settingsViewModel,
+                true,
+                onAboutClicked = onShowAbout,
+                modifier = modifier
+            )
+        } else {
+            AboutUi(navController, modifier = modifier)
+            BackArrowAndHandler(action = onShowAbout)
+        }
     }
 }
 
