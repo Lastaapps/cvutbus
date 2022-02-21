@@ -53,7 +53,7 @@ class NotificationTileService : TileService() {
     override fun onTileAdded() {
         super.onTileAdded()
 
-        runBlocking {
+        runBlocking(Dispatchers.Default) {
             log.i { "Tile initializing state" }
             val state = details.isRunningFlow().first()
             qsTile.state = if (state) Tile.STATE_ACTIVE else Tile.STATE_INACTIVE
@@ -66,7 +66,7 @@ class NotificationTileService : TileService() {
         log.i { "Started listening" }
 
         job?.cancel()
-        job = scope.launch {
+        job = scope.launch(Dispatchers.Default) {
             details.isRunningFlow().collectLatest {
                 log.i { "Tile updating state" }
                 qsTile.state = if (it) Tile.STATE_ACTIVE else Tile.STATE_INACTIVE

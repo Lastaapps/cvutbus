@@ -20,7 +20,6 @@
 package cz.lastaapps.cvutbus.di
 
 import android.content.Context
-import cz.lastaapps.cvutbus.notification.receivers.StartupInit
 import dagger.hilt.EntryPoint
 import dagger.hilt.InstallIn
 import dagger.hilt.android.EntryPointAccessors
@@ -31,7 +30,7 @@ import org.lighthousegames.logging.logging
 @InstallIn(SingletonComponent::class)
 interface InitializerEntryPoint {
 
-    fun inject(notificationStartupInit: StartupInit)
+    //fun inject(notificationStartupInit: StartupInit)
 
     companion object {
         val log = logging()

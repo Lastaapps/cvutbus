@@ -1,4 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?><!--
+<?xml version="1.0" encoding="utf-8"?>
+<!--
   ~ Copyright 2022, Petr Laštovička as Lasta apps, All rights reserved
   ~
   ~ This file is part of ČVUT Bus.
@@ -28,17 +29,18 @@
     <queries>
         <intent>
             <action android:name="android.intent.action.View" />
+
             <data android:scheme="tg" />
         </intent>
     </queries>
 
     <supports-screens
+            android:anyDensity="true"
+            android:largeScreens="true"
+            android:normalScreens="true"
             android:resizeable="true"
             android:smallScreens="true"
-            android:normalScreens="true"
-            android:largeScreens="true"
-            android:xlargeScreens="true"
-            android:anyDensity="true" />
+            android:xlargeScreens="true" />
 
     <application
             android:name=".App"
@@ -77,22 +79,22 @@
         </service>
 
         <receiver
-                android:name=".notification.receivers.NotificationBootReceiver"
+                android:name=".init.AfterUpdateReceiver"
                 android:enabled="true"
                 android:exported="true">
             <intent-filter>
-                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.MY_PACKAGE_REPLACED" />
+                <data android:scheme="package" />
             </intent-filter>
         </receiver>
         <receiver
-                android:name=".api.worker.UpdateBootReceiver"
+                android:name=".init.BootReceiver"
                 android:enabled="true"
                 android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
         </receiver>
-
         <receiver
                 android:name=".notification.receivers.RegisteredReceiver"
                 android:enabled="true"
@@ -109,9 +111,6 @@
                 android:authorities="${applicationId}.androidx-startup"
                 android:exported="false"
                 tools:node="merge">
-            <meta-data
-                    android:name="cz.lastaapps.cvutbus.notification.receivers.StartupInit"
-                    android:value="androidx.startup" />
             <!-- Using Hilts own initializer -->
             <meta-data
                     android:name="androidx.work.WorkManagerInitializer"
@@ -119,4 +118,5 @@
                     tools:node="remove" />
         </provider>
     </application>
+
 </manifest>

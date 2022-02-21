@@ -57,9 +57,7 @@ class RegisteredReceiver : BroadcastReceiver() {
 
     override fun onReceive(context: Context, intent: Intent) {
         log.i { "Received" }
-        if (BuildConfig.DEBUG) {
-            Toast.makeText(context, "Alarm received", Toast.LENGTH_LONG).show()
-        }
+
         runBlocking {
             if (shouldStart(intent)) {
                 log.i { "Starting worker" }

@@ -31,6 +31,7 @@ import io.ktor.client.engine.cio.*
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
 import io.ktor.http.*
+import io.ktor.util.*
 import io.ktor.utils.io.core.*
 import kotlinx.coroutines.runBlocking
 import kotlinx.datetime.toJavaZoneId
@@ -174,14 +175,13 @@ fun main(): Unit = runBlocking {
     genLog.i { "Done, bye" }
 }
 
-@OptIn(ExperimentalIoApi::class)
+@OptIn(InternalAPI::class)
 internal suspend fun HttpClient.downloadFile(
     file: File,
     url: String,
     onProgress: (Float) -> Unit
 ): Boolean {
-    val response = request<HttpResponse> {
-        url(url)
+    val response = request(url) {
         method = HttpMethod.Get
     }
 

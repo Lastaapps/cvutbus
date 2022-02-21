@@ -19,6 +19,7 @@
 
 package cz.lastaapps.cvutbus.notification.receivers
 
+/*
 import android.content.Context
 import androidx.annotation.Keep
 import androidx.startup.Initializer
@@ -51,3 +52,4 @@ class StartupInit : Initializer<Unit> {
     override fun dependencies(): List<Class<out Initializer<*>>> =
         listOf(DependencyGraphInitializer::class.java)
 }
+ */

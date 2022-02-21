@@ -17,7 +17,7 @@
  * along with ČVUT Bus.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package cz.lastaapps.cvutbus.api.worker
+package cz.lastaapps.cvutbus.init
 
 import android.content.BroadcastReceiver
 import android.content.Context
@@ -27,19 +27,19 @@ import org.lighthousegames.logging.logging
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class UpdateBootReceiver : BroadcastReceiver() {
-
+class BootReceiver : BroadcastReceiver() {
     companion object {
         private val log = logging()
     }
 
     @Inject
-    lateinit var updateManager: UpdateManager
+    lateinit var init: RunInit
 
     override fun onReceive(context: Context, intent: Intent) {
+        log.i { "Received" }
         if (intent.action == Intent.ACTION_BOOT_COMPLETED) {
-            log.i { "Received" }
-            updateManager.schedule()
+            log.i { "Accepted" }
+            init.run()
         }
     }
 }

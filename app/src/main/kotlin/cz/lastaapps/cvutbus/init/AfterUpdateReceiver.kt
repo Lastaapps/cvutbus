@@ -17,32 +17,32 @@
  * along with ČVUT Bus.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package cz.lastaapps.cvutbus.notification.receivers
+package cz.lastaapps.cvutbus.init
 
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.runBlocking
 import org.lighthousegames.logging.logging
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class NotificationBootReceiver : BroadcastReceiver() {
+class AfterUpdateReceiver : BroadcastReceiver() {
 
     companion object {
         private val log = logging()
     }
 
     @Inject
-    lateinit var registerModule: RegisterModule
+    lateinit var init: RunInit
 
     override fun onReceive(context: Context, intent: Intent) {
-        if (intent.action == Intent.ACTION_BOOT_COMPLETED) {
-            log.i { "Received" }
-            runBlocking {
-                registerModule.update()
-            }
+        log.i { "Received" }
+        if (intent.action == Intent.ACTION_MY_PACKAGE_REPLACED &&
+            intent.data.toString() == "package:${context.packageName}"
+        ) {
+            log.i { "Accepted" }
+            init.run()
         }
     }
 }

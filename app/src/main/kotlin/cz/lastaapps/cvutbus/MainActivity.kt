@@ -27,9 +27,10 @@ import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.lifecycleScope
 import cz.lastaapps.cvutbus.components.pid.PIDViewModel
 import cz.lastaapps.cvutbus.components.settings.SettingsViewModel
-import cz.lastaapps.cvutbus.notification.receivers.RegisterModule
+import cz.lastaapps.cvutbus.init.RunInit
 import cz.lastaapps.cvutbus.ui.root.AppLayout
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.delay
 import org.lighthousegames.logging.logging
 import javax.inject.Inject
 
@@ -41,7 +42,7 @@ class MainActivity : FragmentActivity() {
     }
 
     @Inject
-    lateinit var registerModule: RegisterModule
+    lateinit var init: RunInit
 
     private val pidViewModel: PIDViewModel by viewModels()
     private val settingsViewModel: SettingsViewModel by viewModels()
@@ -51,8 +52,9 @@ class MainActivity : FragmentActivity() {
 
         var composeReady = false
 
-        lifecycleScope.launchWhenCreated {
-            registerModule.update()
+        lifecycleScope.launchWhenStarted {
+            delay(5000)
+            init.checkFirstLaunch()
         }
 
         val splash = installSplashScreen()
