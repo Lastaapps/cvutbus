@@ -116,6 +116,9 @@
                     android:name="androidx.work.WorkManagerInitializer"
                     android:value="androidx.startup"
                     tools:node="remove" />
+            <meta-data
+                    android:name="cz.lastaapps.cvutbus.di.DependencyGraphInitializer"
+                    android:value="androidx.startup" />
         </provider>
     </application>
 

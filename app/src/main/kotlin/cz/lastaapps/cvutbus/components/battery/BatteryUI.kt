@@ -58,7 +58,9 @@ fun BatteryChoice(
 
     Card(
         modifier,
-        containerColor = MaterialTheme.colorScheme.errorContainer,
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.errorContainer,
+        ),
         shape = RoundedCornerShape(8.dp),
     ) {
         Column(
@@ -122,7 +124,9 @@ fun BatteryWaring(settingsViewModel: SettingsViewModel, modifier: Modifier = Mod
 
     Card(
         modifier,
-        containerColor = MaterialTheme.colorScheme.errorContainer,
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.errorContainer,
+        ),
         shape = RoundedCornerShape(8.dp),
     ) {
         Column(

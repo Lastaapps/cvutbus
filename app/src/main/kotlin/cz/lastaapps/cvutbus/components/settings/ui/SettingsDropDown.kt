@@ -22,15 +22,12 @@ package cz.lastaapps.cvutbus.components.settings.ui
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.material.*
-import androidx.compose.material3.LocalContentColor
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 
-@OptIn(ExperimentalMaterialApi::class)
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun <T> SettingsDropDown(
     expanded: Boolean,
@@ -46,85 +43,27 @@ fun <T> SettingsDropDown(
         if (label != null)
             Text(label, style = MaterialTheme.typography.titleMedium)
 
+        //TODO try to rework in next compose version
+        var exp by remember { mutableStateOf(false) }
+        LaunchedEffect(expanded) { exp = expanded }
+
         ExposedDropdownMenuBox(
             modifier = Modifier.fillMaxWidth(),
-            expanded = expanded,
-            onExpandedChange = onExpanded
+            expanded = exp,
+            onExpandedChange = { onExpanded(!exp) },
         ) {
             TextField(
                 readOnly = true,
                 value = options.getOrNull(selected)?.second ?: defaultItem!!,
                 onValueChange = { },
                 //label = { Text(label) },
-                trailingIcon = {
-                    ExposedDropdownMenuDefaults.TrailingIcon(
-                        expanded = expanded
-                    )
-                },
-                colors = ExposedDropdownMenuDefaults.textFieldColors(
-                    textColor = LocalContentColor.current
-                ),
+                trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(exp) },
+                colors = ExposedDropdownMenuDefaults.textFieldColors(),
                 modifier = Modifier.fillMaxWidth(),
             )
             ExposedDropdownMenu(
-                expanded = expanded,
+                expanded = exp,
                 onDismissRequest = { onExpanded(false) }
-            ) {
-                options.forEach { option ->
-                    DropdownMenuItem(
-                        onClick = {
-                            onItemSelected(option.first)
-                            onExpanded(false)
-                        }
-                    ) {
-                        Text(text = option.second)
-                    }
-                }
-            }
-        }
-    }
-}
-
-/* Material You ready version
-@OptIn(ExperimentalMaterialApi::class)
-@Composable
-fun <T> SettingsDropDown(
-    expanded: Boolean,
-    onExpanded: (Boolean) -> Unit,
-    label: String?,
-    options: List<Pair<T, String>>,
-    selected: Int,
-    onItemSelected: (T) -> Unit,
-    modifier: Modifier = Modifier,
-    defaultItem: String? = null,
-) {
-    Column(modifier, verticalArrangement = Arrangement.spacedBy(8.dp)) {
-        if (label != null)
-            Text(label, style = MaterialTheme.typography.titleMedium)
-
-        ExposedDropdownMenuBox(
-            modifier = Modifier.fillMaxWidth(),
-            expanded = expanded,
-            onExpandedChange = onExpanded
-        ) {
-            TextField(
-                readOnly = true,
-                value = options.getOrNull(selected)?.second ?: defaultItem!!,
-                onValueChange = { },
-                //label = { Text(label) },
-                trailingIcon = {
-                    ExposedDropdownMenuDefaults.TrailingIcon(
-                        expanded = expanded
-                    )
-                },
-                colors = ExposedDropdownMenuDefaults.textFieldColors(
-                    textColor = LocalContentColor.current
-                ),
-                modifier = Modifier.fillMaxWidth(),
-            )
-            DropdownMenu(
-                expanded = expanded,
-                onDismissRequest = { onExpanded(false) },
             ) {
                 options.forEach { option ->
                     DropdownMenuItem(
@@ -139,4 +78,3 @@ fun <T> SettingsDropDown(
         }
     }
 }
- */

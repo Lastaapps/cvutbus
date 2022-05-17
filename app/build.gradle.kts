@@ -138,7 +138,6 @@ fun DependencyHandler.initCompose(useMaterial2: Boolean = false, useMaterial3: B
 
     implementation(Libs.ACCOMPANIST_DRAWABLE_PAINTERS)
     implementation(Libs.ACCOMPANIST_FLOW_LAYOUTS)
-    implementation(Libs.ACCOMPANIST_INSETS)
     implementation(Libs.ACCOMPANIST_NAVIGATION_ANIMATION)
     implementation(Libs.ACCOMPANIST_NAVIGATION_MATERIAL)
     implementation(Libs.ACCOMPANIST_PAGER)

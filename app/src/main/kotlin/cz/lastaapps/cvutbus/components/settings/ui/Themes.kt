@@ -21,8 +21,6 @@ package cz.lastaapps.cvutbus.components.settings.ui
 
 import android.os.Build
 import androidx.compose.foundation.Canvas
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Slider
@@ -163,12 +161,11 @@ private fun ShowcaseCircle(
     else
         MaterialTheme.colorScheme.surface
 
-    val interaction = remember { MutableInteractionSource() }
     Card(
-        containerColor = surfaceColor,
+        onClick = onClick,
+        colors = CardDefaults.cardColors(containerColor = surfaceColor),
         shape = RoundedCornerShape(8.dp),
-        interactionSource = interaction,
-        modifier = modifier.clickable(interaction, null, onClick = onClick),
+        modifier = modifier,
     ) {
         val selectedColor = LocalContentColor.current
 

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="CompilerConfiguration">
-    <bytecodeTargetLevel target="17">
+    <bytecodeTargetLevel target="18">
       <module name="ČVUTBus.entity.commonMain" target="11" />
       <module name="ČVUTBus.entity.commonTest" target="11" />
       <module name="ČVUTBus.entity.desktopMain" target="11" />
