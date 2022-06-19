@@ -23,10 +23,11 @@ buildscript {
     }
 }
 plugins {
-    id(Plugins.APPLICATION) version Versions.GRADLE apply false
-    id(Plugins.LIBRARY) version Versions.GRADLE apply false
+    val gradleVersion = "7.2.1"
+    id(Plugins.APPLICATION) version gradleVersion apply false
+    id(Plugins.LIBRARY) version gradleVersion apply false
 
-    id(Plugins.KOTLIN) version Versions.KOTLIN apply false
+    id(Plugins.KOTLIN_ANDROID) version Versions.KOTLIN apply false
     id(Plugins.KSP) version Versions.KSP apply false
     id(Plugins.KOTLIN_JVM) version Versions.KOTLIN apply false
 

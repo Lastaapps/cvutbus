@@ -107,7 +107,6 @@ dependencies {
     implementation(Libs.DAGGER_HILT)
     implementation(Libs.DATASTORE)
     implementation(Libs.HILT_COMMON)
-    implementation(Libs.HILT_VIEWMODEL)
     implementation(Libs.HILT_WORK)
     implementation(Libs.HILT_NAVIGATION_COMPOSE)
     kapt(Libs.DAGGER_HILT_COMPILER)
@@ -118,19 +117,16 @@ dependencies {
     implementation(Libs.KTOR_CORE)
     implementation(Libs.KTOR_CIO)
 
-    initCompose(useMaterial2 = true)
+    initCompose()
 }
 
-fun DependencyHandler.initCompose(useMaterial2: Boolean = false, useMaterial3: Boolean = true) {
+fun DependencyHandler.initCompose() {
     implementation(Libs.COMPOSE_ACTIVITY)
     implementation(Libs.COMPOSE_ANIMATION)
     implementation(Libs.COMPOSE_CONSTRAINTLAYOUT)
     implementation(Libs.COMPOSE_FOUNDATION)
     implementation(Libs.COMPOSE_ICONS_EXTENDED)
-    if (useMaterial2)
-        implementation(Libs.COMPOSE_MATERIAL)
-    if (useMaterial3)
-        implementation(Libs.COMPOSE_MATERIAL_3)
+    implementation(Libs.COMPOSE_MATERIAL_3)
     implementation(Libs.COMPOSE_NAVIGATION)
     debugImplementation(Libs.COMPOSE_TOOLING)
     implementation(Libs.COMPOSE_UI)

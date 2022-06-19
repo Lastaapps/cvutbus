@@ -28,8 +28,11 @@ import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.DirectionsBus
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.colorResource
@@ -46,9 +49,6 @@ fun MainTopBar(navController: NavController) {
     val title = stringResource(R.string.ui_top_bar_title)
 
     val decayAnimationSpec = rememberSplineBasedDecay<Float>()
-    val scrollBehavior = remember(decayAnimationSpec) {
-        TopAppBarDefaults.exitUntilCollapsedScrollBehavior(decayAnimationSpec)
-    }
 
     var mainPopupExpanded by rememberSaveable { mutableStateOf(false) }
 
@@ -105,7 +105,6 @@ fun MainTopBar(navController: NavController) {
                 }
             }
         },
-        scrollBehavior = scrollBehavior
     )
 }
 
