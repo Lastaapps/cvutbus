@@ -133,6 +133,7 @@
     <string name="battery_button_grant">Vypnout</string>
     <string name="battery_button_dismiss">Přežiji to</string>
     <string name="notification_tile_name">ČVUT Bus</string>
+    <string name="notification_tile_permission_missing">Klikněte na tlačítko dole</string>
     <string name="notification_create_placeholder_title">Vteřinku</string>
     <string name="notification_create_placeholder_content">Nekecáme, makáme</string>
     <string name="notification_create_time_no_data_title">Nejsou dostupná žádná data</string>
@@ -147,6 +148,7 @@
     <string name="notification_button_close">Zavřít</string>
     <string name="ui_fab_notification_show">Zobrazi oznámení s odjezdy</string>
     <string name="ui_fab_notification_dismiss">Skrýt oznámení s odjezdy</string>
+    <string name="ui_fab_notification_grant_permission">Povolte oznámení v nastavení</string>
     <string name="ui_top_bar_title">ČVUT Bus</string>
     <string name="ui_top_bar_back_arrow">Zpět</string>
     <string name="ui_top_bar_action_description">Další</string>

@@ -19,6 +19,11 @@
 
 package cz.lastaapps.cvutbus.ui.root
 
+import android.content.Intent
+import android.net.Uri
+import android.os.Build
+import android.provider.Settings
+import android.widget.Toast
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.NotificationAdd
@@ -29,6 +34,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.google.accompanist.permissions.ExperimentalPermissionsApi
+import com.google.accompanist.permissions.isGranted
+import com.google.accompanist.permissions.rememberPermissionState
+import com.google.accompanist.permissions.shouldShowRationale
 import cz.lastaapps.cvutbus.R
 import cz.lastaapps.cvutbus.notification.WorkerUtils
 import kotlinx.coroutines.launch
@@ -76,14 +85,41 @@ private fun FloatingIcon(modifier: Modifier = Modifier) {
         )
 }
 
+@OptIn(ExperimentalPermissionsApi::class)
 @Composable
 private fun onFabAction(): () -> Unit {
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
-    return {
+    val action: () -> Unit = {
         scope.launch {
             logging("Fab").i { "Fab pressed" }
             WorkerUtils(context).toggle()
+        }
+    }
+
+    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
+        return action
+    } else {
+        val permission = rememberPermissionState(android.Manifest.permission.POST_NOTIFICATIONS)
+        return {
+            if (permission.status.isGranted)
+                action()
+            else {
+                if (!permission.status.shouldShowRationale) {
+                    permission.launchPermissionRequest()
+                } else {
+                    val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                    val uri = Uri.fromParts("package", context.packageName, null)
+                    intent.data = uri
+                    context.startActivity(intent)
+                    Toast.makeText(
+                        context,
+                        R.string.ui_fab_notification_grant_permission,
+                        Toast.LENGTH_LONG
+                    ).show()
+                }
+            }
         }
     }
 }

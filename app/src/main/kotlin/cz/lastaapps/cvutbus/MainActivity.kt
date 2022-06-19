@@ -34,8 +34,7 @@ import kotlinx.coroutines.delay
 import org.lighthousegames.logging.logging
 import javax.inject.Inject
 
-@AndroidEntryPoint
-class MainActivity : FragmentActivity() {
+class MainActivity : AppCompatActivity(), DIAware {
 
     companion object {
         private val log = logging()
@@ -63,6 +62,8 @@ class MainActivity : FragmentActivity() {
                 if (!it) log.i { "Dismissing splash screen" }
             }
         }
+
+        supportActionBar?.hide()
 
         setContent {
             AppLayout(this, this, pidViewModel, settingsViewModel) {

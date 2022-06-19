@@ -19,11 +19,19 @@
 
 package cz.lastaapps.cvutbus.notification.tile
 
+import android.Manifest
+import android.content.Intent
+import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Build
 import android.service.quicksettings.Tile
 import android.service.quicksettings.TileService
+import android.widget.Toast
 import androidx.annotation.RequiresApi
+import cz.lastaapps.cvutbus.MainActivity
+import cz.lastaapps.cvutbus.R
 import cz.lastaapps.cvutbus.notification.WorkerUtils
+import cz.lastaapps.cvutbus.ui.SafeToast
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.first
@@ -46,7 +54,24 @@ class NotificationTileService : TileService() {
 
         log.i { "Tile clicked" }
         scope.launch {
-            details.toggle()
+            val context = this@NotificationTileService
+
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU ||
+                context.checkSelfPermission(Manifest.permission.POST_NOTIFICATIONS) == PackageManager.PERMISSION_GRANTED
+            ) {
+                details.toggle()
+            } else {
+                val intent = Intent(context, MainActivity::class.java)
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                val uri = Uri.fromParts("package", packageName, null)
+                intent.data = uri
+                startActivityAndCollapse(intent)
+                SafeToast.makeTextAndShow(
+                    context,
+                    R.string.notification_tile_permission_missing,
+                    Toast.LENGTH_LONG
+                )
+            }
         }
     }
 

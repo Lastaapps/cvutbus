@@ -76,7 +76,7 @@ object Versions {
     const val HILT_NAVIGATION_COMPOSE = "1.0.0"
 
     //google
-    const val GOOGLE_MATERIAL = "1.6.1"
+    const val GOOGLE_MATERIAL = "1.7.0-alpha02"
     const val PLAY_SERVICES = "1.8.1"
     const val PLAY_SERVICES_LOCATION = "20.0.0"
     const val MLKIT_BARCODE = "17.0.2"
