@@ -32,6 +32,7 @@ import cz.lastaapps.cvutbus.components.settings.modules.NotificationStartup
 import cz.lastaapps.cvutbus.components.settings.modules.notificationStartTime
 import cz.lastaapps.cvutbus.components.settings.modules.notificationStartup
 import cz.lastaapps.cvutbus.toLocalTime
+import cz.lastaapps.cvutbus.ui.SafeToast
 import cz.lastaapps.entity.utils.CET
 import kotlinx.coroutines.flow.first
 import kotlinx.datetime.toJavaZoneId
@@ -74,7 +75,7 @@ class RegisterModule @Inject constructor(
         manager.cancel(pendingIntent)
     }
 
-    private fun registerWorkerStart(
+    private suspend fun registerWorkerStart(
         time: LocalTime,
         type: String,
         pendingIntent: PendingIntent = createPendingIntent(type)
@@ -88,12 +89,12 @@ class RegisterModule @Inject constructor(
 
         log.i { "Scheduling aram on ${toExecute.format(DateTimeFormatter.ISO_DATE_TIME)}, type: $type" }
         if (BuildConfig.DEBUG) {
-            Toast.makeText(
+            SafeToast.makeTextAndShow(
                 context,
                 "Alarm registered on ${toExecute.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME)}",
                 Toast.LENGTH_LONG,
-            ).show()
-            Toast.makeText(context, "Alarm type is $type", Toast.LENGTH_LONG).show()
+            )
+            SafeToast.makeTextAndShow(context, "Alarm type is $type", Toast.LENGTH_LONG)
         }
 
         manager.set(

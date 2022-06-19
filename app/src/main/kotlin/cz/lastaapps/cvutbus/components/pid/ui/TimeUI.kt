@@ -42,6 +42,8 @@ import cz.lastaapps.cvutbus.*
 import cz.lastaapps.cvutbus.R
 import cz.lastaapps.cvutbus.api.DatabaseInfo
 import cz.lastaapps.cvutbus.components.pid.PIDViewModel
+import cz.lastaapps.cvutbus.components.settings.SettingsViewModel
+import cz.lastaapps.cvutbus.components.settings.ui.RefreshData
 import cz.lastaapps.entity.utils.CET
 import cz.lastaapps.repo.DepartureInfo
 import kotlinx.datetime.Instant
@@ -50,6 +52,7 @@ import kotlinx.datetime.toInstant
 @Composable
 fun TimeUI(
     pidViewModel: PIDViewModel,
+    settingsViewModel: SettingsViewModel,
     modifier: Modifier = Modifier,
 ) {
     val data by pidViewModel.getData().collectAsState(null)
@@ -60,7 +63,7 @@ fun TimeUI(
     ) {
         when (data) {
             null -> Loading()
-            emptyList<DatabaseInfo>() -> NoItems()
+            emptyList<DatabaseInfo>() -> NoItems(settingsViewModel)
             else -> ShowData(
                 data!!,
                 pidViewModel.showCounter.collectAsState().value,
@@ -76,12 +79,19 @@ private fun Loading(modifier: Modifier = Modifier) {
 }
 
 @Composable
-private fun NoItems(modifier: Modifier = Modifier) {
-    Text(
-        text = stringResource(R.string.pid_no_connection),
-        textAlign = TextAlign.Center,
-        modifier = modifier,
-    )
+private fun NoItems(viewModel: SettingsViewModel, modifier: Modifier = Modifier) {
+    Column(
+        modifier,
+        verticalArrangement = Arrangement.spacedBy(8.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+    ) {
+        Text(
+            text = stringResource(R.string.pid_no_connection),
+            textAlign = TextAlign.Center,
+            modifier = modifier,
+        )
+        RefreshData(viewModel)
+    }
 }
 
 @Composable

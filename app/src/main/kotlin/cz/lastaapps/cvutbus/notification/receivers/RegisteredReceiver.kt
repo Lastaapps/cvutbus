@@ -27,6 +27,7 @@ import cz.lastaapps.cvutbus.BuildConfig
 import cz.lastaapps.cvutbus.components.settings.SettingsStore
 import cz.lastaapps.cvutbus.components.settings.modules.notificationWorkDaysOnly
 import cz.lastaapps.cvutbus.notification.WorkerUtils
+import cz.lastaapps.cvutbus.ui.SafeToast
 import cz.lastaapps.entity.utils.CET
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.*
@@ -62,7 +63,7 @@ class RegisteredReceiver : BroadcastReceiver() {
             if (shouldStart(intent)) {
                 log.i { "Starting worker" }
                 if (BuildConfig.DEBUG) {
-                    Toast.makeText(context, "Notification started", Toast.LENGTH_LONG).show()
+                    SafeToast.makeTextAndShow(context, "Notification started", Toast.LENGTH_LONG)
                 }
                 WorkerUtils(context).start()
             }

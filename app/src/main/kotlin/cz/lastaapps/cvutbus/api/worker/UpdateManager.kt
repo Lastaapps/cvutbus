@@ -24,6 +24,7 @@ import android.widget.Toast
 import androidx.lifecycle.asFlow
 import androidx.work.*
 import cz.lastaapps.cvutbus.BuildConfig
+import cz.lastaapps.cvutbus.ui.SafeToast
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.first
@@ -63,10 +64,10 @@ class UpdateManager @Inject constructor(val app: Application) {
         manager.enqueueUniqueWork(UpdateWorker.workerOneTimeKey, ExistingWorkPolicy.KEEP, work)
     }
 
-    fun schedule() {
+    suspend fun schedule() {
         log.i { "Scheduling" }
         if (BuildConfig.DEBUG)
-            Toast.makeText(app, "Scheduling update worker", Toast.LENGTH_LONG).show()
+            SafeToast.makeTextAndShow(app, "Scheduling update worker", Toast.LENGTH_LONG)
 
         val constrains = with(Constraints.Builder()) {
             setRequiredNetworkType(NetworkType.CONNECTED)

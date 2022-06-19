@@ -29,6 +29,7 @@ import androidx.work.WorkerParameters
 import cz.lastaapps.cvutbus.BuildConfig
 import cz.lastaapps.cvutbus.api.DatabaseProvider
 import cz.lastaapps.cvutbus.api.DatabaseStore
+import cz.lastaapps.cvutbus.ui.SafeToast
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
 import io.ktor.client.*
@@ -75,11 +76,11 @@ class UpdateWorker @AssistedInject constructor(
         if (BuildConfig.DEBUG)
             withContext(Dispatchers.Main) {
                 yield() // if looper() haven't been called yet, may help
-                Toast.makeText(
+                SafeToast.makeTextAndShow(
                     applicationContext,
                     "Update r: $isRequestedByUser",
-                    Toast.LENGTH_LONG
-                ).show()
+                    Toast.LENGTH_LONG,
+                )
             }
 
         if (!checkUpdateRequired() && !BuildConfig.DEBUG) {

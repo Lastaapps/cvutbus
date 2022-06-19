@@ -68,19 +68,25 @@ fun UpdateUI(viewModel: SettingsViewModel, modifier: Modifier = Modifier) {
                             + lastUpdate!!.format(dateFormat)
                 )
             }
+            RefreshData(viewModel)
+        }
+    }
+}
 
-            if (isRunning == true) {
-                Box(Modifier.size(48.dp), contentAlignment = Alignment.Center) {
-                    CircularProgressIndicator(Modifier.size(24.dp))
-                }
-            } else {
-                IconButton(onClick = { viewModel.updateManager.startNow() }) {
-                    Icon(
-                        Icons.Default.Refresh,
-                        stringResource(R.string.settings_update_button_description),
-                    )
-                }
-            }
+@Composable
+fun RefreshData(viewModel: SettingsViewModel, modifier: Modifier = Modifier) {
+    val isRunning by remember { viewModel.updateManager.isRunningFlow() }.collectAsState(null)
+
+    if (isRunning == true) {
+        Box(modifier.size(48.dp), contentAlignment = Alignment.Center) {
+            CircularProgressIndicator(Modifier.size(24.dp))
+        }
+    } else {
+        IconButton(onClick = { viewModel.updateManager.startNow() }, modifier) {
+            Icon(
+                Icons.Default.Refresh,
+                stringResource(R.string.settings_update_button_description),
+            )
         }
     }
 }
