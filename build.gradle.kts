@@ -18,19 +18,16 @@
  */
 
 buildscript {
-    dependencies {
-        classpath(Classpath.DAGGER_HILT)
-    }
+    dependencies {}
 }
+
 plugins {
     val gradleVersion = "7.2.1"
     id(Plugins.APPLICATION) version gradleVersion apply false
     id(Plugins.LIBRARY) version gradleVersion apply false
-
+    id(Plugins.KOTLIN_MULTIPLATFORM) version Versions.KOTLIN apply false
     id(Plugins.KOTLIN_ANDROID) version Versions.KOTLIN apply false
-    id(Plugins.KSP) version Versions.KSP apply false
     id(Plugins.KOTLIN_JVM) version Versions.KOTLIN apply false
-
     id(Plugins.ABOUT_LIBRARIES) version Versions.ABOUT_LIBRARIES apply false
 }
 

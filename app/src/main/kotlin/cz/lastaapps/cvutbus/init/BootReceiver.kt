@@ -22,23 +22,22 @@ package cz.lastaapps.cvutbus.init
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
-import dagger.hilt.android.AndroidEntryPoint
+import org.kodein.di.android.closestDI
+import org.kodein.di.instance
 import org.lighthousegames.logging.logging
-import javax.inject.Inject
 
-@AndroidEntryPoint
 class BootReceiver : BroadcastReceiver() {
     companion object {
         private val log = logging()
     }
 
-    @Inject
-    lateinit var init: RunInit
-
     override fun onReceive(context: Context, intent: Intent) {
+        val di by closestDI(context)
+
         log.i { "Received" }
         if (intent.action == Intent.ACTION_BOOT_COMPLETED) {
             log.i { "Accepted" }
+            val init by di.instance<RunInit>()
             init.run()
         }
     }

@@ -30,11 +30,8 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
-import javax.inject.Inject
-import javax.inject.Singleton
 
-@Singleton
-class PrivacyStore @Inject constructor(app: Application) {
+class PrivacyStore constructor(app: Application) {
 
     companion object {
         private const val storeName = "privacy"

@@ -23,11 +23,8 @@ import android.app.Application
 import android.content.Context
 import androidx.datastore.preferences.preferencesDataStore
 import org.lighthousegames.logging.logging
-import javax.inject.Inject
-import javax.inject.Singleton
 
-@Singleton
-class SettingsStore @Inject constructor(val app: Application) {
+class SettingsStore constructor(val app: Application) {
 
     companion object {
         private val Context.settingsDataStore by preferencesDataStore("settings_store")

@@ -29,17 +29,16 @@ import cz.lastaapps.cvutbus.components.settings.modules.notificationWorkDaysOnly
 import cz.lastaapps.cvutbus.notification.WorkerUtils
 import cz.lastaapps.cvutbus.ui.SafeToast
 import cz.lastaapps.entity.utils.CET
-import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.first
 import kotlinx.datetime.toJavaZoneId
+import org.kodein.di.android.closestDI
+import org.kodein.di.instance
 import org.lighthousegames.logging.logging
 import java.time.DayOfWeek
 import java.time.LocalDate
 import java.time.LocalTime
-import javax.inject.Inject
 
-@AndroidEntryPoint
 class RegisteredReceiver : BroadcastReceiver() {
 
     companion object {
@@ -50,17 +49,14 @@ class RegisteredReceiver : BroadcastReceiver() {
         private val log = logging()
     }
 
-    @Inject
-    lateinit var registerModule: RegisterModule
-
-    @Inject
-    lateinit var store: SettingsStore
-
     override fun onReceive(context: Context, intent: Intent) {
         log.i { "Received" }
+        val di by closestDI(context)
+        val registerModule: RegisterModule by di.instance()
+        val store: SettingsStore by di.instance()
 
         runBlocking {
-            if (shouldStart(intent)) {
+            if (shouldStart(intent, store)) {
                 log.i { "Starting worker" }
                 if (BuildConfig.DEBUG) {
                     SafeToast.makeTextAndShow(context, "Notification started", Toast.LENGTH_LONG)
@@ -78,8 +74,8 @@ class RegisteredReceiver : BroadcastReceiver() {
         }
     }
 
-    private suspend fun shouldStart(intent: Intent): Boolean {
-        if (!canRunWeekEnd()) return false
+    private suspend fun shouldStart(intent: Intent, store: SettingsStore): Boolean {
+        if (!canRunWeekEnd(store)) return false
 
         return when (intent.getStringExtra(EXTRA_TYPE)!!) {
             TYPE_ALARM -> {
@@ -91,7 +87,7 @@ class RegisteredReceiver : BroadcastReceiver() {
         }
     }
 
-    private suspend fun canRunWeekEnd(): Boolean {
+    private suspend fun canRunWeekEnd(store: SettingsStore): Boolean {
         val today = LocalDate.now(CET.toJavaZoneId())
         val isWeekend = today.dayOfWeek in listOf(DayOfWeek.SATURDAY, DayOfWeek.SUNDAY)
         if (isWeekend) {

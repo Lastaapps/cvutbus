@@ -21,11 +21,8 @@ package cz.lastaapps.cvutbus.api
 
 import cz.lastaapps.repo.PIDRepo
 import cz.lastaapps.repo.PIDRepoImpl
-import javax.inject.Inject
-import javax.inject.Singleton
 
-@Singleton
-class PIDRepoProvider @Inject constructor(private val provider: DatabaseProvider) {
+class PIDRepoProvider constructor(private val provider: DatabaseProvider) {
     suspend fun provide(): PIDRepo {
         return PIDRepoImpl(provider.provideDatabase())
     }

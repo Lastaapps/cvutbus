@@ -34,11 +34,8 @@ import kotlinx.datetime.LocalDate
 import kotlinx.datetime.toKotlinLocalDate
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
-import javax.inject.Inject
-import javax.inject.Singleton
 
-@Singleton
-class DatabaseStore @Inject constructor(app: Application) {
+class DatabaseStore constructor(app: Application) {
 
     companion object {
         private val Context.infoStore: DataStore<Preferences> by preferencesDataStore("database_info")

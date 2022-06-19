@@ -41,9 +41,8 @@ import java.time.Instant
 import java.time.LocalTime
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
-import javax.inject.Inject
 
-class RegisterModule @Inject constructor(
+class RegisterModule constructor(
     private val context: Application,
     private val store: SettingsStore,
 ) {

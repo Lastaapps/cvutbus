@@ -22,7 +22,6 @@ package cz.lastaapps.cvutbus.api.worker
 import android.content.Context
 import android.widget.Toast
 import androidx.core.app.NotificationManagerCompat
-import androidx.hilt.work.HiltWorker
 import androidx.work.CoroutineWorker
 import androidx.work.ForegroundInfo
 import androidx.work.WorkerParameters
@@ -30,23 +29,25 @@ import cz.lastaapps.cvutbus.BuildConfig
 import cz.lastaapps.cvutbus.api.DatabaseProvider
 import cz.lastaapps.cvutbus.api.DatabaseStore
 import cz.lastaapps.cvutbus.ui.SafeToast
-import dagger.assisted.Assisted
-import dagger.assisted.AssistedInject
 import io.ktor.client.*
 import io.ktor.client.engine.cio.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.withContext
 import kotlinx.coroutines.yield
+import org.kodein.di.DI
+import org.kodein.di.DIAware
+import org.kodein.di.android.closestDI
+import org.kodein.di.instance
 import org.lighthousegames.logging.logging
 
-@HiltWorker
-class UpdateWorker @AssistedInject constructor(
-    @Assisted app: Context,
-    @Assisted val params: WorkerParameters,
-    val store: DatabaseStore,
-    val databaseProvider: DatabaseProvider,
-) : CoroutineWorker(app, params) {
+class UpdateWorker constructor(
+    app: Context, params: WorkerParameters,
+) : CoroutineWorker(app, params), DIAware {
+
+    override val di: DI by closestDI(app)
+    val store: DatabaseStore by instance()
+    val databaseProvider: DatabaseProvider by instance()
 
     companion object {
         const val workerPeriodKey = "database_update_period"

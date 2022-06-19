@@ -24,32 +24,17 @@ import cz.lastaapps.database.DatabaseDriverFactoryImpl
 import cz.lastaapps.database.PIDDatabase
 import cz.lastaapps.database.createDatabase
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import kotlinx.coroutines.withContext
 import org.lighthousegames.logging.logging
-import javax.inject.Inject
-import javax.inject.Singleton
 
-@Singleton
-class DatabaseProvider {
-
+class DatabaseProvider(
     @Suppress("JoinDeclarationAndAssignment")
-    private val app: Application
-    private val store: DatabaseStore
+    private val app: Application,
+    private val store: DatabaseStore,
     private val dispatcher: CoroutineDispatcher
-
-    constructor(
-        app: Application, store: DatabaseStore, dispatcher: CoroutineDispatcher,
-    ) {
-        this.app = app; this.store = store; this.dispatcher = dispatcher
-    }
-
-    @Inject
-    constructor(
-        app: Application, store: DatabaseStore,
-    ) : this(app, store, Dispatchers.IO)
+) {
 
     companion object {
         private const val assetName = "piddatabase.db"

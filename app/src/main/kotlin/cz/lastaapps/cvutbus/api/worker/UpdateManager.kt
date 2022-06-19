@@ -32,12 +32,9 @@ import kotlinx.coroutines.flow.map
 import org.lighthousegames.logging.logging
 import java.time.Duration
 import java.util.concurrent.TimeUnit
-import javax.inject.Inject
-import javax.inject.Singleton
 
-@Singleton
 @Suppress("MemberVisibilityCanBePrivate")
-class UpdateManager @Inject constructor(val app: Application) {
+class UpdateManager constructor(val app: Application) {
 
     companion object {
         private val log = logging()

@@ -21,18 +21,20 @@ package cz.lastaapps.cvutbus
 
 import android.os.Bundle
 import androidx.activity.compose.setContent
-import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
-import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.lifecycleScope
 import cz.lastaapps.cvutbus.components.pid.PIDViewModel
 import cz.lastaapps.cvutbus.components.settings.SettingsViewModel
 import cz.lastaapps.cvutbus.init.RunInit
 import cz.lastaapps.cvutbus.ui.root.AppLayout
-import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.delay
+import org.kodein.di.DI
+import org.kodein.di.DIAware
+import org.kodein.di.android.closestDI
+import org.kodein.di.android.x.viewmodel.viewModel
+import org.kodein.di.instance
 import org.lighthousegames.logging.logging
-import javax.inject.Inject
 
 class MainActivity : AppCompatActivity(), DIAware {
 
@@ -40,11 +42,12 @@ class MainActivity : AppCompatActivity(), DIAware {
         private val log = logging()
     }
 
-    @Inject
-    lateinit var init: RunInit
+    override val di: DI by closestDI()
 
-    private val pidViewModel: PIDViewModel by viewModels()
-    private val settingsViewModel: SettingsViewModel by viewModels()
+    private val init: RunInit by instance()
+
+    private val pidViewModel: PIDViewModel by viewModel()
+    private val settingsViewModel: SettingsViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

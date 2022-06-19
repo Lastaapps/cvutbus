@@ -28,6 +28,7 @@ import androidx.lifecycle.ViewModelStoreOwner
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 import cz.lastaapps.cvutbus.components.pid.PIDViewModel
 import cz.lastaapps.cvutbus.components.privacy.PrivacyCheck
+import cz.lastaapps.cvutbus.components.privacy.PrivacyViewModel
 import cz.lastaapps.cvutbus.components.settings.SettingsViewModel
 import cz.lastaapps.cvutbus.components.settings.modules.AppThemeMode
 import cz.lastaapps.cvutbus.components.settings.modules.appTheme
@@ -67,9 +68,11 @@ fun AppLayout(
         }
     }
 
+    val privacyViewModel: PrivacyViewModel by rememberActivityViewModel()
+
     AppTheme(useCustomTheme = !dynamic!!, darkTheme = darkState, updateSystemBars = true) {
         ApplyProviders(activity = activity, viewModelStoreOwner = viewModelStoreOwner) {
-            PrivacyCheck(hiltActivityViewModel()) {
+            PrivacyCheck(privacyViewModel) {
                 AppContent(pidViewModel, settingsViewModel)
             }
         }

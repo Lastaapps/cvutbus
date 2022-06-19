@@ -24,25 +24,24 @@ import android.content.Context
 import android.content.Intent
 import cz.lastaapps.cvutbus.notification.WorkerUtils
 import cz.lastaapps.cvutbus.notification.worker.WorkerState
-import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.runBlocking
+import org.kodein.di.android.closestDI
+import org.kodein.di.instance
 import org.lighthousegames.logging.logging
-import javax.inject.Inject
 
-@AndroidEntryPoint
 class ChangeDirectionReceiver : BroadcastReceiver() {
 
     companion object {
         private val log = logging()
     }
 
-    @Inject
-    lateinit var state: WorkerState
-
     override fun onReceive(context: Context, intent: Intent) {
+        val di by closestDI(context)
+
         log.i { "Changing direction" }
         runBlocking {
             WorkerUtils(context).start()
+            val state by di.instance<WorkerState>()
             state.reverseDirection()
         }
     }

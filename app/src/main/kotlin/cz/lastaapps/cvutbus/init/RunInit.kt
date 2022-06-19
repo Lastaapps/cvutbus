@@ -30,9 +30,8 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.lighthousegames.logging.logging
-import javax.inject.Inject
 
-class RunInit @Inject constructor(
+class RunInit constructor(
     private val app: Application,
     private val registerModule: RegisterModule,
     private val updateManager: UpdateManager,

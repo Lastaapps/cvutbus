@@ -29,20 +29,17 @@ import cz.lastaapps.cvutbus.api.worker.UpdateManager
 import cz.lastaapps.cvutbus.components.settings.modules.*
 import cz.lastaapps.cvutbus.minuteTicker
 import cz.lastaapps.cvutbus.notification.receivers.RegisterModule
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import java.time.Instant
 import java.time.ZoneId
 import java.time.ZonedDateTime
-import javax.inject.Inject
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.hours
 import kotlin.time.Duration.Companion.minutes
 
-@HiltViewModel
-class SettingsViewModel @Inject constructor(
+class SettingsViewModel constructor(
     private val app: Application,
     val store: SettingsStore,
     val databaseStore: DatabaseStore,

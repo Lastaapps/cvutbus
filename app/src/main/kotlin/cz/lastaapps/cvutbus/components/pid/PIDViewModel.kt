@@ -28,8 +28,6 @@ import cz.lastaapps.cvutbus.getRoundedNow
 import cz.lastaapps.cvutbus.secondTicker
 import cz.lastaapps.entity.utils.CET
 import cz.lastaapps.repo.*
-import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.ObsoleteCoroutinesApi
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import kotlinx.datetime.Clock
@@ -37,10 +35,8 @@ import kotlinx.datetime.DateTimeUnit
 import kotlinx.datetime.minus
 import kotlinx.datetime.toLocalDateTime
 import org.lighthousegames.logging.logging
-import javax.inject.Inject
 
-@HiltViewModel
-class PIDViewModel @Inject constructor(
+class PIDViewModel constructor(
     private val provider: PIDRepoProvider,
     private val store: SettingsStore,
 ) : ViewModel() {
@@ -133,7 +129,6 @@ class PIDViewModel @Inject constructor(
     }
 
 
-    @OptIn(ObsoleteCoroutinesApi::class)
     fun getData(): Flow<List<DepartureInfo>> = channelFlow {
         val repo = provider.provide()
         transportConnection.collectLatest { connection ->

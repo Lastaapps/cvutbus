@@ -35,11 +35,8 @@ import kotlinx.coroutines.sync.withLock
 import kotlinx.datetime.Clock
 import kotlinx.datetime.toLocalDateTime
 import org.lighthousegames.logging.logging
-import javax.inject.Inject
-import javax.inject.Singleton
 
-@Singleton
-class WorkerState @Inject constructor(
+class WorkerState constructor(
     private val repoProvider: PIDRepoProvider,
     private val store: SettingsStore,
 ) {

@@ -21,17 +21,14 @@ package cz.lastaapps.cvutbus.components.privacy
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import org.lighthousegames.logging.logging
 import java.time.LocalDate
-import javax.inject.Inject
 
-@HiltViewModel
-class PrivacyViewModel @Inject constructor(
+class PrivacyViewModel constructor(
     private val store: PrivacyStore,
 ) : ViewModel() {
 
