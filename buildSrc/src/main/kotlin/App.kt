@@ -36,20 +36,16 @@ object App {
     const val IS_ALPHA = false
     const val IS_BETA = false
 
-    const val USE_LEGACY = false
+    const val USE_PREVIEW = false
     const val MIN_SDK = 21
 
-    //latest version, may be preview
-    const val COMPILE_SDK = 31
-    const val BUILD_TOOLS = "31.0.0"
-    const val TARGET_SDK = 31
+    // latest official version
+    const val COMPILE_SDK = 33
+    const val TARGET_SDK = 33
+
+    // preview version, last released android version
+    const val PREVIEW_COMPILE_SDK = 33
+    const val PREVIEW_TARGET_SDK = 33
 //    const val COMPILE_SDK = "android-S"
-//    const val BUILD_TOOLS = "31.0.0 rc5"
 //    const val TARGET_SDK = "S"
-
-    //legacy version, last released android version
-    const val LEGACY_COMPILE_SDK = 31
-    const val LEGACY_BUILD_TOOLS = "31.0.0"
-    const val LEGACY_TARGET_SDK = 31
-
 }
