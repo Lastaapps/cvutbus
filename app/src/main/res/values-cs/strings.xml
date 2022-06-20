@@ -93,7 +93,7 @@
     <string name="settings_update_title">Lokální databáze</string>
     <string name="settings_update_released">Vydáno</string>
     <string name="settings_update_valid">Platné do</string>
-    <string name="settings_update_updated">Aktualizováno</string>
+    <string name="settings_update_updated">Poslední kontrola</string>
     <string name="settings_update_button_description">Vynutit aktualizaci dat</string>
     <string name="update_notification_updating_title">Aktualizuji lokální data</string>
     <string name="update_notification_updating_content">Takže vám nic neunikne</string>
@@ -115,7 +115,7 @@
     <string name="license_detail_description">Popis</string>
     <string name="license_detail_no_license">Není dostupná žádná licence</string>
     <string name="pid_no_connection">Nebyl nalezen žádný spoj, zkuste aktualizovat lokální databázi</string>
-    <string name="pid_button_direction">Změnit směr</string>
+    <string name="pid_button_direction">Otočit</string>
     <string name="pid_button_time_mode">Změnit zobrazení času</string>
     <string name="pid_button_battery">Vypnout optimalizaci baterie</string>
     <string name="pid_icon_description_direction">Změnit směr</string>
@@ -140,11 +140,13 @@
     <string name="notification_create_time_no_data_content">Zkuste aktualizovat lokální databázi nebo tuto chybu nahlásit vývojáři</string>
     <string name="notification_create_time_data_minutes_abbrev">min</string>
     <string name="notification_create_time_data_now">Nyní</string>
+    <string name="notification_create_time_data_leaving">Odjíždí, utíkej!</string>
     <string name="notification_create_hide_title">Limit oznámení vypršel</string>
     <string name="notification_create_hide_content">Notifikace brzy zmizí</string>
     <string name="notification_channel_name">Odjezdy</string>
     <string name="notification_channel_description">Zobrazuje další odjezdy (čas a zbývající) a možnost změnit směr</string>
     <string name="notification_button_direction">Změnit směr</string>
+    <string name="notification_button_next">Další</string>
     <string name="notification_button_close">Zavřít</string>
     <string name="ui_fab_notification_show">Zobrazi oznámení s odjezdy</string>
     <string name="ui_fab_notification_dismiss">Skrýt oznámení s odjezdy</string>

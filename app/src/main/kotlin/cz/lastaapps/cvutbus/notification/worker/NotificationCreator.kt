@@ -34,6 +34,7 @@ import cz.lastaapps.cvutbus.MainActivity
 import cz.lastaapps.cvutbus.R
 import cz.lastaapps.cvutbus.localizedFormat
 import cz.lastaapps.cvutbus.notification.receivers.ChangeDirectionReceiver
+import cz.lastaapps.cvutbus.notification.receivers.NextConnectionReceiver
 import cz.lastaapps.entity.utils.CET
 import cz.lastaapps.repo.DepartureInfo
 import kotlinx.datetime.Clock
@@ -76,10 +77,14 @@ class NotificationCreator(private val context: Context, private val workerId: UU
         val duration = info.dateTime.toInstant(CET) - Clock.System.now()
 
         val time = if (duration.inWholeHours == 0L) {
-            if (duration.inWholeMinutes == 0L)
-                context.getString(R.string.notification_create_time_data_now)
-            else
-                "${duration.inWholeMinutes} ${context.getString(R.string.notification_create_time_data_minutes_abbrev)}"
+            when {
+                duration.isNegative() ->
+                    context.getString(R.string.notification_create_time_data_leaving)
+                duration.inWholeMinutes == 0L ->
+                    context.getString(R.string.notification_create_time_data_now)
+                else ->
+                    "${duration.inWholeMinutes} ${context.getString(R.string.notification_create_time_data_minutes_abbrev)}"
+            }
         } else {
             "%d:%02d".format(duration.inWholeHours, duration.inWholeMinutes % 60)
         }
@@ -90,7 +95,7 @@ class NotificationCreator(private val context: Context, private val workerId: UU
 
     private fun createTimeDescription(data: List<DepartureInfo>): String {
         return data.joinToString(separator = ", ") {
-            it.dateTime.localizedFormat(context)
+            it.routeShortName + " " + it.dateTime.localizedFormat(context)
         }
     }
 
@@ -124,10 +129,20 @@ class NotificationCreator(private val context: Context, private val workerId: UU
         val cancelIntent = WorkManager.getInstance(context)
             .createCancelPendingIntent(workerId)
 
-        val reverse = PendingIntent.getBroadcast(
+        val reverseIntent = PendingIntent.getBroadcast(
             context,
             23569,
             Intent(context, ChangeDirectionReceiver::class.java),
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+            } else
+                PendingIntent.FLAG_UPDATE_CURRENT
+        )
+
+        val nextIntent = PendingIntent.getBroadcast(
+            context,
+            23824,
+            Intent(context, NextConnectionReceiver::class.java),
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
                 PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
             } else
@@ -159,7 +174,12 @@ class NotificationCreator(private val context: Context, private val workerId: UU
             addAction(
                 android.R.drawable.ic_menu_rotate,
                 context.getString(R.string.notification_button_direction),
-                reverse,
+                reverseIntent,
+            )
+            addAction(
+                R.drawable.ic_navigate_next,
+                context.getString(R.string.notification_button_next),
+                nextIntent,
             )
             addAction(
                 android.R.drawable.ic_delete,

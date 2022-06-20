@@ -34,7 +34,6 @@ import cz.lastaapps.repo.TransportConnection
 /**
  * Ready for the future where there may be more connection added
  */
-@Suppress("unused")
 @Composable
 fun PreferredStopPairSelection(
     viewModel: SettingsViewModel, modifier: Modifier = Modifier
@@ -66,7 +65,7 @@ fun PreferredStopPairSelection(
     SettingsDropDown(
         expanded = expanded,
         onExpanded = { expanded = it },
-        label = stringResource(R.string.settings_preferred_stops_remember),
+        label = stringResource(R.string.settings_preferred_stops_label),
         options = options,
         selected = selectedIndex,
         onItemSelected = onSelected,

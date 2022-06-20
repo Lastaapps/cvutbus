@@ -36,4 +36,14 @@ object StopsParser {
             Stop(StopId(stopId), StopName(name))
         }
     }
+
+    fun parse(stream: InputStream, onEach: (Stop) -> Unit) {
+        val buffered = BufferedReader(InputStreamReader(stream))
+
+        buffered.readLine()
+        return buffered.lines().forEach { line ->
+            val (stopId, name) = line.safeSplit()
+            Stop(StopId(stopId), StopName(name)).also(onEach)
+        }
+    }
 }

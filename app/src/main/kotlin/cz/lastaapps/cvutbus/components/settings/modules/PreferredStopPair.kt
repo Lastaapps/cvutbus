@@ -38,7 +38,7 @@ sealed class PreferredStopPair(val stopPair: StopPair) {
 
 private val preferredStopKey = intPreferencesKey("preferred_stop_pair")
 private val latestStopPairKey = intPreferencesKey("latest_stop_pair")
-private val defaultStopPair = StopPairs.strahovDejvicka
+private val defaultStopPair = StopPairs.allStops.first()
 
 val SettingsStore.preferredStopPair: Flow<PreferredStopPair>
     get() = store.data.map { it[preferredStopKey] ?: -1 }.combine(latestStopPair) { key, latest ->

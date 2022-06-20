@@ -44,6 +44,21 @@ object CalendarParser {
         }
     }
 
+    fun parse(stream: InputStream, onEach: (Calendar) -> Unit) {
+        val buffered = BufferedReader(InputStreamReader(stream))
+
+        buffered.readLine()
+        buffered.lines().forEach { line ->
+            val split = line.split(",")
+            Calendar(
+                ServiceId(split[0]),
+                ServiceDays.Companion.fromDays(split.drop(1).take(7).map { it == "1" }),
+                split[8].toLocalDate(),
+                split[9].toLocalDate(),
+            ).also(onEach)
+        }
+    }
+
     private fun String.toLocalDate(): LocalDate {
         val num = toInt()
         val year = num / 10_000

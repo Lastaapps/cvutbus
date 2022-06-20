@@ -17,14 +17,29 @@
  * along with ČVUT Bus.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package cz.lastaapps.generator
+package cz.lastaapps.repo
 
-import org.junit.jupiter.api.Test
-
-class MainButItIsATest {
-
-    @Test
-    fun whenMainDoesNotRunThanRunItInTest() {
-        main()
+abstract class LruCache<K : Any, V : Any>(
+    private val capacity: Int,
+) {
+    init {
+        require(capacity > 0)
     }
+
+    private val backingMap = HashMap<K, V>()
+    private val queue = ArrayDeque<K>(capacity + 1)
+
+    fun get(key: K): V {
+        val item = backingMap.getOrPut(key) { createItem(key) }
+        queue.remove(key)
+        queue.add(key)
+        if (queue.size > capacity) {
+            val toRemove = queue.removeLast()
+            backingMap.remove(toRemove)?.let { destroyItem(it) }
+        }
+        return item
+    }
+
+    abstract fun createItem(key: K): V
+    open fun destroyItem(value: V) {}
 }

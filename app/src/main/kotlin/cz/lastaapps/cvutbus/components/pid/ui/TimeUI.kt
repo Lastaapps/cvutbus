@@ -51,11 +51,12 @@ import kotlinx.datetime.toInstant
 
 @Composable
 fun TimeUI(
+    page: Int,
     pidViewModel: PIDViewModel,
     settingsViewModel: SettingsViewModel,
     modifier: Modifier = Modifier,
 ) {
-    val data by pidViewModel.getData().collectAsState(null)
+    val data by pidViewModel.getData(page).collectAsState(null)
 
     Box(
         contentAlignment = Alignment.Center,
@@ -139,6 +140,7 @@ private fun ShowData(
                     }
                 }
             }
+            Spacer(Modifier.height(64.dp))
         }
     }
 }

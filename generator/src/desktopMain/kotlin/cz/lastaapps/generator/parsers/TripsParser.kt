@@ -42,4 +42,19 @@ object TripsParser {
             )
         }
     }
+
+    fun parse(stream: InputStream, onEach: (Trip) -> Unit) {
+        val buffered = BufferedReader(InputStreamReader(stream))
+
+        buffered.readLine()
+        buffered.lines().forEach { line ->
+            val split = line.safeSplit()
+            Trip(
+                RouteId.fromString(split[0]),
+                ServiceId(split[1]),
+                TripId(split[2]),
+                split[3],
+            ).also { onEach(it) }
+        }
+    }
 }

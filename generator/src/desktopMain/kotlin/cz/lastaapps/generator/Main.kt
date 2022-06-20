@@ -23,16 +23,16 @@ import cz.lastaapps.database.DatabaseDriverFactoryImpl
 import cz.lastaapps.database.MemoryDriverFactory
 import cz.lastaapps.database.PIDDatabase
 import cz.lastaapps.database.createDatabase
-import cz.lastaapps.entity.StopName
 import cz.lastaapps.entity.utils.CET
 import cz.lastaapps.generator.parsers.*
+import cz.lastaapps.repo.StopPairs
 import io.ktor.client.*
 import io.ktor.client.engine.cio.*
+import io.ktor.client.plugins.*
 import io.ktor.client.request.*
-import io.ktor.client.statement.*
 import io.ktor.http.*
 import io.ktor.util.*
-import io.ktor.utils.io.core.*
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
 import kotlinx.datetime.toJavaZoneId
 import org.lighthousegames.logging.logging
@@ -62,7 +62,7 @@ const val jsonName = "config.json"
  * Filters all the non-important trips form the dara provided by PID,
  * so a small database can be uploaded to the net
  */
-fun main(): Unit = runBlocking {
+fun main(): Unit = runBlocking(Dispatchers.IO) {
 
     val skipDownload = false
     val skipZip = false
@@ -77,12 +77,14 @@ fun main(): Unit = runBlocking {
 
     val archive = File(dir, archiveName)
     if ((!archive.exists() || Instant.ofEpochMilli(archive.lastModified() + 24 * 3600 * 1000) < Instant.now()) && !skipDownload) {
-        downLog.i { "Downloading from http://data.pid.cz/PID_GTFS.zip" }
+        downLog.i { "Downloading from https://data.pid.cz/PID_GTFS.zip" }
 
         if (!archive.exists())
             archive.createNewFile()
 
-        val succeeded = HttpClient(CIO).downloadFile(archive, "http://data.pid.cz/PID_GTFS.zip") {
+        val succeeded = HttpClient(CIO) {
+            CurlUserAgent()
+        }.downloadFile(archive, "https://data.pid.cz/PID_GTFS.zip") {
             //print("\rDownload progress: ${it * 100} %")
         }
         if (!succeeded) {
@@ -110,18 +112,14 @@ fun main(): Unit = runBlocking {
     loadData(dir, completeDatabase)
     memLog.i { "Loading done" }
 
-    val stationPairs = listOf(
-        "Koleje Strahov" to "Dejvická",
-    ).map { StopName(it.first) to StopName(it.second) }
-
     val databaseFile = File(dir, databaseName)
     if (databaseFile.exists()) databaseFile.delete()
     databaseFile.createNewFile()
 
     val database = createDatabase(DatabaseDriverFactoryImpl(databaseFile))
-    stationPairs.forEach {
-        dbLog.i { "Querying data for ${it.first} - ${it.second}" }
-        completeDatabase.queriesQueries.getAllColumns(it.first, it.second).executeAsList()
+    StopPairs.allStops.forEach {
+        dbLog.i { "Querying data for ${it.stop1} - ${it.stop2}" }
+        completeDatabase.queriesQueries.getAllColumns(it.stop1, it.stop2).executeAsList()
             .also { list ->
                 dbLog.i { "Connections found: ${list.size}" }
             }.forEach { row ->
@@ -177,13 +175,9 @@ fun main(): Unit = runBlocking {
 
 @OptIn(InternalAPI::class)
 internal suspend fun HttpClient.downloadFile(
-    file: File,
-    url: String,
-    onProgress: (Float) -> Unit
+    file: File, url: String, onProgress: (Float) -> Unit
 ): Boolean {
-    val response = request(url) {
-        method = HttpMethod.Get
-    }
+    val response = get { url(url) }
 
     val data = ByteArray(response.contentLength()!!.toInt())
     var offset = 0
@@ -260,26 +254,24 @@ internal fun loadData(dir: File, database: PIDDatabase) {
 
     database.transaction {
         parseLog.i { "Parsing calendar.txt" }
-        CalendarParser.parse(stream("calendar")).forEach {
+        CalendarParser.parse(stream("calendar")) {
             database.calendarQueries.insert(it.serviceId, it.days, it.start, it.end)
         }
         parseLog.i { "Parsing routes.txt" }
-        RoutesParser.parse(stream("routes")).forEach {
+        RoutesParser.parse(stream("routes")) {
             database.routesQueries.insert(it.routeId, it.shortName, it.longName)
         }
         parseLog.i { "Parsing stops.txt" }
-        StopsParser.parse(stream("stops")).forEach {
+        StopsParser.parse(stream("stops")) {
             database.stopsQueries.insert(it.stopId, it.name)
         }
         parseLog.i { "Parsing stop_times.txt" }
-        StopTimesParser.parse(stream("stop_times")).forEach {
+        StopTimesParser.parse(stream("stop_times")) {
             database.stopTimesQueries.insert(it.stopId, it.tripId, it.arrival, it.departure)
         }
         parseLog.i { "Parsing trips.txt" }
-        TripsParser.parse(stream("trips")).forEach {
-            database.tripsQueries.insert(
-                it.tripId, it.routeId, it.serviceId, it.headSign,
-            )
+        TripsParser.parse(stream("trips")) {
+            database.tripsQueries.insert(it.tripId, it.routeId, it.serviceId, it.headSign)
         }
     }
 }

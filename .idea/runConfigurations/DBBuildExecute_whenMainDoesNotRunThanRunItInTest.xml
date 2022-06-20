@@ -1,20 +1,17 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="MainButItIsATest.whenMainDoesNotRunThanRunItInTest" type="GradleRunConfiguration" factoryName="Gradle" singleton="false">
+  <configuration default="false" name="DBBuildExecute.whenMainDoesNotRunThanRunItInTest" type="GradleRunConfiguration" factoryName="Gradle">
     <ExternalSystemSettings>
       <option name="executionName" />
       <option name="externalProjectPath" value="$PROJECT_DIR$/generator" />
       <option name="externalSystemIdString" value="GRADLE" />
-      <option name="scriptParameters" value="--tests &quot;cz.lastaapps.generator.MainButItIsATest.whenMainDoesNotRunThanRunItInTest&quot;" />
+      <option name="scriptParameters" value=":generator:cleanDesktopTest :generator:desktopTest --tests &quot;cz.lastaapps.generator.DBBuildExecute.whenMainDoesNotRunThanRunItInTest&quot;" />
       <option name="taskDescriptions">
         <list />
       </option>
       <option name="taskNames">
-        <list>
-          <option value=":generator:cleanDesktopTest" />
-          <option value=":generator:desktopTest" />
-        </list>
+        <list />
       </option>
-      <option name="vmOptions" value="" />
+      <option name="vmOptions" />
     </ExternalSystemSettings>
     <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>
     <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>

@@ -54,6 +54,7 @@ kotlin {
         val commonMain by getting {
             dependencies {
                 implementation(project(":storage:database"))
+                implementation(project(":storage:repo"))
 
                 api(Libs.KOTLINX_DATETIME)
                 implementation(Tests.KOTEST_ASSERTION)
@@ -81,7 +82,7 @@ kotlin {
         val desktopMain by getting {
             dependencies {
                 // required by KM Logging for the JVM target
-                implementation("org.slf4j:slf4j-api:1.7.32")
+                implementation("org.slf4j:slf4j-api:1.7.36")
                 implementation("ch.qos.logback:logback-core:1.2.7")
                 implementation("ch.qos.logback:logback-classic:1.2.7")
             }

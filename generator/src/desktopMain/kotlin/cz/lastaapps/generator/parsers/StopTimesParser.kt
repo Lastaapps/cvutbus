@@ -44,6 +44,21 @@ object StopTimesParser {
         }
     }
 
+    fun parse(stream: InputStream, onEach: (StopTime) -> Unit) {
+        val buffered = BufferedReader(InputStreamReader(stream))
+
+        buffered.readLine()
+        buffered.lines().forEach { line ->
+            val (tripId, arrival, departure, stopId) = line.safeSplit()
+            StopTime(
+                StopId(stopId),
+                TripId(tripId),
+                arrival.toServiceDayTime(),
+                departure.toServiceDayTime()
+            ).also(onEach)
+        }
+    }
+
     private val patter = "(\\d{1,2}):(\\d{1,2}):(\\d{1,2})".toRegex()
     private fun String.toServiceDayTime(): ServiceDayTime {
         val (hour, minute, second) = patter.find(this)!!.destructured

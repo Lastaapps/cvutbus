@@ -36,4 +36,14 @@ object RoutesParser {
             Route(RouteId(routeId.drop(1).toInt()), short, long)
         }
     }
+
+    fun parse(stream: InputStream, onEach: (Route) -> Unit) {
+        val buffered = BufferedReader(InputStreamReader(stream))
+
+        buffered.readLine()
+        buffered.lines().forEach {
+            val (routeId, _, short, long) = it.safeSplit()
+            Route(RouteId(routeId.drop(1).toInt()), short, long).also(onEach)
+        }
+    }
 }

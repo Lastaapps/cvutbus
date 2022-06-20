@@ -21,6 +21,8 @@ package cz.lastaapps.cvutbus.components.pid
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.google.accompanist.pager.ExperimentalPagerApi
+import com.google.accompanist.pager.PagerState
 import cz.lastaapps.cvutbus.api.PIDRepoProvider
 import cz.lastaapps.cvutbus.components.settings.SettingsStore
 import cz.lastaapps.cvutbus.components.settings.modules.*
@@ -28,6 +30,7 @@ import cz.lastaapps.cvutbus.getRoundedNow
 import cz.lastaapps.cvutbus.secondTicker
 import cz.lastaapps.entity.utils.CET
 import cz.lastaapps.repo.*
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import kotlinx.datetime.Clock
@@ -36,6 +39,7 @@ import kotlinx.datetime.minus
 import kotlinx.datetime.toLocalDateTime
 import org.lighthousegames.logging.logging
 
+@OptIn(ExperimentalPagerApi::class)
 class PIDViewModel constructor(
     private val provider: PIDRepoProvider,
     private val store: SettingsStore,
@@ -51,7 +55,6 @@ class PIDViewModel constructor(
 
     private val mIsReady = MutableStateFlow(false)
 
-
     val direction: StateFlow<Direction> get() = mDirection
 
     private lateinit var mDirection: MutableStateFlow<Direction>
@@ -61,26 +64,9 @@ class PIDViewModel constructor(
         viewModelScope.launch { store.setLatestDirection(direction) }
     }
 
-
-    //useless until more transfers are added
-    @Suppress("MemberVisibilityCanBePrivate")
-    val stops: StateFlow<StopPair>
-        get() = mStops
-
-    private lateinit var mStops: MutableStateFlow<StopPair>
-
-    @Suppress("unused")
-    fun setStops(stops: StopPair) {
-        mStops.tryEmit(stops)
-        viewModelScope.launch { store.setLatestStopPair(stops) }
+    fun onPage(page: Int) {
+        viewModelScope.launch { store.setLatestStopPair(getPairForPage(page)) }
     }
-
-
-    val transportConnection: Flow<TransportConnection>
-        get() = stops.combine(direction) { stops, directions ->
-            TransportConnection(stops.stop1, stops.stop2, directions)
-        }
-
 
     val showCounter: StateFlow<Boolean> get() = mShowCounter
     private lateinit var mShowCounter: MutableStateFlow<Boolean>
@@ -91,7 +77,7 @@ class PIDViewModel constructor(
     }
 
     init {
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.Default) {
             log.i { "Initializing" }
 
             val preferredDirection = store.preferredDirection.first()
@@ -114,8 +100,6 @@ class PIDViewModel constructor(
                 }
             )
 
-            mStops = MutableStateFlow(preferredStopPair.stopPair)
-
             mShowCounter = MutableStateFlow(
                 when (showMode) {
                     TimeShowMode.Countdown -> true
@@ -124,16 +108,25 @@ class PIDViewModel constructor(
                 }
             )
 
+            pagerState = PagerState(
+                StopPairs.allStops.indexOf(preferredStopPair.stopPair).takeIf { it >= 0 } ?: 0
+            )
+
+            log.i { "Initialization done" }
             mIsReady.value = true
         }
     }
 
+    lateinit var pagerState: PagerState
+    val pageCount = StopPairs.allStops.size
+    private fun getPairForPage(page: Int) = StopPairs.allStops[page]
 
-    fun getData(): Flow<List<DepartureInfo>> = channelFlow {
+    fun getData(page: Int): Flow<List<DepartureInfo>> = channelFlow {
+        val pair = getPairForPage(page)
         val repo = provider.provide()
-        transportConnection.collectLatest { connection ->
-            val start = getRoundedNow().toLocalDateTime(CET)
-            repo.getData(start, connection)
+        val start = getRoundedNow().toLocalDateTime(CET)
+        direction.collectLatest { dir ->
+            repo.getData(start, TransportConnection.fromStopPair(pair, dir))
                 .map { it.dropOld(start) }
                 .collectLatest { dbList ->
                     var list = dbList
@@ -146,4 +139,7 @@ class PIDViewModel constructor(
                 }
         }
     }
+
+    fun getTransportConnection(page: Int): Flow<TransportConnection> =
+        direction.map { TransportConnection.fromStopPair(getPairForPage(page), it) }
 }

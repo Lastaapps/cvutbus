@@ -55,8 +55,9 @@ class PIDRepoTest {
         val date = LocalDate(2022, Month.FEBRUARY, 1)
         val dateTime = LocalDateTime(date.year, date.month, date.dayOfMonth, 8, 0, 0)
 
-        val toDejvickaConnection = TransportConnections.strahovDejvicka(true)
-        val toStrahovConnection = TransportConnections.strahovDejvicka(false)
+        val pair = StopPairs.allStops.first { it.stop1.name == "Koleje Strahov" }
+        val toDejvickaConnection = TransportConnection.fromStopPair(pair, true)
+        val toStrahovConnection = TransportConnection.fromStopPair(pair, false)
 
         val toDejvicka = repo.getData(dateTime, toDejvickaConnection).first().take(5)
         val toStrahov = repo.getData(dateTime, toStrahovConnection).first().take(5)
@@ -115,8 +116,9 @@ class PIDRepoTest {
         val date = LocalDate(2022, Month.FEBRUARY, 5)
         val dateTime = LocalDateTime(date.year, date.month, date.dayOfMonth, 8, 0, 0)
 
-        val toDejvickaConnection = TransportConnections.strahovDejvicka(true)
-        val toStrahovConnection = TransportConnections.strahovDejvicka(false)
+        val pair = StopPairs.allStops.first { it.stop1.name == "Koleje Strahov" }
+        val toDejvickaConnection = TransportConnection.fromStopPair(pair, true)
+        val toStrahovConnection = TransportConnection.fromStopPair(pair, false)
 
         val toDejvicka = repo.getData(dateTime, toDejvickaConnection).first().take(5)
         val toStrahov = repo.getData(dateTime, toStrahovConnection).first().take(5)

@@ -38,8 +38,16 @@ data class TransportConnection(
             if (direction == Direction.Inbound) Direction.Outbound else Direction.Inbound
         )
 
+    fun toStopPair(id: Int) = StopPair(id, stop1, stop2)
+
     companion object {
         fun fromStopPair(stopPair: StopPair, direction: Direction) =
             TransportConnection(stopPair.stop1, stopPair.stop2, direction)
+
+        fun fromStopPair(stopPair: StopPair, toEnd: Boolean) =
+            TransportConnection(
+                stopPair.stop1, stopPair.stop2,
+                if (toEnd) Direction.Outbound else Direction.Inbound,
+            )
     }
 }

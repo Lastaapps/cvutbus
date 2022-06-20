@@ -62,7 +62,7 @@ fun SettingsUI(
             BatteryWaring(settingsViewModel, Modifier.fillMaxWidth())
 
             // disabled until more connections are added
-            //PreferredStopPairSelection(settingsViewModel, Modifier.fillMaxWidth())
+            PreferredStopPairSelection(settingsViewModel, Modifier.fillMaxWidth())
             PreferredDirectionSelection(settingsViewModel, Modifier.fillMaxWidth())
             TimeShowModeSelection(settingsViewModel)
 

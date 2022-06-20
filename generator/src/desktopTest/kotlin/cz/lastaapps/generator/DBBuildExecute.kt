@@ -17,11 +17,14 @@
  * along with ČVUT Bus.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package cz.lastaapps.repo
+package cz.lastaapps.generator
 
-object TransportConnections {
-    fun strahovDejvicka(toDejvicka: Boolean) = TransportConnection(
-        StopPairs.strahovDejvicka.stop1, StopPairs.strahovDejvicka.stop2,
-        if (toDejvicka) Direction.Outbound else Direction.Inbound
-    )
+import org.junit.jupiter.api.Test
+
+class DBBuildExecute {
+
+    @Test
+    fun whenMainDoesNotRunThanRunItInTest() {
+        main()
+    }
 }

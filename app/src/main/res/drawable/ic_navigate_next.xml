@@ -1,0 +1,30 @@
+<!--
+  ~ Copyright 2022, Petr Laštovička as Lasta apps, All rights reserved
+  ~
+  ~ This file is part of ČVUT Bus.
+  ~
+  ~ ČVUT Bus is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ ČVUT Bus is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with ČVUT Bus.  If not, see <https://www.gnu.org/licenses/>.
+  -->
+
+<vector android:autoMirrored="true"
+        android:height="24dp"
+        android:tint="#000000"
+        android:viewportHeight="24"
+        android:viewportWidth="24"
+        android:width="24dp"
+        xmlns:android="http://schemas.android.com/apk/res/android">
+    <path
+            android:fillColor="@android:color/white"
+            android:pathData="M10,6L8.59,7.41 13.17,12l-4.58,4.59L10,18l6,-6z" />
+</vector>

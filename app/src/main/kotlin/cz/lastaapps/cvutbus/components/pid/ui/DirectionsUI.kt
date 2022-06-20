@@ -40,8 +40,12 @@ import cz.lastaapps.cvutbus.components.pid.PIDViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun DirectionsUI(pidViewModel: PIDViewModel, modifier: Modifier = Modifier) {
-    val stops by pidViewModel.transportConnection.collectAsState(null)
+fun DirectionsUI(
+    page: Int,
+    pidViewModel: PIDViewModel,
+    modifier: Modifier = Modifier,
+) {
+    val stops by pidViewModel.getTransportConnection(page).collectAsState(null)
 
     if (stops == null) return
 
@@ -53,7 +57,7 @@ fun DirectionsUI(pidViewModel: PIDViewModel, modifier: Modifier = Modifier) {
 
         Layout(
             modifier = Modifier
-                .padding(top = 16.dp, bottom = 16.dp)
+                .padding(top = 8.dp, bottom = 8.dp)
                 .align(Alignment.CenterHorizontally),
             content = {
                 val iconModifier = Modifier
@@ -62,7 +66,9 @@ fun DirectionsUI(pidViewModel: PIDViewModel, modifier: Modifier = Modifier) {
                 Icon(Icons.Default.DoubleArrow, null, iconModifier)
 
                 Column(
-                    Modifier.height(IntrinsicSize.Min),
+                    Modifier
+                        .height(IntrinsicSize.Min)
+                        .width(IntrinsicSize.Max),
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.spacedBy(8.dp),
                 ) {
@@ -73,6 +79,7 @@ fun DirectionsUI(pidViewModel: PIDViewModel, modifier: Modifier = Modifier) {
                         modifier = Modifier
                             .weight(1f)
                             .animateContentSize(tween())
+                            .fillMaxWidth()
                     )
                     Text(
                         stops!!.from.name,
@@ -81,6 +88,7 @@ fun DirectionsUI(pidViewModel: PIDViewModel, modifier: Modifier = Modifier) {
                         modifier = Modifier
                             .weight(1f)
                             .animateContentSize(tween())
+                            .fillMaxWidth()
                     )
                 }
 

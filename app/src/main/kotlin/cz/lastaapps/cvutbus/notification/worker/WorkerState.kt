@@ -26,13 +26,15 @@ import cz.lastaapps.cvutbus.components.settings.modules.latestDirection
 import cz.lastaapps.cvutbus.components.settings.modules.preferredDirection
 import cz.lastaapps.cvutbus.components.settings.modules.preferredStopPair
 import cz.lastaapps.cvutbus.getRoundedNow
-import cz.lastaapps.cvutbus.minuteTicker
+import cz.lastaapps.cvutbus.secondTicker
 import cz.lastaapps.entity.utils.CET
 import cz.lastaapps.repo.*
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import kotlinx.datetime.Clock
+import kotlinx.datetime.DateTimeUnit
+import kotlinx.datetime.minus
 import kotlinx.datetime.toLocalDateTime
 import org.lighthousegames.logging.logging
 
@@ -86,7 +88,15 @@ class WorkerState constructor(
         connection.value = connection.value.reversed
     }
 
-    suspend fun setStopPair(stopPair: StopPair) {
+    suspend fun nextStopPair() {
+        val conn = connection.value.toStopPair(Int.MAX_VALUE)
+        val stops = StopPairs.allStops
+        val newIndex = stops.indexOfFirst { it.stop1 == conn.stop1 && it.stop2 == it.stop2 }
+            .takeIf { it >= 0 }?.plus(1)?.mod(stops.size) ?: 0
+        setStopPair(stops[newIndex])
+    }
+
+    private suspend fun setStopPair(stopPair: StopPair) {
         prepareData()
         connection.value = TransportConnection.fromStopPair(stopPair, connection.value.direction)
     }
@@ -97,11 +107,11 @@ class WorkerState constructor(
             repo.getData(getRoundedNow().toLocalDateTime(CET), connection).collectLatest { dbData ->
                 var data = dbData
 
-                minuteTicker { now ->
-                    data = data.dropOld(now.toLocalDateTime(CET))
+                secondTicker { now ->
+                    data = data.dropOld(now.minus(30, DateTimeUnit.SECOND).toLocalDateTime(CET))
                     trySend(data)
                 }
             }
         }
-    }
+    }.distinctUntilChanged()
 }

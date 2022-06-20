@@ -101,7 +101,7 @@
     <string name="settings_update_title">Local database</string>
     <string name="settings_update_released">Released</string>
     <string name="settings_update_valid">Valid until</string>
-    <string name="settings_update_updated">Updated on</string>
+    <string name="settings_update_updated">Last checked</string>
     <string name="settings_update_button_description">Force data refresh</string>
 
     <string name="update_notification_updating_title">Updating offline data</string>
@@ -126,7 +126,7 @@
     <string name="license_detail_no_license">No license available</string>
 
     <string name="pid_no_connection">No connections found, try to update offline database</string>
-    <string name="pid_button_direction">Switch direction</string>
+    <string name="pid_button_direction">Reverse</string>
     <string name="pid_button_time_mode">Switch time mode</string>
     <string name="pid_button_battery">Disable battery optimization</string>
     <string name="pid_icon_description_direction">Switch direction</string>
@@ -152,11 +152,13 @@
     <string name="notification_create_time_no_data_content">"Try to update data or contact the app developer"</string>
     <string name="notification_create_time_data_minutes_abbrev">min</string>
     <string name="notification_create_time_data_now">Now</string>
+    <string name="notification_create_time_data_leaving">Just leaving, run!</string>
     <string name="notification_create_hide_title">Auto hide limit has been just reached</string>
     <string name="notification_create_hide_content">Notification is going to be dismissed in a moment</string>
     <string name="notification_channel_name">Departures</string>
     <string name="notification_channel_description">Shows next departures (time + remaining) with the option to change direction.</string>
     <string name="notification_button_direction">Switch direction</string>
+    <string name="notification_button_next">Next</string>
     <string name="notification_button_close">Close</string>
 
     <string name="ui_fab_notification_show">Show departures notification</string>

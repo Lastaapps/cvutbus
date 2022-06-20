@@ -22,9 +22,13 @@ package cz.lastaapps.repo
 import cz.lastaapps.entity.StopName
 
 object StopPairs {
-    val strahovDejvicka = StopPair(0, StopName("Koleje Strahov"), StopName("Dejvická"))
+    private var id = 0
 
-    val allStops = listOf(strahovDejvicka)
+    val allStops = listOf(
+        StopPair(id++, StopName("Koleje Strahov"), StopName("Dejvická")),
+        StopPair(id++, StopName("Stadion Strahov"), StopName("Karlovo náměstí")),
+        StopPair(id++, StopName("Lotyšská"), StopName("Karlovo náměstí")),
+    )
 
     fun getPairById(id: Int): StopPair? =
         allStops.firstOrNull { it.id == id }

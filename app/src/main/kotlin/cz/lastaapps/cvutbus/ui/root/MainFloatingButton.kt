@@ -26,7 +26,7 @@ import android.provider.Settings
 import android.widget.Toast
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.NotificationAdd
+import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material.icons.filled.NotificationsOff
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -73,13 +73,13 @@ private fun FloatingIcon(modifier: Modifier = Modifier) {
 
     if (serviceRunning == false)
         Icon(
-            Icons.Default.NotificationAdd,
+            Icons.Default.NotificationsOff,
             stringResource(R.string.ui_fab_notification_show),
             modifier,
         )
     else
         Icon(
-            Icons.Default.NotificationsOff,
+            Icons.Default.Notifications,
             stringResource(R.string.ui_fab_notification_dismiss),
             modifier,
         )

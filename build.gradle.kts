@@ -17,10 +17,6 @@
  * along with ČVUT Bus.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-buildscript {
-    dependencies {}
-}
-
 plugins {
     val gradleVersion = "7.2.1"
     id(Plugins.APPLICATION) version gradleVersion apply false
