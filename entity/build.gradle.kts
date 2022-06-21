@@ -76,7 +76,8 @@ kotlin {
         }
         val desktopTest by getting {
             dependencies {
-                implementation(Tests.JUNIT)
+                implementation(project.dependencies.platform(Tests.JUNIT_BOM))
+                implementation(Tests.JUNIT_JUPITER)
             }
         }
     }

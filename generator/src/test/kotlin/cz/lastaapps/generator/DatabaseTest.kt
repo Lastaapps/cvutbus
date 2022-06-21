@@ -47,7 +47,7 @@ class DatabaseTest {
         fun initDatabase() {
             database = createDatabase(MemoryDriverFactory())
             measureTime {
-                loadData(File("src/desktopTest/kotlin/cz/lastaapps/generator/testdata"), database)
+                loadData(File("src/test/kotlin/cz/lastaapps/generator/testdata"), database)
             }.also {
                 println("Database ready, took: $it")
             }
@@ -60,7 +60,6 @@ class DatabaseTest {
         database.stopsQueries.getStopsByName(listOf(strahov)).executeAsList().shouldHaveSize(2)
     }
 
-    @OptIn(ExperimentalTime::class)
     @Test
     fun filterTripNumber() = runTest {
         database.queriesQueries.getTripIds(strahov, dejvicka).executeAsList().shouldHaveSize(358)

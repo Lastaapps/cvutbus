@@ -98,7 +98,7 @@ object Versions {
     const val SQLDELIGHT = "1.5.3"
 
     //testing android
-    const val TEST_JUNIT = "4.13.2"
+    const val TEST_JUNIT = "5.8.2"
     const val TEST_ARCH = "2.1.0"
     const val TEST_ANDROIDX = "1.4.0"
     const val TEST_ANDROIDX_JUNIT = "1.1.3"

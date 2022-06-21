@@ -27,7 +27,7 @@ import cz.lastaapps.entity.utils.CET
 import cz.lastaapps.generator.parsers.*
 import cz.lastaapps.repo.StopPairs
 import io.ktor.client.*
-import io.ktor.client.engine.cio.*
+import io.ktor.client.engine.java.*
 import io.ktor.client.plugins.*
 import io.ktor.client.request.*
 import io.ktor.http.*
@@ -82,7 +82,8 @@ fun main(): Unit = runBlocking(Dispatchers.IO) {
         if (!archive.exists())
             archive.createNewFile()
 
-        val succeeded = HttpClient(CIO) {
+        // CIO stopped working
+        val succeeded = HttpClient(Java) {
             CurlUserAgent()
         }.downloadFile(archive, "https://data.pid.cz/PID_GTFS.zip") {
             //print("\rDownload progress: ${it * 100} %")
@@ -104,6 +105,8 @@ fun main(): Unit = runBlocking(Dispatchers.IO) {
     zipLog.i { "Unzipping..." }
     if (!skipZip)
         unzip(archive, dir)
+    else
+        zipLog.i { "Unzipped skipped" }
     zipLog.i { "Unzipped!" }
 
 
@@ -118,7 +121,7 @@ fun main(): Unit = runBlocking(Dispatchers.IO) {
 
     val database = createDatabase(DatabaseDriverFactoryImpl(databaseFile))
     StopPairs.allStops.forEach {
-        dbLog.i { "Querying data for ${it.stop1} - ${it.stop2}" }
+        dbLog.i { "Querying data for ${it.stop1.name} - ${it.stop2.name}" }
         completeDatabase.queriesQueries.getAllColumns(it.stop1, it.stop2).executeAsList()
             .also { list ->
                 dbLog.i { "Connections found: ${list.size}" }

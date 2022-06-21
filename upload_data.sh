@@ -7,8 +7,8 @@ stash="$(git stash)"
 git checkout cloud_data
 git pull
 
-cp generator/pid_data/piddatabase.db cloud_data/.
-cp generator/pid_data/config.json cloud_data/.
+cp pid_data/piddatabase.db cloud_data/.
+cp pid_data/config.json cloud_data/.
 
 git add cloud_data/.
 date="$(date +"%Y/%m/%d")"

@@ -27,6 +27,9 @@ plugins {
     id(Plugins.ABOUT_LIBRARIES) version Versions.ABOUT_LIBRARIES apply false
 }
 
+group = App.GROUP
+version = App.VERSION_NAME
+
 tasks.register("clean", Delete::class) {
     delete(rootProject.buildDir)
 }

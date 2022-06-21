@@ -19,111 +19,54 @@
 
 
 plugins {
-    kotlin("multiplatform")
-    id(Plugins.LIBRARY)
+    application
+    id(Plugins.KOTLIN_JVM)
 }
 
 group = App.GROUP
 version = App.VERSION_NAME
 
-tasks.withType<Test> {
+application {
+}
+
+dependencies {
+    implementation(project(":storage:database"))
+    implementation(project(":storage:repo"))
+
+    implementation(Libs.KOTLINX_DATETIME)
+    implementation(Tests.KOTEST_ASSERTION)
+    implementation(Libs.KM_LOGGING)
+
+    implementation(Libs.KOTLIN_COROUTINES)
+    implementation(Libs.KTOR_CORE)
+    //implementation(Libs.KTOR_CIO)
+    implementation("io.ktor:ktor-client-java:${Versions.KTOR}")
+
+    // required by KM Logging for the JVM target
+    implementation("org.slf4j:slf4j-api:1.7.36")
+    implementation("ch.qos.logback:logback-core:1.2.7")
+    implementation("ch.qos.logback:logback-classic:1.2.7")
+
+    testImplementation(kotlin("test"))
+    testImplementation(Tests.COROUTINES)
+    testImplementation(project.dependencies.platform(Tests.JUNIT_BOM))
+    testImplementation(Tests.JUNIT_JUPITER)
+    testRuntimeOnly(Tests.JUNIT_ENGINE)
+}
+
+tasks.test {
     useJUnitPlatform()
+    maxHeapSize = "1G"
 }
 
-kotlin {
-    sourceSets.all {
-        languageSettings.apply {
-            languageVersion = Versions.KOTLIN_LANGUAGE_VERSION
-            apiVersion = Versions.KOTLIN_LANGUAGE_VERSION
-        }
-    }
-    android {
-        compilations.all {
-            kotlinOptions.jvmTarget = Versions.JVM_TARGET
-        }
-    }
-    jvm("desktop") {
-        compilations.all {
-            kotlinOptions.jvmTarget = Versions.JVM_TARGET
-        }
-        testRuns["test"].executionTask.configure {
-            useJUnitPlatform()
-        }
-    }
-    sourceSets {
-        val commonMain by getting {
-            dependencies {
-                implementation(project(":storage:database"))
-                implementation(project(":storage:repo"))
-
-                api(Libs.KOTLINX_DATETIME)
-                implementation(Tests.KOTEST_ASSERTION)
-                implementation(Libs.KM_LOGGING)
-
-                implementation(Libs.KOTLIN_COROUTINES)
-                implementation(Libs.KTOR_CORE)
-                implementation(Libs.KTOR_CIO)
-            }
-        }
-        val commonTest by getting {
-            dependencies {
-                implementation(kotlin("test"))
-                implementation(Tests.COROUTINES)
-            }
-        }
-        val androidMain by getting {
-            dependencies {
-            }
-        }
-        val androidTest by getting {
-            dependencies {
-            }
-        }
-        val desktopMain by getting {
-            dependencies {
-                // required by KM Logging for the JVM target
-                implementation("org.slf4j:slf4j-api:1.7.36")
-                implementation("ch.qos.logback:logback-core:1.2.7")
-                implementation("ch.qos.logback:logback-classic:1.2.7")
-            }
-        }
-        val desktopTest by getting {
-            dependencies {
-                implementation(Tests.JUNIT)
-            }
-        }
-    }
-}
-
-android {
-    compileSdk = App.COMPILE_SDK
-
-    sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
-
-    defaultConfig {
-        minSdk = App.MIN_SDK
-        targetSdk = App.TARGET_SDK
-
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        consumerProguardFiles("consumer-rules.pro")
+tasks.withType<Jar> {
+    manifest {
+        attributes["Main-Class"] = "cz.lastaapps.generator.MainKt"
     }
 
-    buildTypes {
-        release {
-            isMinifyEnabled = false
-            proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
-            )
-        }
-    }
-    compileOptions {
-        isCoreLibraryDesugaringEnabled = true
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 
-        sourceCompatibility = Versions.JAVA
-        targetCompatibility = Versions.JAVA
-    }
-    dependencies {
-        coreLibraryDesugaring(Libs.DESUGARING)
+    configurations.getByName("runtimeClasspath").forEach {
+        from(if (it.isDirectory) it else zipTree(it))
     }
 }
