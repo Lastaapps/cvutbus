@@ -20,7 +20,6 @@
 package cz.lastaapps.cvutbus.ui.root
 
 import androidx.compose.animation.animateContentSize
-import androidx.compose.animation.rememberSplineBasedDecay
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -35,6 +34,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -42,13 +42,10 @@ import androidx.navigation.NavController
 import cz.lastaapps.cvutbus.R
 import cz.lastaapps.cvutbus.navigation.Dests
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MainTopBar(navController: NavController) {
 
     val title = stringResource(R.string.ui_top_bar_title)
-
-    val decayAnimationSpec = rememberSplineBasedDecay<Float>()
 
     var mainPopupExpanded by rememberSaveable { mutableStateOf(false) }
 
@@ -114,6 +111,7 @@ private fun TopBarPopup(
     modifier: Modifier = Modifier,
     navigateTo: (String) -> Unit,
 ) {
+    val handler = LocalUriHandler.current
     DropdownMenu(expanded, onDismissRequest, modifier) {
         DropdownMenuItem(
             { Text(stringResource(R.string.ui_top_bar_action_privacy)) },
@@ -131,6 +129,12 @@ private fun TopBarPopup(
             { Text(stringResource(R.string.ui_top_bar_action_osturak)) },
             {
                 navigateTo(Dests.Routes.osturak)
+                onDismissRequest()
+            })
+        DropdownMenuItem(
+            { Text(stringResource(R.string.ui_top_bar_action_tracking)) },
+            {
+                handler.openUri("https://mapa.pid.cz")
                 onDismissRequest()
             })
     }

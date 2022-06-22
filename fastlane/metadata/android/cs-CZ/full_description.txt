@@ -1,0 +1,19 @@
+ČVUT Bus je open-source aplikace zobrazující časy odjezdů autobusů a tramvají
+ze zastávek spojených s ČVUT v Praze. Aplikace zobrazuje například spojení mezi
+
+- Koleje Strahov - Dejvická
+- Stadion Strahov - Karlovo náměstí
+- Lotyšská - Karlovo náměstí
+a mnohé další
+
+Pokud vám bude nějaké chybět, dejte vědět a dost možná ho i přidám.
+
+Navíc ještě aplikace podporuje zobrazení oznámení s aktuálním stavem.
+Oznámení můžete zobrazit manuálně v aplikaci nebo v dlaždici
+(kolečka „nahoře“, např. s Wi-Fi či mobilními daty)
+nebo automaticky ve vámi určený čas či po zazvonění vašeho ranního budíku.
+
+Data se spoji jsou získávána z https://pid.cz/o-systemu/opendata/.
+Díky, že je udržujete veřejně dostupná.
+
+Zdrojové kódy aplikace: https://github.com/Lastaapps/cvutbus

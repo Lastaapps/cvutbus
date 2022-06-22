@@ -75,24 +75,14 @@ fun AboutUi(
                 }
 
                 ElevatedCard {
-                    Column(
-                        Modifier
-                            .padding(16.dp)
-                            .align(Alignment.CenterHorizontally),
-                        horizontalAlignment = Alignment.CenterHorizontally,
-                        verticalArrangement = Arrangement.spacedBy(8.dp),
-                    ) {
-                        DataSource(Modifier.fillMaxWidth())
-                        LicenseButton(navController, Modifier.fillMaxWidth())
-                        OsturakButton(navController, Modifier.fillMaxWidth())
-                        ViewSource(Modifier.fillMaxWidth())
-                    }
+                    DataSource(Modifier.padding(16.dp).fillMaxWidth())
                 }
-                ElevatedCard(
-                    modifier = Modifier.fillMaxWidth(),
-                    shape = RoundedCornerShape(8.dp),
-                ) {
-                    Socials(Modifier.padding(16.dp))
+
+                ElevatedCard {
+                    SeeAlso(navController, Modifier.padding(16.dp).fillMaxWidth())
+                }
+                ElevatedCard {
+                    Socials(Modifier.padding(16.dp).fillMaxWidth())
                 }
                 AppInfo(modifier = Modifier.padding(8.dp))
             }
@@ -122,6 +112,24 @@ private fun DataSource(modifier: Modifier = Modifier) {
                 Text(text = "pid.cz", textAlign = TextAlign.Center)
             })
         }
+    }
+}
+
+@Composable
+private fun SeeAlso(navController: NavController, modifier: Modifier = Modifier) {
+    Column(
+        modifier,
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.spacedBy(8.dp),
+    ) {
+        Text(
+            text = stringResource(cz.lastaapps.cvutbus.R.string.about_see_also),
+            style = MaterialTheme.typography.titleMedium,
+            textAlign = TextAlign.Center,
+        )
+        LicenseButton(navController, Modifier.fillMaxWidth())
+        OsturakButton(navController, Modifier.fillMaxWidth())
+        ViewSource(Modifier.fillMaxWidth())
     }
 }
 
@@ -225,14 +233,14 @@ private fun Socials(modifier: Modifier = Modifier) {
         ) { Communication.openPlayStore(context) },
     )
 
-    Column(Modifier.padding(8.dp), horizontalAlignment = Alignment.CenterHorizontally) {
+    Column(modifier, horizontalAlignment = Alignment.CenterHorizontally) {
         Text(
             text = stringResource(cz.lastaapps.cvutbus.R.string.about_developer_contact),
             style = MaterialTheme.typography.titleMedium,
             textAlign = TextAlign.Center,
         )
         Row(
-            modifier.horizontalScroll(rememberScrollState()),
+            Modifier.horizontalScroll(rememberScrollState()),
             horizontalArrangement = Arrangement.spacedBy(8.dp),
         ) {
             icons.forEach {

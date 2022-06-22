@@ -27,7 +27,9 @@ object StopPairs {
     val allStops = listOf(
         StopPair(id++, StopName("Koleje Strahov"), StopName("Dejvická")),
         StopPair(id++, StopName("Stadion Strahov"), StopName("Karlovo náměstí")),
+        StopPair(id++, StopName("Stadion Strahov"), StopName("Anděl")),
         StopPair(id++, StopName("Lotyšská"), StopName("Karlovo náměstí")),
+        StopPair(id++, StopName("Újezd"), StopName("Petřín")),
     )
 
     fun getPairById(id: Int): StopPair? =

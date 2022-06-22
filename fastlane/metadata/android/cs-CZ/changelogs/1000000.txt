@@ -1,0 +1,4 @@
+ČVUT Bus je vydán se všemi funkcemi, které si zamilujete
+- časy dalších odjezdů
+- 4 základní spojení
+- oznámení se současným stavem

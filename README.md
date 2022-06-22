@@ -8,11 +8,21 @@ The core is written using Kotlin Multiplatform. If you want you can port this co
 
 ## Features
 
-- Departure times from Koleje Strahov and Dejvická station
+- The next departure time from the selected station
 - Notification with the following times (+ tile)
-- The notification can be automatically shown in the morning
-- Background data updating
+- The notification can be automatically shown in the morning (after an alarm)
+- Background data update
 - Large screen and landscape support
+
+
+
+## Transport connections
+
+- Koleje Strahov - Dejvická
+- Stadion Strahov - Karlovo náměstí
+- Lotyšská - Karlovo náměstí
+- Stadion Strahov - Anděl
+- Petřín - Úvaly
 
 
 
@@ -20,16 +30,14 @@ The core is written using Kotlin Multiplatform. If you want you can port this co
 
 - Jetpack libraries (Compose, Work, Data Store, ...)
 - Material You
-- Kotlin Multiplatform
-- Ktor
-- Hilt
+- KMM (Ktor, Kodein, SQLDelight, ...)
 
 
 
 ## Screenshots
-<p align="center"><img src="img/light_main.png" alt="Main screen in the light mode" style="width:20%;"/>   <img src="img/light_settings.png" alt="Settings in the light mode" style="width:20%;"/>   <img src="img/dark_main.png" alt="Main screen in the dark mode" style="width:20%;"/>   <img src="img/dark_settings.png" alt="Settings in the dark mode" style="width:20%;"/></p>
+<p align="center"><img src="fastlane/metadata/android/en-US/images/phoneScreenshots/1-en_US.png" alt="Main screen in the light mode" style="width:20%;"/>   <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/3-en_US.png" alt="Settings in the light mode" style="width:20%;"/>   <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/2-en_US.png" alt="Main screen in the dark mode" style="width:20%;"/>   <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/4-en_US.png" alt="Settings in the dark mode" style="width:20%;"/></p>
 
-<p align="center"><img src="img/light_notification.png" alt="Settings in the dark mode" style="width:25%;"/>   <img src="img/dark_notification.png" alt="Settings in the dark mode" style="width:25%;"/></p>
+<p align="center"><img src="fastlane/metadata/android/en-US/images/phoneScreenshots/7-en_US.png" alt="Settings in the light mode" style="width:25%;"/>   <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/8-en_US.png" alt="Settings in the dark mode" style="width:25%;"/></p>
 
 ## License
 

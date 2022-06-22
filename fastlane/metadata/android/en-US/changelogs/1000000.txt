@@ -1,0 +1,4 @@
+CTU Bus is released with all the features you would like and love
+- next departure times
+- 4 basic transfer connections
+- notification with the current state

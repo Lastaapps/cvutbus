@@ -42,6 +42,7 @@
     <string name="about_license_notices">Použité knihovny</string>
     <string name="about_osturak">Informace o ošťuráku</string>
     <string name="about_data_source">Zdroj dat</string>
+    <string name="about_see_also">Koukněte také na</string>
     <string name="about_developer_contact">Kontakt na vývojáře</string>
     <string name="report_title">Jakým způsobem chcete nahlásit chybu?</string>
     <string name="report_telegram">Telegram</string>
@@ -156,5 +157,6 @@
     <string name="ui_top_bar_action_description">Další</string>
     <string name="ui_top_bar_action_privacy">Ochrana soukromí</string>
     <string name="ui_top_bar_action_license">Použité knihovny</string>
+    <string name="ui_top_bar_action_tracking">Sledování spojů</string>
 
 </resources>

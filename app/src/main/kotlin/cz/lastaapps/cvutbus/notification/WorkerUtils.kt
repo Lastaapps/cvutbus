@@ -19,7 +19,10 @@
 
 package cz.lastaapps.cvutbus.notification
 
+import android.Manifest
 import android.content.Context
+import android.content.pm.PackageManager
+import android.os.Build
 import androidx.lifecycle.asFlow
 import androidx.work.*
 import cz.lastaapps.cvutbus.notification.worker.NotificationWorker
@@ -29,7 +32,7 @@ import kotlinx.coroutines.flow.map
 import org.lighthousegames.logging.logging
 
 @Suppress("MemberVisibilityCanBePrivate")
-class WorkerUtils(context: Context) {
+class WorkerUtils(private val context: Context) {
 
     companion object {
         private val log = logging()
@@ -39,6 +42,12 @@ class WorkerUtils(context: Context) {
 
     fun start() {
         log.i { "Starting" }
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU && context.checkSelfPermission(Manifest.permission.POST_NOTIFICATIONS) == PackageManager.PERMISSION_DENIED) {
+            log.e { "Start aborted, notification permission not granted" }
+            return
+        }
+
         val work = with(OneTimeWorkRequestBuilder<NotificationWorker>()) {
             setExpedited(OutOfQuotaPolicy.RUN_AS_NON_EXPEDITED_WORK_REQUEST)
             build()

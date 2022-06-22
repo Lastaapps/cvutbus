@@ -1,0 +1,17 @@
+CTU Bus is an open-source app that shows the times of bus and tram departures from some CTU related
+stations in the city of Prague. You can view for example transfer times between
+
+- Koleje Strahov - Dejvická
+- Stadion Strahov - Karlovo náměstí
+- Lotyšská - Karlovo náměstí
+and others
+
+If you miss any important connection just let me know and I'll think about it.
+
+Moreover, the app supports showing a notification updated with the latest info.
+The notification can be shown manually in the app or using a tile
+or automatically in the morning at a time set or with your alarm clock (auto-detected).
+
+The connection data are fetched from https://pid.cz/o-systemu/opendata/. Thanks for being open.
+
+App source code repo: https://github.com/Lastaapps/cvutbus
