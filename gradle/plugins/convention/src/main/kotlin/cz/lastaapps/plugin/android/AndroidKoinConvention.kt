@@ -19,16 +19,29 @@
 
 package cz.lastaapps.plugin.android
 
-import cz.lastaapps.extensions.implementation
-import cz.lastaapps.extensions.libs
-import cz.lastaapps.extensions.testImplementation
+import cz.lastaapps.extensions.*
 import cz.lastaapps.plugin.BasePlugin
 import org.gradle.kotlin.dsl.dependencies
+import org.jetbrains.kotlin.gradle.dsl.kotlinExtension
 
 class AndroidKoinConvention : BasePlugin({
+    pluginManager {
+        alias(libs.plugins.google.ksp)
+    }
+
+    kotlinExtension.apply {
+        sourceSets.all {
+            kotlin.srcDir("build/generated/ksp/$name/kotlin")
+        }
+    }
+
     dependencies {
         implementation(libs.koin.core)
-        implementation(libs.koin.android)
+        implementation(libs.koin.android.core)
+
+        implementation(libs.koin.annotations)
+        ksp(libs.koin.annotations.compiler)
+
         testImplementation(libs.koin.test)
     }
 })

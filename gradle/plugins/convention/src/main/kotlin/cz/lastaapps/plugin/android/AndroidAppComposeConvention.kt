@@ -20,18 +20,20 @@
 package cz.lastaapps.plugin.android
 
 import com.android.build.gradle.internal.dsl.BaseAppModuleExtension
+import cz.lastaapps.extensions.androidApp
 import cz.lastaapps.plugin.BasePlugin
 import cz.lastaapps.plugin.android.config.configureComposeCompiler
 import cz.lastaapps.plugin.android.config.configureComposeDependencies
 import org.gradle.kotlin.dsl.apply
 import org.gradle.kotlin.dsl.configure
+import org.gradle.kotlin.dsl.extra
 
 @Suppress("unused")
 class AndroidAppComposeConvention : BasePlugin({
 
     apply<AndroidAppConvention>()
 
-    extensions.configure<BaseAppModuleExtension> {
+    androidApp {
         configureComposeCompiler(this)
     }
     configureComposeDependencies()

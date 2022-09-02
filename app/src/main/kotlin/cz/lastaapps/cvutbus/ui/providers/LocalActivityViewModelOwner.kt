@@ -22,12 +22,17 @@ package cz.lastaapps.cvutbus.ui.providers
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.ProvidedValue
 import androidx.compose.runtime.compositionLocalOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalView
-import androidx.lifecycle.*
-import org.kodein.di.compose.localDI
-import org.kodein.di.direct
-import org.kodein.di.instance
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelStoreOwner
+import androidx.lifecycle.ViewTreeViewModelStoreOwner
+import org.koin.androidx.compose.getViewModel
+import org.koin.androidx.compose.viewModel
+import org.koin.core.annotation.KoinInternalApi
+import org.koin.core.context.GlobalContext
+import org.koin.core.parameter.ParametersDefinition
+import org.koin.core.qualifier.Qualifier
+import org.koin.core.scope.Scope
 
 // Stolen from LocalViewModelOwner
 object LocalActivityViewModelOwner {
@@ -45,23 +50,18 @@ object LocalActivityViewModelOwner {
     }
 }
 
+@OptIn(KoinInternalApi::class)
 @Composable
-inline fun <reified VM : ViewModel> rememberActivityViewModel(tag: Any? = null): ViewModelLazy<VM> =
-    with(localDI()) {
-        val viewModelStoreOwner = LocalActivityViewModelOwner.current
+inline fun <reified VM : ViewModel> activityViewModel(
+    qualifier: Qualifier? = null,
+    scope: Scope = GlobalContext.get().scopeRegistry.rootScope,
+    noinline parameters: ParametersDefinition? = null
+): Lazy<VM> = viewModel(qualifier, LocalActivityViewModelOwner.current, scope, parameters)
 
-        remember {
-            ViewModelLazy(
-                viewModelClass = VM::class,
-                storeProducer = { viewModelStoreOwner.viewModelStore },
-                factoryProducer = {
-                    object : ViewModelProvider.Factory {
-                        override fun <T : ViewModel> create(modelClass: Class<T>): T {
-                            @Suppress("UNCHECKED_CAST")
-                            return direct.instance<VM>(tag) as T
-                        }
-                    }
-                }
-            )
-        }
-    }
+@OptIn(KoinInternalApi::class)
+@Composable
+inline fun <reified VM : ViewModel> getActivityViewModel(
+    qualifier: Qualifier? = null,
+    scope: Scope = GlobalContext.get().scopeRegistry.rootScope,
+    noinline parameters: ParametersDefinition? = null
+): VM = getViewModel(qualifier, LocalActivityViewModelOwner.current, scope, parameters)

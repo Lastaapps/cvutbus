@@ -32,14 +32,14 @@ import cz.lastaapps.entity.utils.CET
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.first
 import kotlinx.datetime.toJavaZoneId
-import org.kodein.di.android.closestDI
-import org.kodein.di.instance
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 import org.lighthousegames.logging.logging
 import java.time.DayOfWeek
 import java.time.LocalDate
 import java.time.LocalTime
 
-class RegisteredReceiver : BroadcastReceiver() {
+class RegisteredReceiver : BroadcastReceiver(), KoinComponent {
 
     companion object {
         const val EXTRA_TYPE = "type"
@@ -51,9 +51,8 @@ class RegisteredReceiver : BroadcastReceiver() {
 
     override fun onReceive(context: Context, intent: Intent) {
         log.i { "Received" }
-        val di by closestDI(context)
-        val registerModule: RegisterModule by di.instance()
-        val store: SettingsStore by di.instance()
+        val registerModule: RegisterModule by inject()
+        val store: SettingsStore by inject()
 
         runBlocking {
             if (shouldStart(intent, store)) {

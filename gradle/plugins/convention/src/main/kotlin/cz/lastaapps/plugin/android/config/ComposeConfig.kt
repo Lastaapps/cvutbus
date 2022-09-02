@@ -67,5 +67,8 @@ internal fun Project.configureComposeDependencies() {
         implementation(libs.androidx.navigation.compose)
 
         implementation(libs.coil.composeComplete)
+
+        implementation(libs.koin.android.navigation)
+        implementation(libs.koin.android.compose)
     }
 }

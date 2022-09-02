@@ -29,22 +29,17 @@ import cz.lastaapps.cvutbus.components.settings.SettingsViewModel
 import cz.lastaapps.cvutbus.init.RunInit
 import cz.lastaapps.cvutbus.ui.root.AppLayout
 import kotlinx.coroutines.delay
-import org.kodein.di.DI
-import org.kodein.di.DIAware
-import org.kodein.di.android.closestDI
-import org.kodein.di.android.x.viewmodel.viewModel
-import org.kodein.di.instance
+import org.koin.android.ext.android.inject
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.lighthousegames.logging.logging
 
-class MainActivity : AppCompatActivity(), DIAware {
+class MainActivity : AppCompatActivity() {
 
     companion object {
         private val log = logging()
     }
 
-    override val di: DI by closestDI()
-
-    private val init: RunInit by instance()
+    private val init: RunInit by inject()
 
     private val pidViewModel: PIDViewModel by viewModel()
     private val settingsViewModel: SettingsViewModel by viewModel()

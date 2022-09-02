@@ -43,5 +43,13 @@ dependencies {
 
     implementation(libs.androidx.datastore)
     implementation(libs.androidx.windowManager)
+
     implementation(libs.androidx.work)
+    implementation(libs.androidx.lifecycle.livedata) // asFlow()
+    implementation(libs.koin.android.workmanager)
+
+    implementation(libs.ktor.client.core)
+    implementation(libs.ktor.client.cio)
+
+    implementation(libs.aboutLibraries.core)
 }

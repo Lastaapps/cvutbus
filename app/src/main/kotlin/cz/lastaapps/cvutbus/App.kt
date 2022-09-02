@@ -20,7 +20,6 @@
 package cz.lastaapps.cvutbus
 
 import android.app.Application
-import android.content.Context
 import androidx.work.Configuration
 import cz.lastaapps.cvutbus.api.DatabaseProvider
 import cz.lastaapps.cvutbus.api.DatabaseStore
@@ -36,39 +35,49 @@ import cz.lastaapps.cvutbus.notification.receivers.RegisterModule
 import cz.lastaapps.cvutbus.notification.worker.WorkerState
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import org.kodein.di.*
+import org.koin.android.ext.koin.androidContext
+import org.koin.android.ext.koin.androidLogger
+import org.koin.androidx.viewmodel.dsl.viewModelOf
+import org.koin.androidx.workmanager.koin.workManagerFactory
+import org.koin.core.context.startKoin
+import org.koin.core.module.dsl.factoryOf
+import org.koin.core.module.dsl.singleOf
+import org.koin.dsl.module
 import org.lighthousegames.logging.logging
 
-class App : Application(), Configuration.Provider, DIAware {
+//import org.koin.ksp.generated.*
 
-    @Suppress("RemoveExplicitTypeArguments")
-    override val di: DI by DI.lazy {
-        bindProvider<Context> { this@App }
-        bindProvider<App> { this@App }
+class App : Application(), Configuration.Provider {
 
-        bindSingleton<WorkerState> { WorkerState(instance(), instance()) }
+    override fun onCreate() {
+        super.onCreate()
+        log.i { "Creating App" }
 
-        bindSingleton<DatabaseStore> { DatabaseStore(instance()) }
-        bindSingleton<DatabaseProvider> { DatabaseProvider(instance(), instance(), Dispatchers.IO) }
-        bindSingleton<PIDRepoProvider> { PIDRepoProvider(instance()) }
-        bindSingleton<UpdateManager> { UpdateManager(instance()) }
-        bindProvider<RegisterModule> { RegisterModule(instance(), instance()) }
-        bindProvider<RunInit> { RunInit(instance(), instance(), instance()) }
-
-        bindSingleton<SettingsStore> { SettingsStore(instance()) }
-        bindSingleton<PrivacyStore> { PrivacyStore(instance()) }
-
-        bindProvider<PIDViewModel> { PIDViewModel(instance(), instance()) }
-        bindProvider<PrivacyViewModel> { PrivacyViewModel(instance()) }
-        bindProvider<SettingsViewModel> {
-            SettingsViewModel(
-                instance(),
-                instance(),
-                instance(),
-                instance(),
-                instance()
-            )
+        startKoin {
+            androidLogger()
+            androidContext(this@App)
+            workManagerFactory()
+            modules(appModule)
+//            defaultModule()
         }
+    }
+
+    private val appModule = module {
+        singleOf(::WorkerState)
+
+        single { DatabaseProvider(get(), get(), Dispatchers.IO) }
+        singleOf(::DatabaseStore)
+        singleOf(::PIDRepoProvider)
+        singleOf(::UpdateManager)
+        factoryOf(::RegisterModule)
+        factoryOf(::RunInit)
+
+        singleOf(::SettingsStore)
+        singleOf(::PrivacyStore)
+
+        viewModelOf(::PIDViewModel)
+        viewModelOf(::PrivacyViewModel)
+        viewModelOf(::SettingsViewModel)
     }
 
     companion object {
@@ -78,10 +87,4 @@ class App : Application(), Configuration.Provider, DIAware {
 
     override fun getWorkManagerConfiguration() =
         Configuration.Builder().build()
-
-
-    override fun onCreate() {
-        super.onCreate()
-        log.i { "Creating App" }
-    }
 }

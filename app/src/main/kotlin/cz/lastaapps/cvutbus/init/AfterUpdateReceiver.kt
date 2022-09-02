@@ -22,25 +22,24 @@ package cz.lastaapps.cvutbus.init
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
-import org.kodein.di.android.closestDI
-import org.kodein.di.instance
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.get
 import org.lighthousegames.logging.logging
 
-class AfterUpdateReceiver : BroadcastReceiver() {
+class AfterUpdateReceiver : BroadcastReceiver(), KoinComponent {
 
     companion object {
         private val log = logging()
     }
 
     override fun onReceive(context: Context, intent: Intent) {
-        val di by closestDI(context)
 
         log.i { "Received" }
         if (intent.action == Intent.ACTION_MY_PACKAGE_REPLACED &&
             intent.data.toString() == "package:${context.packageName}"
         ) {
             log.i { "Accepted" }
-            val init by di.instance<RunInit>()
+            val init = get<RunInit>()
             init.run()
         }
     }

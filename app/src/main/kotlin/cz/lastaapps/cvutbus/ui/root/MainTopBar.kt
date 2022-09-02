@@ -42,6 +42,7 @@ import androidx.navigation.NavController
 import cz.lastaapps.cvutbus.R
 import cz.lastaapps.cvutbus.navigation.Dests
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MainTopBar(navController: NavController) {
 

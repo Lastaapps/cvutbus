@@ -35,19 +35,16 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.withContext
 import kotlinx.coroutines.yield
-import org.kodein.di.DI
-import org.kodein.di.DIAware
-import org.kodein.di.android.closestDI
-import org.kodein.di.instance
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 import org.lighthousegames.logging.logging
 
 class UpdateWorker constructor(
     app: Context, params: WorkerParameters,
-) : CoroutineWorker(app, params), DIAware {
+) : CoroutineWorker(app, params), KoinComponent {
 
-    override val di: DI by closestDI(app)
-    val store: DatabaseStore by instance()
-    val databaseProvider: DatabaseProvider by instance()
+    val store: DatabaseStore by inject()
+    val databaseProvider: DatabaseProvider by inject()
 
     companion object {
         const val workerPeriodKey = "database_update_period"

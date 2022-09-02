@@ -100,5 +100,7 @@ private fun ColorScheme.animated(): ColorScheme {
         surfaceTint = animateColorAsState(targetValue = surfaceTint).value,
         tertiary = animateColorAsState(tertiary).value,
         tertiaryContainer = animateColorAsState(tertiaryContainer).value,
+        scrim = animateColorAsState(scrim).value,
+        outlineVariant = animateColorAsState(outlineVariant).value,
     )
 }

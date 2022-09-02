@@ -19,12 +19,13 @@ coil = "2.2.0"
 dagger = "2.42"
 espresso = "3.4.0"
 firebase-bom = "30.2.0"
-google-ksp = "1.7.10-1.0.5"
+google-ksp = "1.7.10-1.0.6"
 # @keep
 java-jvmTarget = "11"
 junit5-bom = "5.9.0"
 kodein = "7.12.0"
 koin = "3.2.0"
+koin-annotations = "1.0.1"
 kotest = "5.4.2"
 kotlin = "1.7.10"
 kotlin-coroutines = "1.6.4"
@@ -158,11 +159,16 @@ kodein-androidxViewmode = { module = "org.kodein.di:kodein-di-framework-android-
 kodein-androidxViewmodeSavedstate = { module = "org.kodein.di:kodein-di-framework-android-x-viewmodel-savedstate", version.ref = "kodein" }
 kodein-compose = { module = "org.kodein.di:kodein-di-framework-compose", version.ref = "kodein" }
 kodein-core = { module = "org.kodein.di:kodein-di", version.ref = "kodein" }
-koin-android = { module = "io.insert-koin:koin-android", version.ref = "koin" }
-koin-annotations = { module = "io.insert-koin:koin-annotations", version.ref = "koin" }
+koin-android-compose = { module = "io.insert-koin:koin-androidx-workmanager", version.ref = "koin" }
+koin-android-core = { module = "io.insert-koin:koin-android", version.ref = "koin" }
+koin-android-navigation = { module = "io.insert-koin:koin-androidx-navigation", version.ref = "koin" }
+koin-android-workmanager = { module = "io.insert-koin:koin-androidx-compose", version.ref = "koin" }
+koin-annotations = { module = "io.insert-koin:koin-annotations", version.ref = "koin-annotations" }
+koin-annotations-compiler = { module = "io.insert-koin:koin-ksp-compiler", version.ref = "koin-annotations" }
 koin-compiler = { module = "io.insert-koin:koin-ksp-compiler", version.ref = "koin" }
 koin-core = { module = "io.insert-koin:koin-core", version.ref = "koin" }
 koin-ktorServer = { module = "io.insert-koin:koin-ktor", version.ref = "koin" }
+koin-ktorServer-logger = { module = "io.insert-koin:koin-logger-slf4j", version.ref = "koin" }
 koin-test = { module = "io.insert-koin:koin-test", version.ref = "koin" }
 koin-testJUnit = { module = "io.insert-koin:koin-test-junit4", version.ref = "koin" }
 kotest-assertion = { module = "io.kotest:kotest-assertions-core", version.ref = "kotest" }

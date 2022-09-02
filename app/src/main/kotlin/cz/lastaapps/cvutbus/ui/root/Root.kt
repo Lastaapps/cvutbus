@@ -51,11 +51,6 @@ fun AppLayout(
     if (appTheme == null || dynamic == null)
         return
 
-    SideEffect {
-        logging("AppLayout").i { "Theme ready" }
-        onThemeReady()
-    }
-
     val expected = isSystemInDarkTheme()
     val darkState by remember(appTheme, expected) {
         derivedStateOf {
@@ -68,14 +63,20 @@ fun AppLayout(
         }
     }
 
-    val privacyViewModel: PrivacyViewModel by rememberActivityViewModel()
+    ApplyProviders(activity = activity, viewModelStoreOwner = viewModelStoreOwner) {
+        AppTheme(useCustomTheme = !dynamic!!, darkTheme = darkState, updateSystemBars = true) {
 
-    AppTheme(useCustomTheme = !dynamic!!, darkTheme = darkState, updateSystemBars = true) {
-        ApplyProviders(activity = activity, viewModelStoreOwner = viewModelStoreOwner) {
+            val privacyViewModel: PrivacyViewModel = getActivityViewModel()
+
             PrivacyCheck(privacyViewModel) {
                 AppContent(pidViewModel, settingsViewModel)
             }
         }
+    }
+
+    LaunchedEffect(Unit) {
+        logging("AppLayout").i { "Theme ready" }
+        onThemeReady()
     }
 }
 

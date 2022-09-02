@@ -34,5 +34,8 @@ fun DependencyHandlerScope.api(dependencyNotation: Any) = add(Constants.API, dep
 fun DependencyHandlerScope.coreLibraryDesugaring(dependencyNotation: Any) =
     add(Constants.DESUGARING, dependencyNotation)
 
+fun DependencyHandlerScope.ksp(dependencyNotation: Any) =
+    add(Constants.KSP, dependencyNotation)
+
 fun BaseExtension.kotlinOptions(configure: Action<KotlinJvmOptions>) =
     (this as org.gradle.api.plugins.ExtensionAware).extensions.configure("kotlinOptions", configure)

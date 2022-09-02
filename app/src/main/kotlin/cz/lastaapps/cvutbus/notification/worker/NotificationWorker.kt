@@ -32,16 +32,14 @@ import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.first
 import kotlinx.datetime.Clock
-import org.kodein.di.DI
-import org.kodein.di.DIAware
-import org.kodein.di.android.closestDI
-import org.kodein.di.instance
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 import org.lighthousegames.logging.logging
 import kotlin.time.Duration
 
 class NotificationWorker constructor(
     appContext: Context, params: WorkerParameters,
-) : CoroutineWorker(appContext, params), DIAware {
+) : CoroutineWorker(appContext, params), KoinComponent {
 
     companion object {
         private const val notificationId = 42_221
@@ -49,9 +47,8 @@ class NotificationWorker constructor(
         private val log = logging()
     }
 
-    override val di: DI by closestDI(appContext)
-    private val state: WorkerState by instance()
-    private val store: SettingsStore by instance()
+    private val state: WorkerState by inject()
+    private val store: SettingsStore by inject()
 
     private val notificationManager = NotificationManagerCompat.from(appContext)
     private val notificationCreator = NotificationCreator(appContext, id)

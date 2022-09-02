@@ -25,23 +25,21 @@ import android.content.Intent
 import cz.lastaapps.cvutbus.notification.WorkerUtils
 import cz.lastaapps.cvutbus.notification.worker.WorkerState
 import kotlinx.coroutines.runBlocking
-import org.kodein.di.android.closestDI
-import org.kodein.di.instance
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.get
 import org.lighthousegames.logging.logging
 
-class NextConnectionReceiver : BroadcastReceiver() {
+class NextConnectionReceiver : BroadcastReceiver(), KoinComponent {
 
     companion object {
         private val log = logging()
     }
 
     override fun onReceive(context: Context, intent: Intent) {
-        val di by closestDI(context)
-
         log.i { "Changing direction" }
         runBlocking {
             WorkerUtils(context).start()
-            val state by di.instance<WorkerState>()
+            val state = get<WorkerState>()
             state.nextStopPair()
         }
     }

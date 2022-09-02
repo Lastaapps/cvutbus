@@ -24,4 +24,5 @@ object Constants {
     const val TEST_IMPLEMENTATION = "implementation"
     const val API = "api"
     const val DESUGARING = "coreLibraryDesugaring"
+    const val KSP = "ksp"
 }

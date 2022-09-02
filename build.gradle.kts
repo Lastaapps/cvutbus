@@ -29,6 +29,7 @@ plugins {
     alias(libs.plugins.aboutLibraries) apply false
     alias(libs.plugins.sqldelight) apply false
     alias(libs.plugins.shadow) apply false
+    alias(libs.plugins.google.ksp) apply false
 
     alias(libs.plugins.benNamesVersions)
     alias(libs.plugins.versionCatalogUpdate)

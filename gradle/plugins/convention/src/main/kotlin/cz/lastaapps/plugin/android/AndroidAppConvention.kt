@@ -30,6 +30,7 @@ import cz.lastaapps.plugin.android.config.configureKotlinAndroid
 import org.gradle.kotlin.dsl.apply
 import org.gradle.kotlin.dsl.configure
 import org.gradle.kotlin.dsl.dependencies
+import org.gradle.kotlin.dsl.extra
 
 
 class AndroidAppConvention : BasePlugin({
@@ -52,23 +53,25 @@ class AndroidAppConvention : BasePlugin({
             buildConfig = true
         }
 
-        packagingOptions {
-            resources {
-                excludes += "META-INF/domain.kotlin_module"
-                excludes += "META-INF/data.kotlin_module"
-                excludes += "META-INF/infrastructure.kotlin_module"
-                excludes += "META-INF/presentation.kotlin_module"
-                excludes += "META-INF/LICENSE.md"
-                excludes += "META-INF/LICENSE-notice.md"
+        buildTypes {
+            debug {
+                applicationIdSuffix = ".debug"
+                isMinifyEnabled = false
 
-                // for JNA and JNA-platform
-                excludes += "META-INF/AL2.0"
-                excludes += "META-INF/LGPL2.1"
-                // for byte-buddy
-                excludes += "META-INF/licenses/ASM"
-                pickFirsts += "win32-x86-64/attach_hotspot_windows.dll"
-                pickFirsts += "win32-x86/attach_hotspot_windows.dll"
+                extra.set("alwaysUpdateBuildId", false)
             }
+            release {
+                isMinifyEnabled = true
+                isShrinkResources = true
+                proguardFiles(
+                    getDefaultProguardFile("proguard-android-optimize.txt"),
+                    "proguard-rules.pro"
+                )
+            }
+        }
+
+        packagingOptions {
+            resources { }
         }
 
     }
