@@ -1,7 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="CompilerConfiguration">
-    <bytecodeTargetLevel target="18">
+    <bytecodeTargetLevel target="11">
+      <module name="CVUTBus.buildSrc" target="18" />
+      <module name="CVUTBus.buildSrc.main" target="18" />
+      <module name="CVUTBus.buildSrc.test" target="18" />
+      <module name="CVUTBus.common.database.commonMain" target="11" />
+      <module name="CVUTBus.common.database.commonTest" target="11" />
+      <module name="CVUTBus.common.database.jvmMain" target="11" />
+      <module name="CVUTBus.common.database.jvmTest" target="11" />
+      <module name="CVUTBus.common.repo.commonMain" target="11" />
+      <module name="CVUTBus.common.repo.commonTest" target="11" />
+      <module name="CVUTBus.common.repo.jvmMain" target="11" />
+      <module name="CVUTBus.common.repo.jvmTest" target="11" />
+      <module name="CVUTBus.entity.commonMain" target="11" />
+      <module name="CVUTBus.entity.commonTest" target="11" />
+      <module name="CVUTBus.entity.desktopMain" target="11" />
+      <module name="CVUTBus.entity.desktopTest" target="11" />
+      <module name="CVUTBus.entity.jvmMain" target="11" />
+      <module name="CVUTBus.entity.jvmTest" target="11" />
+      <module name="CVUTBus.generator" target="18" />
+      <module name="CVUTBus.generator.main" target="18" />
+      <module name="CVUTBus.generator.test" target="18" />
+      <module name="CVUTBus.storage.database.commonMain" target="11" />
+      <module name="CVUTBus.storage.database.commonTest" target="11" />
+      <module name="CVUTBus.storage.database.desktopMain" target="11" />
+      <module name="CVUTBus.storage.database.desktopTest" target="11" />
+      <module name="CVUTBus.storage.repo.commonMain" target="11" />
+      <module name="CVUTBus.storage.repo.commonTest" target="11" />
+      <module name="CVUTBus.storage.repo.desktopMain" target="11" />
+      <module name="CVUTBus.storage.repo.desktopTest" target="11" />
       <module name="ČVUTBus.entity.commonMain" target="11" />
       <module name="ČVUTBus.entity.commonTest" target="11" />
       <module name="ČVUTBus.entity.desktopMain" target="11" />

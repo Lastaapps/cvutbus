@@ -17,37 +17,48 @@
  * along with ČVUT Bus.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-plugins {
-    val gradleVersion = "7.2.1"
-    id(Plugins.APPLICATION) version gradleVersion apply false
-    id(Plugins.LIBRARY) version gradleVersion apply false
-    id(Plugins.KOTLIN_MULTIPLATFORM) version Versions.KOTLIN apply false
-    id(Plugins.KOTLIN_ANDROID) version Versions.KOTLIN apply false
-    id(Plugins.KOTLIN_JVM) version Versions.KOTLIN apply false
-    id(Plugins.ABOUT_LIBRARIES) version Versions.ABOUT_LIBRARIES apply false
-}
+import com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask
 
-group = App.GROUP
-version = App.VERSION_NAME
+plugins {
+    alias(libs.plugins.kotlin.android) apply false
+    alias(libs.plugins.kotlin.jvm) apply false
+    alias(libs.plugins.kotlin.multiplatform) apply false
+    alias(libs.plugins.kotlin.serialization) apply false
+    alias(libs.plugins.android.application) apply false
+    alias(libs.plugins.android.library) apply false
+    alias(libs.plugins.aboutLibraries) apply false
+    alias(libs.plugins.sqldelight) apply false
+    alias(libs.plugins.shadow) apply false
+
+    alias(libs.plugins.benNamesVersions)
+    alias(libs.plugins.versionCatalogUpdate)
+}
 
 tasks.register("clean", Delete::class) {
     delete(rootProject.buildDir)
 }
 
-allprojects {
-    afterEvaluate {
-        // Remove log pollution until Android support in KMP improves.
-        // https://discuss.kotlinlang.org/t/disabling-androidandroidtestrelease-source-set-in-gradle-kotlin-dsl-script/21448/5
-        project.extensions.findByType<org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension>()
-            ?.let { kmpExt ->
-                kmpExt.sourceSets.removeAll { sourceSet ->
-                    setOf(
-                        "androidAndroidTestRelease",
-                        "androidTestFixtures",
-                        "androidTestFixturesDebug",
-                        "androidTestFixturesRelease",
-                    ).contains(sourceSet.name)
-                }
-            }
+versionCatalogUpdate {
+    sortByKey.set(true)
+    // pins version - wouldn't be changed
+    pin {}
+    // keeps entry - wouldn't be deleted when unused
+    keep {
+        keepUnusedVersions.set(true)
+        keepUnusedLibraries.set(true)
+        keepUnusedPlugins.set(true)
     }
+}
+
+tasks.withType<DependencyUpdatesTask> {
+    rejectVersionIf {
+        isNonStable(candidate.version) && !isNonStable(currentVersion)
+    }
+}
+
+fun isNonStable(version: String): Boolean {
+    val stableKeyword = listOf("rc", "beta", "release").any { version.toUpperCase().contains(it) }
+    val regex = """^[0-9,.v-]+(-r)?$""".toRegex()
+    val isStable = stableKeyword || regex.matches(version)
+    return isStable.not()
 }

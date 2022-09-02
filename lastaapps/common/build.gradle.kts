@@ -17,53 +17,26 @@
  * along with ČVUT Bus.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+import java.time.ZoneId
+import java.time.ZonedDateTime
+import java.time.format.DateTimeFormatter
+
 plugins {
-    id(Plugins.LIBRARY)
-    id(Plugins.KOTLIN_ANDROID)
+    id(libs.plugins.lastaapps.android.library.core.get().pluginId)
 }
 
 android {
-    compileSdk = App.COMPILE_SDK
-
+    namespace = "cz.lastaapps.common"
     defaultConfig {
-        minSdk = App.MIN_SDK
-        targetSdk = App.TARGET_SDK
 
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        consumerProguardFiles("consumer-rules.pro")
+        val buildDate: String = ZonedDateTime.now()
+            .withZoneSameInstant(ZoneId.of("UTC"))
+            .toLocalDate()
+            .format(DateTimeFormatter.ISO_DATE)
 
-        multiDexEnabled = true
-
-        buildConfigField("java.lang.String", "BUILD_DATE", "\"${App.buildDate}\"")
-    }
-
-    buildTypes {
-        getByName("release") {
-            proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
-            )
-        }
-    }
-    compileOptions {
-        isCoreLibraryDesugaringEnabled = true
-
-        sourceCompatibility = Versions.JAVA
-        targetCompatibility = Versions.JAVA
-    }
-    kotlinOptions {
-        jvmTarget = Versions.JVM_TARGET
+        buildConfigField("java.lang.String", "BUILD_DATE", "\"$buildDate\"")
     }
     buildFeatures {
         buildConfig = true
     }
-}
-
-dependencies {
-
-    coreLibraryDesugaring(Libs.DESUGARING)
-
-    implementation(Libs.APPCOMPAT)
-    implementation(Libs.MATERIAL)
-
 }

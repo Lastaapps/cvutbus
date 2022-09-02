@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="entity-jvm">
+    <output-path>$PROJECT_DIR$/entity/build/libs</output-path>
+    <root id="archive" name="entity-jvm.jar">
+      <element id="module-output" name="CVUTBus.entity.jvmMain" />
+    </root>
+  </artifact>
+</component>

@@ -19,39 +19,21 @@
 
 
 plugins {
-    application
-    id(Plugins.KOTLIN_JVM)
+    id(libs.plugins.lastaapps.jvm.app.get().pluginId)
 }
 
-group = App.GROUP
-version = App.VERSION_NAME
-
 application {
+    mainClass.set("cz.lastaapps.generator.MainKt")
 }
 
 dependencies {
-    implementation(project(":storage:database"))
-    implementation(project(":storage:repo"))
+    implementation(projects.entity)
+    implementation(projects.common.database)
+    implementation(projects.common.repo)
 
-    implementation(Libs.KOTLINX_DATETIME)
-    implementation(Tests.KOTEST_ASSERTION)
-    implementation(Libs.KM_LOGGING)
-
-    implementation(Libs.KOTLIN_COROUTINES)
-    implementation(Libs.KTOR_CORE)
-    //implementation(Libs.KTOR_CIO)
-    implementation("io.ktor:ktor-client-java:${Versions.KTOR}")
-
-    // required by KM Logging for the JVM target
-    implementation("org.slf4j:slf4j-api:1.7.36")
-    implementation("ch.qos.logback:logback-core:1.2.7")
-    implementation("ch.qos.logback:logback-classic:1.2.7")
-
-    testImplementation(kotlin("test"))
-    testImplementation(Tests.COROUTINES)
-    testImplementation(project.dependencies.platform(Tests.JUNIT_BOM))
-    testImplementation(Tests.JUNIT_JUPITER)
-    testRuntimeOnly(Tests.JUNIT_ENGINE)
+    implementation(libs.ktor.client.core)
+    implementation(libs.ktor.client.cio)
+//    implementation(libs.ktor.client.java)
 }
 
 tasks.test {

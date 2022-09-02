@@ -19,99 +19,13 @@
 
 
 plugins {
-    kotlin("multiplatform")
-    id(Plugins.LIBRARY)
-}
-
-group = App.GROUP
-version = App.VERSION_NAME
-
-tasks.withType<Test> {
-    useJUnitPlatform()
-}
-
-kotlin {
-    sourceSets.all {
-        languageSettings.apply {
-            languageVersion = Versions.KOTLIN_LANGUAGE_VERSION
-            apiVersion = Versions.KOTLIN_LANGUAGE_VERSION
-        }
-    }
-    android {
-        compilations.all {
-            kotlinOptions.jvmTarget = Versions.JVM_TARGET
-        }
-    }
-    jvm("desktop") {
-        compilations.all {
-            kotlinOptions.jvmTarget = Versions.JVM_TARGET
-        }
-        testRuns["test"].executionTask.configure {
-            useJUnitPlatform()
-        }
-    }
-    sourceSets {
-        val commonMain by getting {
-            dependencies {
-                api(Libs.KOTLINX_DATETIME)
-                implementation(Tests.KOTEST_ASSERTION)
-            }
-        }
-        val commonTest by getting {
-            dependencies {
-                implementation(kotlin("test"))
-            }
-        }
-        val androidMain by getting {
-            dependencies {
-            }
-        }
-        val androidTest by getting {
-            dependencies {
-            }
-        }
-        val desktopMain by getting {
-            dependencies {
-            }
-        }
-        val desktopTest by getting {
-            dependencies {
-                implementation(project.dependencies.platform(Tests.JUNIT_BOM))
-                implementation(Tests.JUNIT_JUPITER)
-            }
-        }
-    }
+    id(libs.plugins.lastaapps.kmp.library.get().pluginId)
 }
 
 android {
-    compileSdk = App.COMPILE_SDK
+    namespace = "cz.lastaapps.entity"
+}
 
-    sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
-
-    defaultConfig {
-        minSdk = App.MIN_SDK
-        targetSdk = App.TARGET_SDK
-
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        consumerProguardFiles("consumer-rules.pro")
-    }
-
-    buildTypes {
-        release {
-            isMinifyEnabled = false
-            proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
-            )
-        }
-    }
-    compileOptions {
-        isCoreLibraryDesugaringEnabled = true
-
-        sourceCompatibility = Versions.JAVA
-        targetCompatibility = Versions.JAVA
-    }
-    dependencies {
-        coreLibraryDesugaring(Libs.DESUGARING)
-    }
+dependencies {
+    commonMainImplementation(libs.kotest.assertion)
 }

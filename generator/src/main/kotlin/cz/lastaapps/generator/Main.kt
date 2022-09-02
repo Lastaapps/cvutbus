@@ -27,7 +27,7 @@ import cz.lastaapps.entity.utils.CET
 import cz.lastaapps.generator.parsers.*
 import cz.lastaapps.repo.StopPairs
 import io.ktor.client.*
-import io.ktor.client.engine.java.*
+import io.ktor.client.engine.cio.*
 import io.ktor.client.plugins.*
 import io.ktor.client.request.*
 import io.ktor.http.*
@@ -83,7 +83,7 @@ fun main(): Unit = runBlocking(Dispatchers.IO) {
             archive.createNewFile()
 
         // CIO stopped working
-        val succeeded = HttpClient(Java) {
+        val succeeded = HttpClient(CIO) {
             CurlUserAgent()
         }.downloadFile(archive, "https://data.pid.cz/PID_GTFS.zip") {
             //print("\rDownload progress: ${it * 100} %")

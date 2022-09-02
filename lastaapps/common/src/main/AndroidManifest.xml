@@ -19,11 +19,16 @@
   ~ along with ČVUT Bus.  If not, see <https://www.gnu.org/licenses/>.
   -->
 
-<manifest package="cz.lastaapps.common"
-        xmlns:android="http://schemas.android.com/apk/res/android">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
     <queries>
         <package android:name="com.facebook.katana" />
+
+        <intent>
+            <action android:name="android.intent.action.View" />
+
+            <data android:scheme="tg" />
+        </intent>
     </queries>
 
 </manifest>

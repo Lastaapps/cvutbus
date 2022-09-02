@@ -4,6 +4,18 @@
   <component name="GradleSettings">
     <option name="linkedExternalProjectsSettings">
       <GradleProjectSettings>
+        <compositeConfiguration>
+          <compositeBuild compositeDefinitionSource="SCRIPT">
+            <builds>
+              <build path="$PROJECT_DIR$/gradle/plugins" name="convention-plugins">
+                <projects>
+                  <project path="$PROJECT_DIR$/gradle/plugins" />
+                  <project path="$PROJECT_DIR$/gradle/plugins/convention" />
+                </projects>
+              </build>
+            </builds>
+          </compositeBuild>
+        </compositeConfiguration>
         <option name="delegatedBuild" value="true" />
         <option name="testRunner" value="GRADLE" />
         <option name="distributionType" value="DEFAULT_WRAPPED" />
@@ -13,14 +25,15 @@
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/app" />
-            <option value="$PROJECT_DIR$/buildSrc" />
+            <option value="$PROJECT_DIR$/common" />
+            <option value="$PROJECT_DIR$/common/database" />
+            <option value="$PROJECT_DIR$/common/repo" />
             <option value="$PROJECT_DIR$/entity" />
             <option value="$PROJECT_DIR$/generator" />
+            <option value="$PROJECT_DIR$/gradle/plugins" />
+            <option value="$PROJECT_DIR$/gradle/plugins/convention" />
             <option value="$PROJECT_DIR$/lastaapps" />
             <option value="$PROJECT_DIR$/lastaapps/common" />
-            <option value="$PROJECT_DIR$/storage" />
-            <option value="$PROJECT_DIR$/storage/database" />
-            <option value="$PROJECT_DIR$/storage/repo" />
           </set>
         </option>
       </GradleProjectSettings>

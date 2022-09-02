@@ -1,8 +1,8 @@
 <component name="ArtifactManager">
   <artifact type="jar" name="repo-desktop-1.0.0">
-    <output-path>$PROJECT_DIR$/storage/repo/build/libs</output-path>
+    <output-path>$PROJECT_DIR$/common/repo/build/libs</output-path>
     <root id="archive" name="repo-desktop-1.0.0.jar">
-      <element id="module-output" name="ČVUTBus.storage.repo.desktopMain" />
+      <element id="module-output" name="CVUTBus.common.repo.desktopMain" />
     </root>
   </artifact>
 </component>

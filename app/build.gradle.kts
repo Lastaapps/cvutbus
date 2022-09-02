@@ -18,124 +18,30 @@
  */
 
 plugins {
-    id(Plugins.APPLICATION)
-    id(Plugins.KOTLIN_ANDROID)
-    id(Plugins.ABOUT_LIBRARIES)
+    id(libs.plugins.lastaapps.android.app.compose.get().pluginId)
+    alias(libs.plugins.aboutLibraries)
 }
 
 android {
-    compileSdk = App.COMPILE_SDK
+    namespace = "cz.lastaapps.cvutbus"
 
     defaultConfig {
-        applicationId = App.APP_ID
-        minSdk = App.MIN_SDK
-        targetSdk = App.TARGET_SDK
+        applicationId = "cz.lastaapps.cvutbus"
 
         //have to be specified explicitly for FDroid to work
         versionCode = 1000000 // 1x major . 2x minor . 2x path . 2x build diff
         versionName = "1.0.0"
-
-        resourceConfigurations += setOf("en", "cs")
-
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        vectorDrawables {
-            useSupportLibrary = true
-        }
-        multiDexEnabled = true
-    }
-
-    buildTypes {
-        debug {
-            applicationIdSuffix = ".debug"
-            isMinifyEnabled = false
-
-            extra.set("alwaysUpdateBuildId", false)
-        }
-        release {
-            isMinifyEnabled = true
-            isShrinkResources = true
-            proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
-            )
-        }
-    }
-    compileOptions {
-        isCoreLibraryDesugaringEnabled = true
-
-        sourceCompatibility = Versions.JAVA
-        targetCompatibility = Versions.JAVA
-    }
-    kotlinOptions {
-        jvmTarget = Versions.JVM_TARGET
-    }
-    buildFeatures {
-        compose = true
-    }
-    composeOptions {
-        kotlinCompilerExtensionVersion = Versions.COMPOSE_COMPILER
-    }
-    packagingOptions {
-        resources {
-            excludes += "META-INF/**"
-        }
     }
 }
 
 dependencies {
-    coreLibraryDesugaring(Libs.DESUGARING)
 
-    implementation(project(":entity"))
-    implementation(project(":storage:database"))
-    implementation(project(":storage:repo"))
-    implementation(project(":lastaapps:common"))
+    implementation(projects.entity)
+    implementation(projects.common.database)
+    implementation(projects.common.repo)
+    implementation(projects.lastaapps.common)
 
-    implementation(Libs.APPCOMPAT)
-    implementation(Libs.COLLECTION)
-    implementation(Libs.CORE)
-    implementation(Libs.DATASTORE)
-    implementation(Libs.MATERIAL)
-    implementation(Libs.LIFECYCLE)
-    implementation(Libs.LIFECYCLE_LIVEDATA)
-    implementation(Libs.SPLASHSCREEN)
-    implementation(Libs.STARTUP)
-    implementation(Libs.VECTOR_DRAWABLES)
-    implementation(Libs.WINDOW_MANAGER)
-    implementation(Libs.WORK)
-
-    implementation(Libs.KODEIN)
-    implementation(Libs.KODEIN_COMPOSE)
-    implementation(Libs.KODEIN_ANDROIDX)
-    implementation(Libs.KODEIN_ANDROIDX_VIEWMODE)
-    implementation(Libs.KODEIN_ANDROIDX_VIEWMODE_SAVEDSTATE)
-
-    implementation(Libs.KOTLINX_DATETIME)
-    implementation(Libs.ABOUT_LIBRARIES_CORE)
-    implementation(Libs.KTOR_CORE)
-    implementation(Libs.KTOR_CIO)
-
-    initCompose()
-}
-
-fun DependencyHandler.initCompose() {
-    implementation(Libs.COMPOSE_ACTIVITY)
-    implementation(Libs.COMPOSE_ANIMATION)
-    implementation(Libs.COMPOSE_CONSTRAINTLAYOUT)
-    implementation(Libs.COMPOSE_FOUNDATION)
-    implementation(Libs.COMPOSE_ICONS_EXTENDED)
-    implementation(Libs.COMPOSE_MATERIAL_3)
-    implementation(Libs.COMPOSE_NAVIGATION)
-    debugImplementation(Libs.COMPOSE_TOOLING)
-    implementation(Libs.COMPOSE_UI)
-    implementation(Libs.COMPOSE_VIEWMODEL)
-
-    implementation(Libs.ACCOMPANIST_DRAWABLE_PAINTERS)
-    implementation(Libs.ACCOMPANIST_FLOW_LAYOUTS)
-    implementation(Libs.ACCOMPANIST_NAVIGATION_ANIMATION)
-    implementation(Libs.ACCOMPANIST_NAVIGATION_MATERIAL)
-    implementation(Libs.ACCOMPANIST_PAGER)
-    implementation(Libs.ACCOMPANIST_PERMISSION)
-    implementation(Libs.ACCOMPANIST_PLACEHOLDER)
-    implementation(Libs.ACCOMPANIST_SWIPE_TO_REFRESH)
-    implementation(Libs.ACCOMPANIST_SYSTEM_UI)
+    implementation(libs.androidx.datastore)
+    implementation(libs.androidx.windowManager)
+    implementation(libs.androidx.work)
 }

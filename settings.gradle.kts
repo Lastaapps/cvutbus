@@ -18,12 +18,14 @@
  */
 
 pluginManagement {
+    includeBuild("gradle/plugins")
     repositories {
         gradlePluginPortal()
-        google()
         mavenCentral()
+        google()
     }
 }
+
 @Suppress("UnstableApiUsage")
 dependencyResolutionManagement {
     repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
@@ -33,12 +35,14 @@ dependencyResolutionManagement {
         maven("https://jitpack.io")
     }
 }
-rootProject.name = "ČVUTBus"
+
+rootProject.name = "CVUTBus"
+
 include(
     ":app",
     ":entity",
-    ":storage:database",
-    ":storage:repo",
+    ":common:database",
+    ":common:repo",
     ":generator",
     ":lastaapps:common",
 )

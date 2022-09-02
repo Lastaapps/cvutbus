@@ -40,7 +40,10 @@ object Communication {
         var uri = Uri.parse(url)
         try {
             val applicationInfo =
-                context.packageManager.getApplicationInfo("com.facebook.katana", 0)
+                context.packageManager.getApplicationInfo(
+                    "com.facebook.katana",
+                    PackageManager.ApplicationInfoFlags.of(0),
+                )
 
             if (applicationInfo.enabled) {
                 uri = Uri.parse("fb://facewebmodal/f?href=$url")
