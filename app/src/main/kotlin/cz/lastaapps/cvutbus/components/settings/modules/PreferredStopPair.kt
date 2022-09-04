@@ -22,8 +22,8 @@ package cz.lastaapps.cvutbus.components.settings.modules
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.intPreferencesKey
 import cz.lastaapps.cvutbus.components.settings.SettingsStore
-import cz.lastaapps.repo.StopPair
-import cz.lastaapps.repo.StopPairs
+import cz.lastaapps.database.domain.model.StopPair
+import cz.lastaapps.database.domain.model.StopPairs
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.map

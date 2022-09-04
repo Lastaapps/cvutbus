@@ -28,7 +28,7 @@ import cz.lastaapps.cvutbus.components.settings.SettingsStore
 import cz.lastaapps.cvutbus.components.settings.modules.notificationWorkDaysOnly
 import cz.lastaapps.cvutbus.notification.WorkerUtils
 import cz.lastaapps.cvutbus.ui.SafeToast
-import cz.lastaapps.entity.utils.CET
+import cz.lastaapps.database.util.CET
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.first
 import kotlinx.datetime.toJavaZoneId

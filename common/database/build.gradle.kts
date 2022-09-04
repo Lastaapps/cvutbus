@@ -35,5 +35,4 @@ sqldelight {
 }
 
 dependencies {
-    commonMainImplementation(projects.entity)
 }

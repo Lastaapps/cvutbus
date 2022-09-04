@@ -26,10 +26,10 @@ import androidx.compose.ui.res.stringResource
 import cz.lastaapps.cvutbus.R
 import cz.lastaapps.cvutbus.components.settings.SettingsViewModel
 import cz.lastaapps.cvutbus.components.settings.modules.*
-import cz.lastaapps.repo.Direction
-import cz.lastaapps.repo.StopPair
-import cz.lastaapps.repo.StopPairs
-import cz.lastaapps.repo.TransportConnection
+import cz.lastaapps.database.domain.model.Direction
+import cz.lastaapps.database.domain.model.StopPair
+import cz.lastaapps.database.domain.model.StopPairs
+import cz.lastaapps.database.domain.model.TransportConnection
 
 /**
  * Ready for the future where there may be more connection added

@@ -27,7 +27,6 @@ android {
 }
 
 dependencies {
-    commonMainImplementation(projects.entity)
     commonMainImplementation(projects.common.database)
 
     commonMainImplementation(libs.kotest.assertion)

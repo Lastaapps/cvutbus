@@ -28,7 +28,10 @@ import cz.lastaapps.cvutbus.components.settings.SettingsStore
 import cz.lastaapps.cvutbus.components.settings.modules.*
 import cz.lastaapps.cvutbus.getRoundedNow
 import cz.lastaapps.cvutbus.secondTicker
-import cz.lastaapps.entity.utils.CET
+import cz.lastaapps.database.domain.model.DepartureInfo
+import cz.lastaapps.database.domain.model.Direction
+import cz.lastaapps.database.domain.model.TransportConnection
+import cz.lastaapps.database.util.CET
 import cz.lastaapps.repo.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*

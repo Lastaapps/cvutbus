@@ -19,56 +19,55 @@
 
 package cz.lastaapps.generator
 
-import cz.lastaapps.database.MemoryDriverFactory
-import cz.lastaapps.database.PIDDatabase
-import cz.lastaapps.database.createDatabase
-import cz.lastaapps.entity.StopName
-import io.kotest.matchers.collections.shouldHaveSize
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.test.runTest
-import org.junit.jupiter.api.BeforeAll
-import org.junit.jupiter.api.Test
-import java.io.File
-import kotlin.time.ExperimentalTime
-import kotlin.time.measureTime
-
-@OptIn(ExperimentalCoroutinesApi::class)
-class DatabaseTest {
-
-    companion object {
-
-        lateinit var database: PIDDatabase
-        val strahov = StopName("Koleje Strahov")
-        val dejvicka = StopName("Dejvická")
-
-        @OptIn(ExperimentalTime::class)
-        @BeforeAll
-        @JvmStatic
-        fun initDatabase() {
-            database = createDatabase(MemoryDriverFactory())
-            measureTime {
-                loadData(File("src/test/kotlin/cz/lastaapps/generator/testdata"), database)
-            }.also {
-                println("Database ready, took: $it")
-            }
-        }
-    }
-
-    @Test
-    fun stopsTest() = runTest {
-        database.stopsQueries.getAll().executeAsList().shouldHaveSize(15594)
-        database.stopsQueries.getStopsByName(listOf(strahov)).executeAsList().shouldHaveSize(2)
-    }
-
-    @Test
-    fun filterTripNumber() = runTest {
-        database.queriesQueries.getTripIds(strahov, dejvicka).executeAsList().shouldHaveSize(358)
-        database.queriesQueries.getTripIds(dejvicka, strahov).executeAsList().shouldHaveSize(358)
-    }
-
-    @Test
-    fun directions() = runTest {
-        database.queriesQueries.getAll(strahov, dejvicka).executeAsList().shouldHaveSize(358)
-        database.queriesQueries.getAll(dejvicka, strahov).executeAsList().shouldHaveSize(358)
-    }
-}
+//import cz.lastaapps.database.MemoryDriverFactory
+//import cz.lastaapps.database.createUpdateDatabaseSource
+//import cz.lastaapps.database.domain.UpdateDataSource
+//import cz.lastaapps.database.domain.model.stop.StopName
+//import kotlinx.coroutines.ExperimentalCoroutinesApi
+//import kotlinx.coroutines.test.runTest
+//import org.junit.jupiter.api.BeforeAll
+//import org.junit.jupiter.api.Test
+//import java.io.File
+//import kotlin.time.ExperimentalTime
+//import kotlin.time.measureTime
+//
+//@OptIn(ExperimentalCoroutinesApi::class)
+//class DatabaseTest {
+//
+//    companion object {
+//
+//        lateinit var database: UpdateDataSource
+//        val strahov = StopName("Koleje Strahov")
+//        val dejvicka = StopName("Dejvická")
+//
+//        @OptIn(ExperimentalTime::class)
+//        @BeforeAll
+//        @JvmStatic
+//        fun initDatabase() {
+//            database = createUpdateDatabaseSource(MemoryDriverFactory().createDriver())
+//            measureTime {
+//                loadData(File("src/test/kotlin/cz/lastaapps/generator/testdata"), database)
+//            }.also {
+//                println("Database ready, took: $it")
+//            }
+//        }
+//    }
+//
+//    @Test
+//    fun stopsTest() = runTest {
+//        database.stopsQueries.getAll().executeAsList().shouldHaveSize(15594)
+//        database.stopsQueries.getStopsByName(listOf(strahov)).executeAsList().shouldHaveSize(2)
+//    }
+//
+//    @Test
+//    fun filterTripNumber() = runTest {
+//        database.queriesQueries.getTripIds(strahov, dejvicka).executeAsList().shouldHaveSize(358)
+//        database.queriesQueries.getTripIds(dejvicka, strahov).executeAsList().shouldHaveSize(358)
+//    }
+//
+//    @Test
+//    fun directions() = runTest {
+//        database.queriesQueries.getAll(strahov, dejvicka).executeAsList().shouldHaveSize(358)
+//        database.queriesQueries.getAll(dejvicka, strahov).executeAsList().shouldHaveSize(358)
+//    }
+//}

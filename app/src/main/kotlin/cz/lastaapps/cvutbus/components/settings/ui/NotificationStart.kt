@@ -45,8 +45,8 @@ import cz.lastaapps.cvutbus.components.settings.modules.NotificationStartup
 import cz.lastaapps.cvutbus.components.settings.modules.notificationStartTime
 import cz.lastaapps.cvutbus.components.settings.modules.notificationStartup
 import cz.lastaapps.cvutbus.components.settings.modules.notificationWorkDaysOnly
-import cz.lastaapps.entity.utils.toHours
-import cz.lastaapps.entity.utils.toMinutes
+import cz.lastaapps.database.util.toHours
+import cz.lastaapps.database.util.toMinutes
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.minutes
 

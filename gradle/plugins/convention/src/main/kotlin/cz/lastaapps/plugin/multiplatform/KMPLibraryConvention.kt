@@ -148,7 +148,9 @@ class KMPLibraryConvention : BasePlugin({
 
             getByName("jvmMain") {
                 dependencies {
-                    implementation(libs.logback)
+                    implementation(libs.logback.core)
+                    implementation(libs.logback.classic)
+                    implementation(libs.slf4j)
                     kotlin.srcDir("build/generated/ksp/jvm/jvmMain/kotlin")
                 }
             }

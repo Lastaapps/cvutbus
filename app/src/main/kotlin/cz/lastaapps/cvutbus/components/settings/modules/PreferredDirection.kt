@@ -23,7 +23,7 @@ import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.intPreferencesKey
 import cz.lastaapps.cvutbus.components.settings.SettingsStore
-import cz.lastaapps.repo.Direction
+import cz.lastaapps.database.domain.model.Direction
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 

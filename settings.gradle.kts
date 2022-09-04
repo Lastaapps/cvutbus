@@ -40,7 +40,6 @@ rootProject.name = "CVUTBus"
 
 include(
     ":app",
-    ":entity",
     ":common:database",
     ":common:repo",
     ":generator",

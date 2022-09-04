@@ -19,6 +19,8 @@
 
 package cz.lastaapps.repo
 
+import cz.lastaapps.database.domain.model.DepartureInfo
+import cz.lastaapps.database.domain.model.TransportConnection
 import kotlinx.coroutines.flow.Flow
 import kotlinx.datetime.LocalDateTime
 

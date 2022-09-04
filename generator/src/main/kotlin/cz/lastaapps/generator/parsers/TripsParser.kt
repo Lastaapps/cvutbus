@@ -19,13 +19,14 @@
 
 package cz.lastaapps.generator.parsers
 
-import cz.lastaapps.entity.RouteId
-import cz.lastaapps.entity.ServiceId
-import cz.lastaapps.entity.Trip
-import cz.lastaapps.entity.TripId
+import cz.lastaapps.database.domain.model.calendar.ServiceId
+import cz.lastaapps.database.domain.model.route.RouteId
+import cz.lastaapps.database.domain.model.trip.Trip
+import cz.lastaapps.database.domain.model.trip.TripId
 import java.io.BufferedReader
 import java.io.InputStream
 import java.io.InputStreamReader
+import kotlin.streams.asSequence
 
 object TripsParser {
 
@@ -47,14 +48,14 @@ object TripsParser {
         val buffered = BufferedReader(InputStreamReader(stream))
 
         buffered.readLine()
-        buffered.lines().forEach { line ->
+        buffered.lines().asSequence().forEach { line ->
             val split = line.safeSplit()
             Trip(
                 RouteId.fromString(split[0]),
                 ServiceId(split[1]),
                 TripId(split[2]),
                 split[3],
-            ).also { onEach(it) }
+            ).also(onEach)
         }
     }
 }

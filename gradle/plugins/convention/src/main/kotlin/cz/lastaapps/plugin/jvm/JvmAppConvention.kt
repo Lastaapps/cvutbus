@@ -66,7 +66,9 @@ class JvmAppConvention : BasePlugin({
         implementation(libs.kmLogging)
         implementation(libs.fluidLocale)
 
-        implementation(libs.logback)
+        implementation(libs.logback.core)
+        implementation(libs.logback.classic)
+        implementation(libs.slf4j)
 
         testImplementation(kotlin("test"))
         testImplementation(libs.kotest.assertion)

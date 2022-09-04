@@ -19,7 +19,7 @@
 
 package cz.lastaapps.cvutbus
 
-import cz.lastaapps.entity.utils.roundToSeconds
+import cz.lastaapps.database.util.roundToSeconds
 import kotlinx.coroutines.delay
 import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant

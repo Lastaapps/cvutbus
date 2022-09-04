@@ -19,9 +19,12 @@
 
 package cz.lastaapps.repo
 
-import cz.lastaapps.database.DatabaseDriverFactoryImpl
+import cz.lastaapps.database.JvmDatabaseDriverFactoryImpl
 import cz.lastaapps.database.PIDDatabase
-import cz.lastaapps.database.createDatabase
+import cz.lastaapps.database.domain.model.DepartureInfo
+import cz.lastaapps.database.domain.model.StopPair
+import cz.lastaapps.database.domain.model.TransportConnection
+import cz.lastaapps.database.domain.model.stop.StopName
 import io.kotest.matchers.collections.shouldContainInOrder
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.first
@@ -44,7 +47,7 @@ class PIDRepoTest {
         fun initDatabase() {
             //accesses data generated on the 1st February 2022
             database =
-                createDatabase(DatabaseDriverFactoryImpl(File("src/desktopTest/piddatabase.db")))
+                createDatabase(JvmDatabaseDriverFactoryImpl(File("src/desktopTest/piddatabase.db")))
         }
     }
 
@@ -55,7 +58,7 @@ class PIDRepoTest {
         val date = LocalDate(2022, Month.FEBRUARY, 1)
         val dateTime = LocalDateTime(date.year, date.month, date.dayOfMonth, 8, 0, 0)
 
-        val pair = StopPairs.allStops.first { it.stop1.name == "Koleje Strahov" }
+        val pair = StopPair(0, StopName("Koleje Strahov"), StopName("Dejvická"))
         val toDejvickaConnection = TransportConnection.fromStopPair(pair, true)
         val toStrahovConnection = TransportConnection.fromStopPair(pair, false)
 
@@ -116,7 +119,7 @@ class PIDRepoTest {
         val date = LocalDate(2022, Month.FEBRUARY, 5)
         val dateTime = LocalDateTime(date.year, date.month, date.dayOfMonth, 8, 0, 0)
 
-        val pair = StopPairs.allStops.first { it.stop1.name == "Koleje Strahov" }
+        val pair = StopPair(0, StopName("Koleje Strahov"), StopName("Dejvická"))
         val toDejvickaConnection = TransportConnection.fromStopPair(pair, true)
         val toStrahovConnection = TransportConnection.fromStopPair(pair, false)
 

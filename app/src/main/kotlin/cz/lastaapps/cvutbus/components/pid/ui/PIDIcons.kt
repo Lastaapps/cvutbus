@@ -48,7 +48,7 @@ import cz.lastaapps.cvutbus.components.battery.BatteryChoiceDialog
 import cz.lastaapps.cvutbus.components.battery.shouldShowBattery
 import cz.lastaapps.cvutbus.components.pid.PIDViewModel
 import cz.lastaapps.cvutbus.components.settings.SettingsViewModel
-import cz.lastaapps.repo.Direction
+import cz.lastaapps.database.domain.model.Direction
 import org.lighthousegames.logging.logging
 
 @Composable

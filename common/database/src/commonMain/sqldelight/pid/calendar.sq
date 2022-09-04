@@ -1,5 +1,5 @@
-import cz.lastaapps.entity.ServiceDays;
-import cz.lastaapps.entity.ServiceId;
+import cz.lastaapps.database.domain.model.calendar.ServiceDays;
+import cz.lastaapps.database.domain.model.calendar.ServiceId;
 import kotlinx.datetime.LocalDate;
 
 CREATE TABLE calendar (
@@ -11,16 +11,6 @@ CREATE TABLE calendar (
 
 CREATE INDEX calendar_index ON calendar(service_id);
 
-getAll:
-    SELECT * FROM calendar;
-
-insertObj:
-    INSERT OR IGNORE INTO calendar
-    VALUES ?;
-
 insert:
     INSERT OR IGNORE INTO calendar (service_id, days, start_date, end_date)
     VALUES (:serviceId, :days, :startDate, :endDate);
-
-deleteAll:
-    DELETE FROM calendar;

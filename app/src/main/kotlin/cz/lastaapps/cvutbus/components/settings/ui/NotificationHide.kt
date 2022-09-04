@@ -33,8 +33,8 @@ import androidx.compose.ui.res.stringResource
 import cz.lastaapps.cvutbus.R
 import cz.lastaapps.cvutbus.components.settings.SettingsViewModel
 import cz.lastaapps.cvutbus.components.settings.modules.notificationHide
-import cz.lastaapps.entity.utils.toHours
-import cz.lastaapps.entity.utils.toMinutes
+import cz.lastaapps.database.util.toHours
+import cz.lastaapps.database.util.toMinutes
 import kotlin.math.roundToInt
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.seconds

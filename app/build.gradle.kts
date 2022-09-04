@@ -36,7 +36,6 @@ android {
 
 dependencies {
 
-    implementation(projects.entity)
     implementation(projects.common.database)
     implementation(projects.common.repo)
     implementation(projects.lastaapps.common)

@@ -1,0 +1,359 @@
+{
+  "entities": [
+    {
+      "name": "Calendar",
+      "parent": null,
+      "attr": [
+        {
+          "name": "service_id",
+          "primary": true,
+          "unique": false,
+          "nullable": false
+        },
+        {
+          "name": "days",
+          "primary": false,
+          "unique": false,
+          "nullable": false
+        },
+        {
+          "name": "start_date",
+          "primary": false,
+          "unique": false,
+          "nullable": false
+        },
+        {
+          "name": "end_date",
+          "primary": false,
+          "unique": false,
+          "nullable": false
+        }
+      ],
+      "transform": {
+        "x": 277.18181818181824,
+        "y": 404.33664772727275,
+        "width": 110.81818181818176,
+        "height": 88.13210227272728
+      }
+    },
+    {
+      "name": "Route",
+      "parent": null,
+      "attr": [
+        {
+          "name": "route_id",
+          "primary": true,
+          "unique": false,
+          "nullable": false
+        },
+        {
+          "name": "route_short_name",
+          "primary": false,
+          "unique": false,
+          "nullable": false
+        },
+        {
+          "name": "route_long_name",
+          "primary": false,
+          "unique": false,
+          "nullable": false
+        }
+      ],
+      "transform": {
+        "x": 272,
+        "y": 129.46875,
+        "width": 117,
+        "height": 73
+      }
+    },
+    {
+      "name": "Stop",
+      "parent": null,
+      "attr": [
+        {
+          "name": "stop_id",
+          "primary": true,
+          "unique": false,
+          "nullable": false
+        },
+        {
+          "name": "stop_name",
+          "primary": false,
+          "unique": true,
+          "nullable": false
+        }
+      ],
+      "transform": {
+        "x": 438,
+        "y": 399.46875,
+        "width": 118,
+        "height": 63
+      }
+    },
+    {
+      "name": "Stop_time",
+      "parent": null,
+      "attr": [
+        {
+          "name": "stop_id",
+          "primary": true,
+          "unique": false,
+          "nullable": false
+        },
+        {
+          "name": "trip_id",
+          "primary": true,
+          "unique": false,
+          "nullable": false
+        },
+        {
+          "name": "arrival_time",
+          "primary": true,
+          "unique": false,
+          "nullable": false
+        },
+        {
+          "name": "departure_time",
+          "primary": true,
+          "unique": false,
+          "nullable": false
+        },
+        {
+          "name": "attribute",
+          "primary": false,
+          "unique": false,
+          "nullable": false
+        }
+      ],
+      "transform": {
+        "x": 443,
+        "y": 255.46875,
+        "width": 108,
+        "height": 97
+      }
+    },
+    {
+      "name": "Trip",
+      "parent": null,
+      "attr": [
+        {
+          "name": "trip_id",
+          "primary": true,
+          "unique": false,
+          "nullable": false
+        },
+        {
+          "name": "route_id",
+          "primary": false,
+          "unique": false,
+          "nullable": false
+        },
+        {
+          "name": "service_id",
+          "primary": false,
+          "unique": false,
+          "nullable": false
+        },
+        {
+          "name": "trip_headsign",
+          "primary": false,
+          "unique": false,
+          "nullable": false
+        }
+      ],
+      "transform": {
+        "x": 277,
+        "y": 254.46875,
+        "width": 106,
+        "height": 102
+      }
+    }
+  ],
+  "relations": [
+    [
+      {
+        "entity": "Stop_time",
+        "identifying": false,
+        "optional": false,
+        "cardinality": 0,
+        "xor": null,
+        "name": null,
+        "transform": {
+          "anchor": {
+            "x": 497,
+            "y": 352.46875,
+            "edge": 2
+          },
+          "points": [
+            {
+              "x": 497,
+              "y": 375.96875
+            }
+          ],
+          "manual": false
+        }
+      },
+      {
+        "entity": "Stop",
+        "identifying": false,
+        "optional": true,
+        "cardinality": 1,
+        "xor": null,
+        "name": null,
+        "transform": {
+          "anchor": {
+            "x": 497,
+            "y": 399.46875,
+            "edge": 0
+          },
+          "points": [
+            {
+              "x": 497,
+              "y": 375.96875
+            }
+          ],
+          "manual": false
+        }
+      }
+    ],
+    [
+      {
+        "entity": "Trip",
+        "identifying": false,
+        "optional": false,
+        "cardinality": 0,
+        "xor": null,
+        "name": null,
+        "transform": {
+          "anchor": {
+            "x": 330.5,
+            "y": 254.46875,
+            "edge": 0
+          },
+          "points": [
+            {
+              "x": 330.5,
+              "y": 228.46875
+            }
+          ],
+          "manual": false
+        }
+      },
+      {
+        "entity": "Route",
+        "identifying": false,
+        "optional": true,
+        "cardinality": 0,
+        "xor": null,
+        "name": null,
+        "transform": {
+          "anchor": {
+            "x": 330.5,
+            "y": 202.46875,
+            "edge": 2
+          },
+          "points": [
+            {
+              "x": 330.5,
+              "y": 228.46875
+            }
+          ],
+          "manual": false
+        }
+      }
+    ],
+    [
+      {
+        "entity": "Trip",
+        "identifying": false,
+        "optional": true,
+        "cardinality": 0,
+        "xor": null,
+        "name": null,
+        "transform": {
+          "anchor": {
+            "x": 330.5,
+            "y": 356.46875,
+            "edge": 2
+          },
+          "points": [
+            {
+              "x": 331.54545454545456,
+              "y": 380.4026988636364
+            }
+          ],
+          "manual": false
+        }
+      },
+      {
+        "entity": "Calendar",
+        "identifying": false,
+        "optional": true,
+        "cardinality": 0,
+        "xor": null,
+        "name": null,
+        "transform": {
+          "anchor": {
+            "x": 332.5909090909091,
+            "y": 404.33664772727275,
+            "edge": 0
+          },
+          "points": [
+            {
+              "x": 331.54545454545456,
+              "y": 380.4026988636364
+            }
+          ],
+          "manual": false
+        }
+      }
+    ],
+    [
+      {
+        "entity": "Trip",
+        "identifying": false,
+        "optional": true,
+        "cardinality": 1,
+        "xor": null,
+        "name": null,
+        "transform": {
+          "anchor": {
+            "x": 383,
+            "y": 303.967529296875,
+            "edge": 1
+          },
+          "points": [
+            {
+              "x": 413,
+              "y": 303.9681396484375
+            }
+          ],
+          "manual": false
+        }
+      },
+      {
+        "entity": "Stop_time",
+        "identifying": false,
+        "optional": false,
+        "cardinality": 0,
+        "xor": null,
+        "name": null,
+        "transform": {
+          "anchor": {
+            "x": 443,
+            "y": 303.96875,
+            "edge": 3
+          },
+          "points": [
+            {
+              "x": 413,
+              "y": 303.9681396484375
+            }
+          ],
+          "manual": false
+        }
+      }
+    ]
+  ],
+  "notes": []
+}

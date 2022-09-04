@@ -44,8 +44,8 @@ import cz.lastaapps.cvutbus.api.DatabaseInfo
 import cz.lastaapps.cvutbus.components.pid.PIDViewModel
 import cz.lastaapps.cvutbus.components.settings.SettingsViewModel
 import cz.lastaapps.cvutbus.components.settings.ui.RefreshData
-import cz.lastaapps.entity.utils.CET
-import cz.lastaapps.repo.DepartureInfo
+import cz.lastaapps.database.domain.model.DepartureInfo
+import cz.lastaapps.database.util.CET
 import kotlinx.datetime.Instant
 import kotlinx.datetime.toInstant
 

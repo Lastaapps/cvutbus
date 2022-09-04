@@ -27,7 +27,8 @@ import cz.lastaapps.cvutbus.components.settings.modules.preferredDirection
 import cz.lastaapps.cvutbus.components.settings.modules.preferredStopPair
 import cz.lastaapps.cvutbus.getRoundedNow
 import cz.lastaapps.cvutbus.secondTicker
-import cz.lastaapps.entity.utils.CET
+import cz.lastaapps.database.domain.model.*
+import cz.lastaapps.database.util.CET
 import cz.lastaapps.repo.*
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.sync.Mutex

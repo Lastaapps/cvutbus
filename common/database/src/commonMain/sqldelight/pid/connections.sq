@@ -1,0 +1,11 @@
+CREATE TABLE connections (
+    id INTEGER NOT NULL PRIMARY KEY,
+    fromStation TEXT NOT NULL,
+    toStation TEXT NOT NULL
+);
+
+insertConnection:
+    INSERT INTO connections VALUES (:id, :from, :to);
+
+getAllConnections:
+    SELECT * FROM connections ORDER BY id;

@@ -1,6 +1,8 @@
-import cz.lastaapps.entity.RouteId;
-import cz.lastaapps.entity.ServiceId;
-import cz.lastaapps.entity.TripId;
+import cz.lastaapps.database.domain.model.calendar.ServiceId;
+import cz.lastaapps.database.domain.model.route.RouteId;
+import cz.lastaapps.database.domain.model.trip.TripId;
+
+
 
 CREATE TABLE trips (
     trip_id TEXT AS TripId NOT NULL PRIMARY KEY,
@@ -11,16 +13,6 @@ CREATE TABLE trips (
 
 CREATE INDEX trips_index ON trips(trip_id, service_id);
 
-getAll:
-    SELECT * FROM trips;
-
-insertObj:
-    INSERT OR IGNORE INTO trips
-    VALUES ?;
-
 insert:
     INSERT OR IGNORE INTO trips (trip_id, route_id, service_id, trip_headsign)
     VALUES (:tripId, :routeId, :serviceId, :headsign);
-
-deleteAll:
-    DELETE FROM trips;

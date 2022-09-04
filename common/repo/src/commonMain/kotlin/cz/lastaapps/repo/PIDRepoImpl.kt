@@ -19,117 +19,24 @@
 
 package cz.lastaapps.repo
 
-import com.squareup.sqldelight.runtime.coroutines.asFlow
-import com.squareup.sqldelight.runtime.coroutines.mapToList
-import cz.lastaapps.database.PIDDatabase
-import cz.lastaapps.entity.hasDay
-import cz.lastaapps.entity.utils.ServiceDayTime
-import io.kotest.matchers.ints.shouldBeGreaterThanOrEqual
+import cz.lastaapps.database.domain.PIDDataSource
+import cz.lastaapps.database.domain.model.DepartureInfo
+import cz.lastaapps.database.domain.model.TransportConnection
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.map
-import kotlinx.datetime.*
+import kotlinx.datetime.LocalDateTime
 import org.lighthousegames.logging.logging
-import pid.GetAllForDays
 
-class PIDRepoImpl(private val database: PIDDatabase) : PIDRepo {
+class PIDRepoImpl(private val pidDataSource: PIDDataSource) : PIDRepo {
 
     companion object {
-        /**
-         * To how many days each entry should be expanded
-         * Required for service time -> normal time conversion (today + yesterday)
-         * + 1 more day because of the after midnight times
-         */
-        private const val generateForDays = 3
-
-        init {
-            generateForDays shouldBeGreaterThanOrEqual 3
-        }
-
         private val log = logging()
     }
 
     override suspend fun getData(
-        fromDateTime: LocalDateTime, connection: TransportConnection,
-    ): Flow<List<DepartureInfo>> {
-
-        log.i { "Loading data from $fromDateTime for connection $connection" }
-
-        val maxStartDate = fromDateTime.date.plus(generateForDays, DateTimeUnit.DAY)
-        val maxEndDate = fromDateTime.date.minus(1, DateTimeUnit.DAY)
-
-        //is a little bit slower
-        //val rows = database.queriesQueries.getAll(connection.from, connection.to)
-
-        // get data for the both directions
-        val rows = database.queriesQueries.getAllForDays(
-            connection.from, connection.to, maxStartDate, maxEndDate,
-        )
-
-        return rows.asFlow().mapToList().map { it.getForRows(fromDateTime, connection) }
-    }
-
-    private fun List<GetAllForDays>.getForRows(
         fromDateTime: LocalDateTime,
         connection: TransportConnection
-    ): List<DepartureInfo> {
-        // we need to start 1 day before, service day can have up to 47 hours
-        val startDate = fromDateTime.date.minus(1, DateTimeUnit.DAY)
-        // caching, creating objects just once
-        val dayShifts = List(generateForDays) { startDate.plus(it.toLong(), DateTimeUnit.DAY) }
-
-        val times = mutableListOf<DepartureInfo>()
-        this.forEach { row ->
-            // select the correct direction
-            if (row.startArrivalTime < row.endArrivalTime) {
-                dayShifts.forEach { date ->
-                    // is time valid
-                    if (row.startDate <= date && date <= row.endDate && row.days.hasDay(date)) {
-                        times.add(
-                            DepartureInfo(
-                                serviceToNormalDateTime(date, row.startArrivalTime),
-                                row.shortName, connection,
-                            )
-                        )
-                    }
-                }
-            }
-        }
-
-        log.i { "Got ${times.size} results" }
-        times.sort()
-        val index = times.binarySearchBy(fromDateTime) { it.dateTime }
-
-        val validTimes =
-            // there is an item with the exact same time as the one requested
-            if (index >= 0) {
-                //there may be same departure time twice from two or more different trips
-                var newIndex = index
-                while (newIndex > 0 && times[newIndex - 1].dateTime == fromDateTime) {
-                    newIndex--
-                }
-                times.subList(fromIndex = newIndex, toIndex = times.lastIndex)
-            } else {
-                // there is no item, we need to select the next one
-                val newIndex = -1 * (index + 1)
-                if (newIndex <= times.lastIndex)
-                    times.subList(fromIndex = newIndex, toIndex = times.lastIndex)
-                // there are no data left, user should probably update data
-                else emptyList()
-            }
-
-        log.i { "Filtered to ${validTimes.size} results" }
-        return validTimes
-    }
-
-    private fun serviceToNormalDateTime(date: LocalDate, time: ServiceDayTime): LocalDateTime {
-        val hours = time.hours
-        val plusDays = hours / 24
-        val newDate = date.plus(plusDays, DateTimeUnit.DAY)
-        val newHours = hours - plusDays * 24
-        return LocalDateTime(
-            newDate.year, newDate.month, newDate.dayOfMonth,
-            newHours, time.minutes, time.seconds, 0
-        )
+    ): Flow<List<DepartureInfo>> {
+        return pidDataSource.getData(fromDateTime, connection)
     }
 }
 

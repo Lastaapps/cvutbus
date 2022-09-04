@@ -35,8 +35,8 @@ import cz.lastaapps.cvutbus.R
 import cz.lastaapps.cvutbus.localizedFormat
 import cz.lastaapps.cvutbus.notification.receivers.ChangeDirectionReceiver
 import cz.lastaapps.cvutbus.notification.receivers.NextConnectionReceiver
-import cz.lastaapps.entity.utils.CET
-import cz.lastaapps.repo.DepartureInfo
+import cz.lastaapps.database.domain.model.DepartureInfo
+import cz.lastaapps.database.util.CET
 import kotlinx.datetime.Clock
 import kotlinx.datetime.toInstant
 import org.lighthousegames.logging.logging

@@ -33,7 +33,7 @@ import cz.lastaapps.cvutbus.components.settings.modules.notificationStartTime
 import cz.lastaapps.cvutbus.components.settings.modules.notificationStartup
 import cz.lastaapps.cvutbus.toLocalTime
 import cz.lastaapps.cvutbus.ui.SafeToast
-import cz.lastaapps.entity.utils.CET
+import cz.lastaapps.database.util.CET
 import kotlinx.coroutines.flow.first
 import kotlinx.datetime.toJavaZoneId
 import org.lighthousegames.logging.logging

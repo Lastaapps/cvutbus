@@ -19,13 +19,14 @@
 
 package cz.lastaapps.generator.parsers
 
-import cz.lastaapps.entity.Calendar
-import cz.lastaapps.entity.ServiceDays
-import cz.lastaapps.entity.ServiceId
+import cz.lastaapps.database.domain.model.calendar.Calendar
+import cz.lastaapps.database.domain.model.calendar.ServiceDays
+import cz.lastaapps.database.domain.model.calendar.ServiceId
 import kotlinx.datetime.LocalDate
 import java.io.BufferedReader
 import java.io.InputStream
 import java.io.InputStreamReader
+import kotlin.streams.asSequence
 
 object CalendarParser {
 
@@ -48,7 +49,7 @@ object CalendarParser {
         val buffered = BufferedReader(InputStreamReader(stream))
 
         buffered.readLine()
-        buffered.lines().forEach { line ->
+        buffered.lines().asSequence().forEach { line ->
             val split = line.split(",")
             Calendar(
                 ServiceId(split[0]),

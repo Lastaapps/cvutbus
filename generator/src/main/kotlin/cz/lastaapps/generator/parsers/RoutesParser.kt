@@ -19,11 +19,12 @@
 
 package cz.lastaapps.generator.parsers
 
-import cz.lastaapps.entity.Route
-import cz.lastaapps.entity.RouteId
+import cz.lastaapps.database.domain.model.route.Route
+import cz.lastaapps.database.domain.model.route.RouteId
 import java.io.BufferedReader
 import java.io.InputStream
 import java.io.InputStreamReader
+import kotlin.streams.asSequence
 
 object RoutesParser {
 
@@ -41,8 +42,8 @@ object RoutesParser {
         val buffered = BufferedReader(InputStreamReader(stream))
 
         buffered.readLine()
-        buffered.lines().forEach {
-            val (routeId, _, short, long) = it.safeSplit()
+        buffered.lines().asSequence().forEach { line ->
+            val (routeId, _, short, long) = line.safeSplit()
             Route(RouteId(routeId.drop(1).toInt()), short, long).also(onEach)
         }
     }

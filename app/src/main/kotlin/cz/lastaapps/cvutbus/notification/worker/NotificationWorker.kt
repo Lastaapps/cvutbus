@@ -27,7 +27,7 @@ import androidx.work.WorkerParameters
 import cz.lastaapps.cvutbus.components.settings.SettingsStore
 import cz.lastaapps.cvutbus.components.settings.modules.notificationHide
 import cz.lastaapps.cvutbus.minuteTickerStopAble
-import cz.lastaapps.repo.DepartureInfo
+import cz.lastaapps.database.domain.model.DepartureInfo
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.first

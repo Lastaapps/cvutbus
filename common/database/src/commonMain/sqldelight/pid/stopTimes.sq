@@ -1,6 +1,7 @@
-import cz.lastaapps.entity.StopId;
-import cz.lastaapps.entity.TripId;
-import cz.lastaapps.entity.utils.ServiceDayTime;
+import cz.lastaapps.database.domain.model.calendar.ServiceDayTime;
+import cz.lastaapps.database.domain.model.stop.StopId;
+import cz.lastaapps.database.domain.model.trip.TripId;
+
 
 CREATE TABLE stopTimes (
     stop_id TEXT AS StopId NOT NULL,
@@ -12,16 +13,6 @@ CREATE TABLE stopTimes (
 
 CREATE INDEX stopTimesIndex ON stopTimes(stop_id, trip_id);
 
-getAll:
-    SELECT * FROM stopTimes;
-
-insertObj:
-    INSERT OR IGNORE INTO stopTimes
-    VALUES ?;
-
 insert:
     INSERT OR IGNORE INTO stopTimes (stop_id, trip_id, arrival_time, departure_time)
     VALUES (:stopId, :tripId, :arrivalTime,:departureTime);
-
-deleteAll:
-    DELETE FROM stopTimes;

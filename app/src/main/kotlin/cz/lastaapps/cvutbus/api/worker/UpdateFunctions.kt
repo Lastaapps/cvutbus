@@ -21,9 +21,7 @@ package cz.lastaapps.cvutbus.api.worker
 
 import cz.lastaapps.cvutbus.api.DatabaseInfo
 import cz.lastaapps.cvutbus.api.UnsupportedConfigVersion
-import cz.lastaapps.database.DatabaseDriverFactoryImpl
-import cz.lastaapps.database.createDatabase
-import cz.lastaapps.entity.utils.CET
+import cz.lastaapps.database.util.CET
 import io.ktor.client.plugins.*
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
@@ -71,35 +69,35 @@ fun writeToFile(file: File, array: ByteArray) {
 
 @Suppress("BlockingMethodInNonBlockingContext")
 suspend fun UpdateWorker.updateDatabase(databaseName: String) {
-    val newDriver = DatabaseDriverFactoryImpl(applicationContext, databaseName).createDriver()
-    val newDb = createDatabase(newDriver)
-    val appDb = databaseProvider.provideDatabase()
-
-    appDb.transaction {
-        appDb.calendarQueries.deleteAll()
-        appDb.routesQueries.deleteAll()
-        appDb.stopTimesQueries.deleteAll()
-        appDb.stopsQueries.deleteAll()
-        appDb.tripsQueries.deleteAll()
-
-        newDb.calendarQueries.getAll().executeAsList().forEach {
-            appDb.calendarQueries.insertObj(it)
-        }
-        newDb.routesQueries.getAll().executeAsList().forEach {
-            appDb.routesQueries.insertObj(it)
-        }
-        newDb.stopTimesQueries.getAll().executeAsList().forEach {
-            appDb.stopTimesQueries.insertObj(it)
-        }
-        newDb.stopsQueries.getAll().executeAsList().forEach {
-            appDb.stopsQueries.insertObj(it)
-        }
-        newDb.tripsQueries.getAll().executeAsList().forEach {
-            appDb.tripsQueries.insertObj(it)
-        }
-    }
-
-    newDriver.close()
+//    val newDriver = Pid(applicationContext, databaseName).createDriver()
+//    val newDb = createDatabase(newDriver)
+//    val appDb = databaseProvider.provideDatabase()
+//
+//    appDb.transaction {
+//        appDb.calendarQueries.deleteAll()
+//        appDb.routesQueries.deleteAll()
+//        appDb.stopTimesQueries.deleteAll()
+//        appDb.stopsQueries.deleteAll()
+//        appDb.tripsQueries.deleteAll()
+//
+//        newDb.calendarQueries.getAll().executeAsList().forEach {
+//            appDb.calendarQueries.insertObj(it)
+//        }
+//        newDb.routesQueries.getAll().executeAsList().forEach {
+//            appDb.routesQueries.insertObj(it)
+//        }
+//        newDb.stopTimesQueries.getAll().executeAsList().forEach {
+//            appDb.stopTimesQueries.insertObj(it)
+//        }
+//        newDb.stopsQueries.getAll().executeAsList().forEach {
+//            appDb.stopsQueries.insertObj(it)
+//        }
+//        newDb.tripsQueries.getAll().executeAsList().forEach {
+//            appDb.tripsQueries.insertObj(it)
+//        }
+//    }
+//
+//    newDriver.close()
 }
 
 @Suppress("SameParameterValue")

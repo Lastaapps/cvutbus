@@ -21,9 +21,9 @@ package cz.lastaapps.cvutbus
 
 import android.content.Context
 import android.text.format.DateFormat
-import cz.lastaapps.entity.utils.toHours
-import cz.lastaapps.entity.utils.toMinutes
-import cz.lastaapps.entity.utils.toSeconds
+import cz.lastaapps.database.util.toHours
+import cz.lastaapps.database.util.toMinutes
+import cz.lastaapps.database.util.toSeconds
 import kotlinx.datetime.toJavaLocalDate
 import kotlinx.datetime.toJavaLocalDateTime
 import java.time.LocalTime

@@ -19,12 +19,13 @@
 
 package cz.lastaapps.generator.parsers
 
-import cz.lastaapps.entity.Stop
-import cz.lastaapps.entity.StopId
-import cz.lastaapps.entity.StopName
+import cz.lastaapps.database.domain.model.stop.Stop
+import cz.lastaapps.database.domain.model.stop.StopId
+import cz.lastaapps.database.domain.model.stop.StopName
 import java.io.BufferedReader
 import java.io.InputStream
 import java.io.InputStreamReader
+import kotlin.streams.asSequence
 
 object StopsParser {
 
@@ -41,7 +42,7 @@ object StopsParser {
         val buffered = BufferedReader(InputStreamReader(stream))
 
         buffered.readLine()
-        return buffered.lines().forEach { line ->
+        return buffered.lines().asSequence().forEach { line ->
             val (stopId, name) = line.safeSplit()
             Stop(StopId(stopId), StopName(name)).also(onEach)
         }

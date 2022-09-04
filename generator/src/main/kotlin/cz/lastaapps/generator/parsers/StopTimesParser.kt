@@ -19,13 +19,14 @@
 
 package cz.lastaapps.generator.parsers
 
-import cz.lastaapps.entity.StopId
-import cz.lastaapps.entity.StopTime
-import cz.lastaapps.entity.TripId
-import cz.lastaapps.entity.utils.ServiceDayTime
+import cz.lastaapps.database.domain.model.calendar.ServiceDayTime
+import cz.lastaapps.database.domain.model.stop.StopId
+import cz.lastaapps.database.domain.model.stoptime.StopTime
+import cz.lastaapps.database.domain.model.trip.TripId
 import java.io.BufferedReader
 import java.io.InputStream
 import java.io.InputStreamReader
+import kotlin.streams.asSequence
 
 object StopTimesParser {
 
@@ -48,7 +49,7 @@ object StopTimesParser {
         val buffered = BufferedReader(InputStreamReader(stream))
 
         buffered.readLine()
-        buffered.lines().forEach { line ->
+        buffered.lines().asSequence().forEach { line ->
             val (tripId, arrival, departure, stopId) = line.safeSplit()
             StopTime(
                 StopId(stopId),

@@ -19,20 +19,20 @@
 
 package cz.lastaapps.generator
 
-import cz.lastaapps.database.DatabaseDriverFactoryImpl
+import cz.lastaapps.database.JvmDatabaseDriverFactoryImpl
 import cz.lastaapps.database.MemoryDriverFactory
-import cz.lastaapps.database.PIDDatabase
-import cz.lastaapps.database.createDatabase
-import cz.lastaapps.entity.utils.CET
+import cz.lastaapps.database.createUpdateDatabaseSource
+import cz.lastaapps.database.domain.UpdateDataSource
+import cz.lastaapps.database.util.CET
+import cz.lastaapps.generator.model.StopPairs
 import cz.lastaapps.generator.parsers.*
-import cz.lastaapps.repo.StopPairs
 import io.ktor.client.*
 import io.ktor.client.engine.cio.*
 import io.ktor.client.plugins.*
 import io.ktor.client.request.*
 import io.ktor.http.*
 import io.ktor.util.*
-import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
 import kotlinx.datetime.toJavaZoneId
 import org.lighthousegames.logging.logging
@@ -62,7 +62,7 @@ const val jsonName = "config.json"
  * Filters all the non-important trips form the dara provided by PID,
  * so a small database can be uploaded to the net
  */
-fun main(): Unit = runBlocking(Dispatchers.IO) {
+fun main(): Unit = runBlocking {
 
     val skipDownload = false
     val skipZip = false
@@ -110,7 +110,7 @@ fun main(): Unit = runBlocking(Dispatchers.IO) {
     zipLog.i { "Unzipped!" }
 
 
-    val completeDatabase = createDatabase(MemoryDriverFactory())
+    val completeDatabase = createUpdateDatabaseSource(MemoryDriverFactory().createDriver())
     memLog.i { "Filling temp database" }
     loadData(dir, completeDatabase)
     memLog.i { "Loading done" }
@@ -119,34 +119,14 @@ fun main(): Unit = runBlocking(Dispatchers.IO) {
     if (databaseFile.exists()) databaseFile.delete()
     databaseFile.createNewFile()
 
-    val database = createDatabase(DatabaseDriverFactoryImpl(databaseFile))
+    val database =
+        createUpdateDatabaseSource(JvmDatabaseDriverFactoryImpl(databaseFile).createDriver())
     StopPairs.allStops.forEach {
         dbLog.i { "Querying data for ${it.stop1.name} - ${it.stop2.name}" }
-        completeDatabase.queriesQueries.getAllColumns(it.stop1, it.stop2).executeAsList()
-            .also { list ->
-                dbLog.i { "Connections found: ${list.size}" }
-            }.forEach { row ->
-                database.stopsQueries.insert(row.stop_id, row.stop_name)
-                database.stopsQueries.insert(row.stop_id_, row.stop_name_)
-
-                database.routesQueries.insert(
-                    row.route_id, row.route_short_name, row.route_long_name,
-                )
-
-                database.tripsQueries.insert(
-                    row.trip_id, row.route_id, row.service_id, row.trip_headsign,
-                )
-
-                database.stopTimesQueries.insert(
-                    row.stop_id__, row.trip_id, row.arrival_time, row.departure_time,
-                )
-                database.stopTimesQueries.insert(
-                    row.stop_id___, row.trip_id_, row.arrival_time_, row.departure_time_,
-                )
-
-                database.calendarQueries.insert(
-                    row.service_id, row.days, row.start_date, row.end_date,
-                )
+        completeDatabase.getAllRecords(it).first()
+            .also { records ->
+                dbLog.i { "Connections found: ${records.size}" }
+                database.insertRecords(it, records)
             }
     }
     dbLog.i { "Data saved" }
@@ -251,30 +231,30 @@ internal fun cleanup(dest: File) {
     }
 }
 
-internal fun loadData(dir: File, database: PIDDatabase) {
+internal fun loadData(dir: File, database: UpdateDataSource) {
 
     fun stream(name: String): InputStream = File(dir, "$name.txt").inputStream()
 
-    database.transaction {
+    database.inTransaction {
         parseLog.i { "Parsing calendar.txt" }
         CalendarParser.parse(stream("calendar")) {
-            database.calendarQueries.insert(it.serviceId, it.days, it.start, it.end)
+            database.insertCalendar(it.serviceId, it.days, it.start, it.end)
         }
         parseLog.i { "Parsing routes.txt" }
         RoutesParser.parse(stream("routes")) {
-            database.routesQueries.insert(it.routeId, it.shortName, it.longName)
+            database.insertRoute(it.routeId, it.shortName, it.longName)
         }
         parseLog.i { "Parsing stops.txt" }
         StopsParser.parse(stream("stops")) {
-            database.stopsQueries.insert(it.stopId, it.name)
+            database.insertStop(it.stopId, it.name)
         }
         parseLog.i { "Parsing stop_times.txt" }
         StopTimesParser.parse(stream("stop_times")) {
-            database.stopTimesQueries.insert(it.stopId, it.tripId, it.arrival, it.departure)
+            database.insertStopTime(it.stopId, it.tripId, it.arrival, it.departure)
         }
         parseLog.i { "Parsing trips.txt" }
         TripsParser.parse(stream("trips")) {
-            database.tripsQueries.insert(it.tripId, it.routeId, it.serviceId, it.headSign)
+            database.insertTrip(it.tripId, it.routeId, it.serviceId, it.headSign)
         }
     }
 }

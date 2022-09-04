@@ -20,9 +20,7 @@
 package cz.lastaapps.cvutbus.api
 
 import android.app.Application
-import cz.lastaapps.database.DatabaseDriverFactoryImpl
 import cz.lastaapps.database.PIDDatabase
-import cz.lastaapps.database.createDatabase
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
@@ -74,9 +72,10 @@ class DatabaseProvider(
                 log.i { "Database is up to date" }
             }
 
-            return@withContext createDatabase(
-                DatabaseDriverFactoryImpl(app, databaseName)
-            ).also { databaseCache = it }
+            Any() as PIDDatabase
+//            return@withContext createDatabase(
+//                PIDDatabaseDriverFactory(app).createDriver()
+//            ).also { databaseCache = it }
         }
     }
 }

@@ -152,7 +152,7 @@ gradlePlugins-shadow = { module = "gradle.plugin.com.github.johnrengelman:shadow
 junit5-bom = { module = "org.junit:junit-bom", version.ref = "junit5-bom" }
 junit5-jupiter-api = { module = "org.junit.jupiter:junit-jupiter-api" }
 junit5-jupiter-runtime = { module = "org.junit.jupiter:junit-jupiter-engine" }
-kmLogging = "org.lighthousegames:logging:1.2.0"
+kmLogging = "org.lighthousegames:logging:1.1.2"
 kodein-androidCore = { module = "org.kodein.di:kodein-di-framework-android-core", version.ref = "kodein" }
 kodein-androidx = { module = "org.kodein.di:kodein-di-framework-android-x", version.ref = "kodein" }
 kodein-androidxViewmode = { module = "org.kodein.di:kodein-di-framework-android-x-viewmodel", version.ref = "kodein" }
@@ -214,7 +214,9 @@ ktor-server-partialContent = { module = "io.ktor:ktor-server-partial-content", v
 ktor-server-sesstions = { module = "io.ktor:ktor-server-sessions", version.ref = "ktor" }
 ktor-server-statusPages = { module = "io.ktor:ktor-server-status-pages", version.ref = "ktor" }
 ktor-server-unofficial-apiKeyAuth = "dev.forst:ktor-api-key:2.1.0"
-logback = "ch.qos.logback:logback-classic:1.4.0"
+logback-classic = "ch.qos.logback:logback-classic:1.4.0"
+logback-core = "ch.qos.logback:logback-core:1.4.0"
+slf4j = "org.slf4j:slf4j-api:2.0.0"
 qrgen = "com.github.kenglxn.QRGen:android:2.6.0"
 robolectric = "org.robolectric:robolectric:4.8"
 skrapeIt = "it.skrape:skrapeit:1.2.1"
