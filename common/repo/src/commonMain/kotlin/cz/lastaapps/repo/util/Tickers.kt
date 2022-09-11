@@ -17,43 +17,43 @@
  * along with ČVUT Bus.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package cz.lastaapps.cvutbus
+package cz.lastaapps.repo.util
 
 import cz.lastaapps.database.util.roundToSeconds
 import kotlinx.coroutines.delay
 import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant
 
-suspend fun secondTicker(getNow: () -> Instant = ::getRoundedNow, onTick: (Instant) -> Unit) {
-    secondTickerStopAble(getNow) { onTick(it); true }
-}
+suspend fun secondsTicker(
+    getNow: () -> Instant = { Clock.System.now() },
+    onTick: (Instant) -> Unit,
+) = secondsTickerStopAble(getNow) { onTick(it); true }
 
-suspend fun secondTickerStopAble(
-    getNow: () -> Instant = ::getRoundedNow,
-    onTick: (Instant) -> Boolean
+suspend fun secondsTickerStopAble(
+    getNow: () -> Instant = { Clock.System.now() },
+    onTick: (Instant) -> Boolean,
 ) {
     val safetyOffset = 10
-    var keep = onTick(getNow())
-    while (keep) {
-        delay(1000 - System.currentTimeMillis() % 1000 + safetyOffset)
-        keep = onTick(getNow())
+    while (true) {
+        val now = getNow().roundToSeconds()
+        if (!onTick(now)) break
+        delay(1_000 - now.toEpochMilliseconds() % 1_000 + safetyOffset)
     }
 }
 
-suspend fun minuteTicker(getNow: () -> Instant = ::getRoundedNow, onTick: (Instant) -> Unit) {
-    minuteTickerStopAble(getNow) { onTick(it); true }
-}
+suspend fun minutesTicker(
+    getNow: () -> Instant = { Clock.System.now() },
+    onTick: (Instant) -> Unit,
+) = minutesTickerStopAble(getNow) { onTick(it); true }
 
-suspend fun minuteTickerStopAble(
-    getNow: () -> Instant = ::getRoundedNow,
-    onTick: (Instant) -> Boolean
+suspend fun minutesTickerStopAble(
+    getNow: () -> Instant = { Clock.System.now() },
+    onTick: (Instant) -> Boolean,
 ) {
     val safetyOffset = 10
-    var keep = onTick(getNow())
-    while (keep) {
-        delay(60_000 - System.currentTimeMillis() % 60_000 + safetyOffset)
-        keep = onTick(getNow())
+    while (true) {
+        val now = getNow().roundToSeconds()
+        if (!onTick(now)) break
+        delay(60_000 - now.toEpochMilliseconds() % 60_000 + safetyOffset)
     }
 }
-
-fun getRoundedNow() = Clock.System.now().roundToSeconds()

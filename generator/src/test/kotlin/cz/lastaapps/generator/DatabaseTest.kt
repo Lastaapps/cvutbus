@@ -61,13 +61,13 @@ package cz.lastaapps.generator
 //
 //    @Test
 //    fun filterTripNumber() = runTest {
-//        database.queriesQueries.getTripIds(strahov, dejvicka).executeAsList().shouldHaveSize(358)
-//        database.queriesQueries.getTripIds(dejvicka, strahov).executeAsList().shouldHaveSize(358)
+//        database.logicQueries.getTripIds(strahov, dejvicka).executeAsList().shouldHaveSize(358)
+//        database.logicQueries.getTripIds(dejvicka, strahov).executeAsList().shouldHaveSize(358)
 //    }
 //
 //    @Test
 //    fun directions() = runTest {
-//        database.queriesQueries.getAll(strahov, dejvicka).executeAsList().shouldHaveSize(358)
-//        database.queriesQueries.getAll(dejvicka, strahov).executeAsList().shouldHaveSize(358)
+//        database.logicQueries.getAll(strahov, dejvicka).executeAsList().shouldHaveSize(358)
+//        database.logicQueries.getAll(dejvicka, strahov).executeAsList().shouldHaveSize(358)
 //    }
 //}

@@ -67,6 +67,38 @@ getAllColumns:
     INNER JOIN calendar USING(service_id)
     INNER JOIN routes USING(route_id)
 
+    WHERE startStopTimes.trip_id = endStopTimes.trip_id
+    ;
+
+getAllColumnsForPair:
+    SELECT
+    startStops.stop_id AS start_stop_id,
+    startStops.stop_name AS start_stop_name,
+    startStopTimes.arrival_time AS start_arrival_time,
+    startStopTimes.departure_time AS start_departure_time,
+    endStops.stop_id AS end_stop_id,
+    endStops.stop_name AS end_stop_name,
+    endStopTimes.arrival_time AS end_arrival_time,
+    endStopTimes.departure_time AS end_departure_time,
+    trips.trip_id, trips.trip_headsign,
+    calendar.*, routes.*
+    FROM stops AS startStops, stops AS endStops
+
+    INNER JOIN stopTimes AS startStopTimes ON startStopTimes.stop_id = startStops.stop_id
+    INNER JOIN stopTimes AS endStopTimes ON endStopTimes.stop_id = endStops.stop_id
+
+    INNER JOIN trips ON trips.trip_id = startStopTimes.trip_id
+    INNER JOIN calendar USING(service_id)
+    INNER JOIN routes USING(route_id)
+
     WHERE startStops.stop_name = :startDest AND endStops.stop_name = :endDest
     AND startStopTimes.trip_id = endStopTimes.trip_id
     ;
+
+deleteAll:
+    DELETE FROM calendar;
+    DELETE FROM connections;
+    DELETE FROM routes;
+    DELETE FROM stops;
+    DELETE FROM stopTimes;
+    DELETE FROM trips;

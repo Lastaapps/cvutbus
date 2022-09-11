@@ -19,13 +19,24 @@
 
 package cz.lastaapps.database.domain.model
 
+import cz.lastaapps.database.util.CET
+import kotlinx.datetime.Instant
 import kotlinx.datetime.LocalDateTime
+import kotlinx.datetime.toInstant
 
 data class DepartureInfo(
-    val dateTime: LocalDateTime,
+    val dateTime: Instant,
     val routeShortName: String,
     val connection: TransportConnection,
 ) : Comparable<DepartureInfo> {
+
+    /** Used for tests only */
+    constructor(
+        dateTime: LocalDateTime,
+        routeShortName: String,
+        connection: TransportConnection,
+    ) : this(dateTime.toInstant(CET), routeShortName, connection)
+
     override fun compareTo(other: DepartureInfo): Int {
         return dateTime.compareTo(other.dateTime)
     }

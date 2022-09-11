@@ -23,13 +23,13 @@ import cz.lastaapps.database.domain.model.DepartureInfo
 import cz.lastaapps.database.domain.model.StopPair
 import cz.lastaapps.database.domain.model.TransportConnection
 import kotlinx.coroutines.flow.Flow
-import kotlinx.datetime.LocalDateTime
+import kotlinx.datetime.Instant
 
 interface PIDDataSource {
 
     suspend fun getConnections(): Flow<List<StopPair>>
 
     suspend fun getData(
-        fromDateTime: LocalDateTime, connection: TransportConnection,
+        fromDateTime: Instant, connection: TransportConnection,
     ): Flow<List<DepartureInfo>>
 }

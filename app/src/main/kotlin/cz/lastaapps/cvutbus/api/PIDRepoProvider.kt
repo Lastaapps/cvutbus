@@ -19,8 +19,8 @@
 
 package cz.lastaapps.cvutbus.api
 
-import cz.lastaapps.repo.PIDRepo
 import cz.lastaapps.repo.PIDRepoImpl
+import cz.lastaapps.repo.domain.usecases.PIDRepo
 
 class PIDRepoProvider constructor(private val provider: DatabaseProvider) {
     suspend fun provide(): PIDRepo {

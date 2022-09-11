@@ -28,25 +28,32 @@ import cz.lastaapps.database.domain.model.route.RouteId
 import cz.lastaapps.database.domain.model.stop.StopId
 import cz.lastaapps.database.domain.model.stop.StopName
 import cz.lastaapps.database.domain.model.trip.TripId
-import kotlinx.coroutines.flow.Flow
 import kotlinx.datetime.LocalDate
 
 interface UpdateDataSource {
 
     fun inTransaction(block: () -> Unit)
 
-    fun getAllRecords(pair: StopPair): Flow<List<RecordDto>>
 
-    fun insertRecords(pair: StopPair, list: List<RecordDto>)
+    // App - updating database from downloaded data
+    fun updateFromAnother(src: UpdateDataSource)
+    fun getAllStopPairs(): List<StopPair>
+    fun getAllRecords(): List<RecordDto>
+    fun getAllRecords(pair: StopPair): List<RecordDto>
 
+
+    // Generator - moving queried data to output databse
+    fun insertStopPair(pair: StopPair)
+    fun insertRecords(list: List<RecordDto>)
+
+
+    // Generator - all the data database
+    // filing new database from PID data
     fun insertCalendar(serviceId: ServiceId, days: ServiceDays, start: LocalDate, end: LocalDate)
     fun insertRoute(routeId: RouteId, shortName: String, longName: String)
     fun insertStop(stopId: StopId, stopName: StopName)
     fun insertStopTime(
-        stopId: StopId,
-        tripId: TripId,
-        arrival: ServiceDayTime,
-        departure: ServiceDayTime
+        stopId: StopId, tripId: TripId, arrival: ServiceDayTime, departure: ServiceDayTime
     )
 
     fun insertTrip(tripId: TripId, routeId: RouteId, serviceId: ServiceId, headSign: String)

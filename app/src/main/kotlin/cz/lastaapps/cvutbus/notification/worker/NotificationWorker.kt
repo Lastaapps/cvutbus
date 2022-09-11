@@ -26,8 +26,8 @@ import androidx.work.ForegroundInfo
 import androidx.work.WorkerParameters
 import cz.lastaapps.cvutbus.components.settings.SettingsStore
 import cz.lastaapps.cvutbus.components.settings.modules.notificationHide
-import cz.lastaapps.cvutbus.minuteTickerStopAble
 import cz.lastaapps.database.domain.model.DepartureInfo
+import cz.lastaapps.repo.util.minutesTickerStopAble
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.first
@@ -69,7 +69,7 @@ class NotificationWorker constructor(
                 var job: Job? = null
                 job = launch {
                     data.collectLatest {
-                        minuteTickerStopAble { now ->
+                        minutesTickerStopAble { now ->
                             if (timeToStop != null && timeToStop < now) {
                                 false
                             } else {

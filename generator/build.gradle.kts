@@ -42,6 +42,7 @@ import cz.lastaapps.extensions.libs
 
 plugins {
     id(libs.plugins.lastaapps.jvm.app.get().pluginId)
+    alias(libs.plugins.kotlin.serialization)
 }
 
 application {
@@ -54,6 +55,8 @@ dependencies {
     implementation(libs.ktor.client.core)
     implementation(libs.ktor.client.cio)
 //    implementation(libs.ktor.client.java)
+
+    implementation(libs.kotlinx.serializationJson)
 }
 
 tasks.test {

@@ -1,7 +1,7 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="Run Generator" type="JetRunConfigurationType">
+  <configuration default="false" name="Generate data" type="JetRunConfigurationType">
     <option name="MAIN_CLASS_NAME" value="cz.lastaapps.generator.MainKt" />
-    <module name="ČVUTBus.generator.main" />
+    <module name="CVUTBus.generator.main" />
     <shortenClasspath name="NONE" />
     <method v="2">
       <option name="Make" enabled="true" />

@@ -24,6 +24,8 @@ import cz.lastaapps.database.MemoryDriverFactory
 import cz.lastaapps.database.createUpdateDatabaseSource
 import cz.lastaapps.database.domain.UpdateDataSource
 import cz.lastaapps.database.util.CET
+import cz.lastaapps.generator.model.Config
+import cz.lastaapps.generator.model.ConfigV1
 import cz.lastaapps.generator.model.StopPairs
 import cz.lastaapps.generator.parsers.*
 import io.ktor.client.*
@@ -32,14 +34,11 @@ import io.ktor.client.plugins.*
 import io.ktor.client.request.*
 import io.ktor.http.*
 import io.ktor.util.*
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
-import kotlinx.datetime.toJavaZoneId
+import kotlinx.datetime.*
+import kotlinx.serialization.json.Json
 import org.lighthousegames.logging.logging
 import java.io.*
-import java.time.Instant
-import java.time.LocalDate
-import java.time.format.DateTimeFormatter
 import java.util.zip.ZipEntry
 import java.util.zip.ZipInputStream
 import kotlin.system.exitProcess
@@ -64,6 +63,8 @@ const val jsonName = "config.json"
  */
 fun main(): Unit = runBlocking {
 
+    val now = Clock.System.now()
+
     val skipDownload = false
     val skipZip = false
     val skipCleanup = false
@@ -76,7 +77,7 @@ fun main(): Unit = runBlocking {
     genLog.i { "Output directory: " + dir.absolutePath }
 
     val archive = File(dir, archiveName)
-    if ((!archive.exists() || Instant.ofEpochMilli(archive.lastModified() + 24 * 3600 * 1000) < Instant.now()) && !skipDownload) {
+    if ((!archive.exists() || Instant.fromEpochMilliseconds(archive.lastModified() + 24 * 3600 * 1000) < now) && !skipDownload) {
         downLog.i { "Downloading from https://data.pid.cz/PID_GTFS.zip" }
 
         if (!archive.exists())
@@ -121,31 +122,32 @@ fun main(): Unit = runBlocking {
 
     val database =
         createUpdateDatabaseSource(JvmDatabaseDriverFactoryImpl(databaseFile).createDriver())
-    StopPairs.allStops.forEach {
-        dbLog.i { "Querying data for ${it.stop1.name} - ${it.stop2.name}" }
-        completeDatabase.getAllRecords(it).first()
-            .also { records ->
-                dbLog.i { "Connections found: ${records.size}" }
-                database.insertRecords(it, records)
-            }
+    database.inTransaction {
+        StopPairs.allStops.forEach {
+            dbLog.i { "Querying data for ${it.stop1.name} - ${it.stop2.name}" }
+            completeDatabase.getAllRecords(it)
+                .also { records ->
+                    dbLog.i { "Connections found: ${records.size}" }
+                    database.insertStopPair(it)
+                    database.insertRecords(records)
+                }
+        }
     }
     dbLog.i { "Data saved" }
 
     jsonLog.i { "Creating json configuration" }
     val json = File(dir, jsonName)
     val jsonOut = PrintWriter(OutputStreamWriter(json.outputStream()))
-    val now = LocalDate.now(CET.toJavaZoneId())
-    jsonOut.print(
-        """
-        |{
-        |   "jsonVersion": 1,
-        |   "minAppVersion": 1,
-        |   "dataReleaseDate": "${now.format(DateTimeFormatter.ISO_DATE)}",
-        |   "dataValidity": "${now.plusDays(10).format(DateTimeFormatter.ISO_DATE)}",
-        |   "fileSize": ${databaseFile.length()}
-        |}
-    """.trimMargin()
+    val nowDate = now.toLocalDateTime(CET).date
+    val config = Config(
+        ConfigV1(
+            releaseDate = nowDate,
+            validUntil = nowDate.plus(10, DateTimeUnit.DAY),
+            fileSize = databaseFile.length(),
+            link = "https://raw.githubusercontent.com/Lastaapps/cvutbus/cloud_data/cloud_data/piddatabase.db",
+        )
     )
+    jsonOut.print(Json.encodeToString(Config.serializer(), config))
     jsonOut.flush()
     jsonOut.close()
 

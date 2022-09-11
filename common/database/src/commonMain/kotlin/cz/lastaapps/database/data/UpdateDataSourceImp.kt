@@ -19,8 +19,6 @@
 
 package cz.lastaapps.database.data
 
-import com.squareup.sqldelight.runtime.coroutines.asFlow
-import com.squareup.sqldelight.runtime.coroutines.mapToList
 import cz.lastaapps.database.PIDDatabase
 import cz.lastaapps.database.domain.UpdateDataSource
 import cz.lastaapps.database.domain.model.RecordDto
@@ -33,7 +31,7 @@ import cz.lastaapps.database.domain.model.stop.StopId
 import cz.lastaapps.database.domain.model.stop.StopName
 import cz.lastaapps.database.domain.model.trip.TripId
 import cz.lastaapps.database.util.getAllColumnsMapper
-import kotlinx.coroutines.flow.Flow
+import cz.lastaapps.database.util.getAllConnectionMapper
 import kotlinx.datetime.LocalDate
 import org.koin.core.annotation.Factory
 
@@ -43,36 +41,53 @@ internal class UpdateDataSourceImp(private val database: PIDDatabase) : UpdateDa
         database.transaction() { block() }
     }
 
-    override fun getAllRecords(pair: StopPair): Flow<List<RecordDto>> {
-        return database.queriesQueries.getAllColumns(pair.stop1, pair.stop2, getAllColumnsMapper)
-            .asFlow().mapToList()
+    override fun updateFromAnother(src: UpdateDataSource) {
+        database.transaction {
+            database.logicQueries.deleteAll()
+
+            src.getAllStopPairs().forEach { pair ->
+                insertStopPair(pair)
+            }
+            insertRecords(src.getAllRecords())
+        }
     }
 
-    override fun insertRecords(pair: StopPair, list: List<RecordDto>) {
-        database.transaction {
-            with(pair) {
-                database.connectionsQueries.insertConnection(id.toLong(), stop1.name, stop2.name)
+    override fun getAllStopPairs(): List<StopPair> =
+        database.connectionsQueries.getAllConnections(getAllConnectionMapper).executeAsList()
+
+    override fun getAllRecords(): List<RecordDto> =
+        database.logicQueries.getAllColumns(getAllColumnsMapper).executeAsList()
+
+    override fun getAllRecords(pair: StopPair): List<RecordDto> =
+        database.logicQueries.getAllColumnsForPair(pair.stop1, pair.stop2, getAllColumnsMapper)
+            .executeAsList()
+
+    override fun insertStopPair(pair: StopPair) {
+        with(pair) {
+            database.connectionsQueries.insertConnection(id.toLong(), stop1, stop2)
+        }
+    }
+
+    override fun insertRecords(list: List<RecordDto>) {
+        list.forEach { row ->
+            listOf(row.stop1, row.stop2).forEach { stop ->
+                database.stopsQueries.insert(stop.stopId, stop.stopName)
+                database.stopTimesQueries.insert(
+                    stop.stopId, row.trip_id, stop.arrivalTime, stop.departureTime,
+                )
             }
-            list.forEach { row ->
-                listOf(row.stop1, row.stop2).forEach { stop ->
-                    database.stopsQueries.insert(stop.stopId, stop.stopName)
-                    database.stopTimesQueries.insert(
-                        stop.stopId, row.trip_id, stop.arrivalTime, stop.departureTime,
-                    )
-                }
 
-                database.routesQueries.insert(
-                    row.route_id, row.route_short_name, row.route_long_name,
-                )
+            database.routesQueries.insert(
+                row.route_id, row.route_short_name, row.route_long_name,
+            )
 
-                database.tripsQueries.insert(
-                    row.trip_id, row.route_id, row.service_id, row.trip_headsign,
-                )
+            database.tripsQueries.insert(
+                row.trip_id, row.route_id, row.service_id, row.trip_headsign,
+            )
 
-                database.calendarQueries.insert(
-                    row.service_id, row.days, row.start_date, row.end_date,
-                )
-            }
+            database.calendarQueries.insert(
+                row.service_id, row.days, row.start_date, row.end_date,
+            )
         }
     }
 

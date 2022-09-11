@@ -1,7 +1,9 @@
+import cz.lastaapps.database.domain.model.stop.StopName;
+
 CREATE TABLE connections (
     id INTEGER NOT NULL PRIMARY KEY,
-    fromStation TEXT NOT NULL,
-    toStation TEXT NOT NULL
+    fromStation TEXT AS StopName NOT NULL,
+    toStation TEXT AS StopName NOT NULL
 );
 
 insertConnection:

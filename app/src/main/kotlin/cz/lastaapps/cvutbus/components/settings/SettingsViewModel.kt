@@ -27,8 +27,8 @@ import androidx.lifecycle.viewModelScope
 import cz.lastaapps.cvutbus.api.DatabaseStore
 import cz.lastaapps.cvutbus.api.worker.UpdateManager
 import cz.lastaapps.cvutbus.components.settings.modules.*
-import cz.lastaapps.cvutbus.minuteTicker
 import cz.lastaapps.cvutbus.notification.receivers.RegisterModule
+import cz.lastaapps.repo.util.minutesTicker
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -110,7 +110,7 @@ class SettingsViewModel constructor(
 
     init {
         viewModelScope.launch {
-            minuteTicker {
+            minutesTicker {
                 updateNextAlarm()
             }
         }

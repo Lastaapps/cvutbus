@@ -17,16 +17,12 @@
  * along with ČVUT Bus.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package cz.lastaapps.repo
+package cz.lastaapps.base.errors
 
-import cz.lastaapps.database.domain.model.DepartureInfo
-import cz.lastaapps.database.domain.model.TransportConnection
-import kotlinx.coroutines.flow.Flow
-import kotlinx.datetime.LocalDateTime
+sealed class NetworkErrors(message: String? = null, throwable: Throwable? = null) :
+    ErrorResult(message, throwable) {
+    class NoNetworkConnection(message: String, throwable: Throwable) :
+        NetworkErrors(message, throwable)
 
-interface PIDRepo {
-    suspend fun getData(
-        fromDateTime: LocalDateTime,
-        connection: TransportConnection,
-    ): Flow<List<DepartureInfo>>
+    class FailedToConnect(message: String, throwable: Throwable) : NetworkErrors(message, throwable)
 }

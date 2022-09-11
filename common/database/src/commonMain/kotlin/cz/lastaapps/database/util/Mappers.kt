@@ -45,6 +45,6 @@ internal val getAllColumnsMapper =
         )
     }
 
-internal val getAllConnectionMapper = { id: Long, fromStation: String, toStation: String ->
-    StopPair(id.toInt(), StopName(fromStation), StopName(toStation))
+internal val getAllConnectionMapper = { id: Long, fromStation: StopName, toStation: StopName ->
+    StopPair(id.toInt(), fromStation, toStation)
 }

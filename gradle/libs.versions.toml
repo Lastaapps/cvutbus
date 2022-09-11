@@ -219,6 +219,10 @@ logback-core = "ch.qos.logback:logback-core:1.4.0"
 slf4j = "org.slf4j:slf4j-api:2.0.0"
 qrgen = "com.github.kenglxn.QRGen:android:2.6.0"
 robolectric = "org.robolectric:robolectric:4.8"
+russhwolf-settins-core = "com.russhwolf:multiplatform-settings:0.9"
+russhwolf-settins-coroutines = "com.russhwolf:multiplatform-settings-coroutines:0.9"
+russhwolf-settins-datastore = "com.russhwolf:multiplatform-settings-datastore:0.9"
+russhwolf-settins-serialization = "com.russhwolf:multiplatform-settings-serialization:0.9"
 skrapeIt = "it.skrape:skrapeit:1.2.1"
 sqldelight-android = { module = "com.squareup.sqldelight:android-driver", version.ref = "sqldelight" }
 sqldelight-coroutines = { module = "com.squareup.sqldelight:coroutines-extensions", version.ref = "sqldelight" }
@@ -232,7 +236,7 @@ android-application = { id = "com.android.application", version.ref = "android-g
 android-library = { id = "com.android.library", version.ref = "android-gradle" }
 benNamesVersions = "com.github.ben-manes.versions:0.42.0"
 daggerHilt = { id = "dagger.hilt.android.plugin", version.ref = "dagger" }
-firebase-crashlytics = "com.google.firebase.crashlytics:1.0.0"
+firebase-crashlytics = "com.google.firebase.crashlytics:2.8.1"
 google-ksp = { id = "com.google.devtools.ksp", version.ref = "google-ksp" }
 java-kotlin = { id = "kotlin" }
 java-library = { id = "java-library" }

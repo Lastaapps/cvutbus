@@ -46,6 +46,8 @@ import cz.lastaapps.cvutbus.components.settings.SettingsViewModel
 import cz.lastaapps.cvutbus.components.settings.ui.RefreshData
 import cz.lastaapps.database.domain.model.DepartureInfo
 import cz.lastaapps.database.util.CET
+import cz.lastaapps.repo.util.getRoundedNow
+import cz.lastaapps.repo.util.secondsTicker
 import kotlinx.datetime.Instant
 import kotlinx.datetime.toInstant
 
@@ -149,7 +151,7 @@ private fun ShowData(
 private fun rememberNow(data: List<DepartureInfo>): Instant {
     var now by remember { mutableStateOf(getRoundedNow()) }
     LaunchedEffect(data) {
-        secondTicker { now = it }
+        secondsTicker { now = it }
     }
     return now
 }

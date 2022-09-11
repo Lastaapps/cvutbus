@@ -25,11 +25,12 @@ import cz.lastaapps.cvutbus.components.settings.modules.PreferredDirection
 import cz.lastaapps.cvutbus.components.settings.modules.latestDirection
 import cz.lastaapps.cvutbus.components.settings.modules.preferredDirection
 import cz.lastaapps.cvutbus.components.settings.modules.preferredStopPair
-import cz.lastaapps.cvutbus.getRoundedNow
-import cz.lastaapps.cvutbus.secondTicker
 import cz.lastaapps.database.domain.model.*
 import cz.lastaapps.database.util.CET
 import cz.lastaapps.repo.*
+import cz.lastaapps.repo.domain.usecases.PIDRepo
+import cz.lastaapps.repo.util.getRoundedNow
+import cz.lastaapps.repo.util.secondsTicker
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
@@ -108,7 +109,7 @@ class WorkerState constructor(
             repo.getData(getRoundedNow().toLocalDateTime(CET), connection).collectLatest { dbData ->
                 var data = dbData
 
-                secondTicker { now ->
+                secondsTicker { now ->
                     data = data.dropOld(now.minus(30, DateTimeUnit.SECOND).toLocalDateTime(CET))
                     trySend(data)
                 }

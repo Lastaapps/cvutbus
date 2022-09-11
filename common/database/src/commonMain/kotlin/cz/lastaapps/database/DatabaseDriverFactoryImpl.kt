@@ -42,6 +42,10 @@ internal fun createDatabase(driver: SqlDriver): PIDDatabase {
             start_dateAdapter = cl.localDate,
             end_dateAdapter = cl.localDate,
         ),
+        connectionsAdapter = Connections.Adapter(
+            fromStationAdapter = cl.stopName,
+            toStationAdapter = cl.stopName
+        ),
         routesAdapter = Routes.Adapter(
             route_idAdapter = cl.routeId,
         ),

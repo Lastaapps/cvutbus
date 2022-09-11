@@ -35,9 +35,9 @@ plugins {
     alias(libs.plugins.versionCatalogUpdate)
 }
 
-//tasks.register("clean", Delete::class) {
-//    delete(rootProject.buildDir)
-//}
+tasks.register("clean", Delete::class) {
+    delete(rootProject.buildDir)
+}
 
 versionCatalogUpdate {
     sortByKey.set(true)

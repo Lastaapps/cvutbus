@@ -20,6 +20,7 @@
 
 plugins {
     id(libs.plugins.lastaapps.kmp.library.get().pluginId)
+    alias(libs.plugins.kotlin.serialization)
 }
 
 android {
@@ -27,9 +28,18 @@ android {
 }
 
 dependencies {
+    commonMainImplementation(projects.base)
     commonMainImplementation(projects.common.database)
 
-    commonMainImplementation(libs.kotest.assertion)
-    commonMainImplementation(libs.sqldelight.runtime)
-    commonMainImplementation(libs.sqldelight.coroutines)
+    commonMainImplementation(libs.kotlinx.serializationJson)
+
+    commonMainImplementation(libs.ktor.client.core)
+    androidMainImplementation(libs.ktor.client.cio)
+    jvmMainImplementation(libs.ktor.client.cio)
+
+    commonMainImplementation(libs.russhwolf.settins.core)
+    commonMainImplementation(libs.russhwolf.settins.coroutines)
+    commonMainImplementation(libs.russhwolf.settins.serialization)
+    androidMainImplementation(libs.russhwolf.settins.datastore)
+    androidMainImplementation(libs.androidx.datastore)
 }

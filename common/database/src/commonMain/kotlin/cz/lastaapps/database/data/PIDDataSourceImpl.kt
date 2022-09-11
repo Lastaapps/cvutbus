@@ -27,14 +27,12 @@ import cz.lastaapps.database.domain.model.DepartureInfo
 import cz.lastaapps.database.domain.model.StopPair
 import cz.lastaapps.database.domain.model.TransportConnection
 import cz.lastaapps.database.domain.model.calendar.hasDay
+import cz.lastaapps.database.util.CET
 import cz.lastaapps.database.util.getAllConnectionMapper
 import cz.lastaapps.database.util.serviceToNormalDateTime
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
-import kotlinx.datetime.DateTimeUnit
-import kotlinx.datetime.LocalDateTime
-import kotlinx.datetime.minus
-import kotlinx.datetime.plus
+import kotlinx.datetime.*
 import org.koin.core.annotation.Factory
 import org.lighthousegames.logging.logging
 import pid.GetAllForDays
@@ -64,30 +62,34 @@ internal class PIDDataSourceImpl(
         database.connectionsQueries.getAllConnections(getAllConnectionMapper).asFlow().mapToList()
 
     override suspend fun getData(
-        fromDateTime: LocalDateTime, connection: TransportConnection,
+        from: Instant, connection: TransportConnection,
     ): Flow<List<DepartureInfo>> {
 
-        log.i { "Loading data from $fromDateTime for connection $connection" }
+        // to prevent summer/winter time changes
+        val fromDateTime = from.toLocalDateTime(CET)
+        log.i { "Loading data from $fromDateTime CET for connection $connection" }
 
         val maxStartDate = fromDateTime.date.plus(generateForDays, DateTimeUnit.DAY)
         val maxEndDate = fromDateTime.date.minus(1, DateTimeUnit.DAY)
 
         //is a little bit slower
-        //val rows = database.queriesQueries.getAll(connection.from, connection.to)
+        //val rows = database.logicQueries.getAll(connection.from, connection.to)
 
         // get data for the both directions
-        val rows = database.queriesQueries.getAllForDays(
+        val rows = database.logicQueries.getAllForDays(
             connection.from, connection.to, maxStartDate, maxEndDate,
         )
 
-        return rows.asFlow().mapToList().map { it.getForRows(fromDateTime, connection) }
+        return rows.asFlow().mapToList()
+            .map { it.getForRows(fromDateTime.toInstant(CET), connection) }
     }
 
     private fun List<GetAllForDays>.getForRows(
-        fromDateTime: LocalDateTime,
+        from: Instant,
         connection: TransportConnection
     ): List<DepartureInfo> {
         // we need to start 1 day before, service day can have up to 47 hours
+        val fromDateTime = from.toLocalDateTime(CET)
         val startDate = fromDateTime.date.minus(1, DateTimeUnit.DAY)
         // caching, creating objects just once
         val dayShifts = List(generateForDays) { startDate.plus(it.toLong(), DateTimeUnit.DAY) }
@@ -101,7 +103,7 @@ internal class PIDDataSourceImpl(
                     if (row.startDate <= date && date <= row.endDate && row.days.hasDay(date)) {
                         times.add(
                             DepartureInfo(
-                                serviceToNormalDateTime(date, row.startArrivalTime),
+                                serviceToNormalDateTime(date, row.startArrivalTime).toInstant(CET),
                                 row.shortName, connection,
                             )
                         )
@@ -112,14 +114,14 @@ internal class PIDDataSourceImpl(
 
         log.i { "Got ${times.size} results" }
         times.sort()
-        val index = times.binarySearchBy(fromDateTime) { it.dateTime }
+        val index = times.binarySearchBy(from) { it.dateTime }
 
         val validTimes =
             // there is an item with the exact same time as the one requested
             if (index >= 0) {
                 //there may be same departure time twice from two or more different trips
                 var newIndex = index
-                while (newIndex > 0 && times[newIndex - 1].dateTime == fromDateTime) {
+                while (newIndex > 0 && times[newIndex - 1].dateTime == from) {
                     newIndex--
                 }
                 times.subList(fromIndex = newIndex, toIndex = times.lastIndex)

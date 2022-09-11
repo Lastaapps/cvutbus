@@ -28,7 +28,7 @@ import org.koin.core.annotation.Factory
 class PIDDatabaseDriverFactory(private val context: Context) :
     DriverFactory by AndroidDatabaseDriverFactoryImpl(context, "pid")
 
-private class AndroidDatabaseDriverFactoryImpl(
+class AndroidDatabaseDriverFactoryImpl(
     private val context: Context,
     private val name: String
 ) :

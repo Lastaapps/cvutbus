@@ -17,30 +17,25 @@
  * along with ČVUT Bus.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package cz.lastaapps.repo
+package cz.lastaapps.repo.domain
 
-import cz.lastaapps.database.domain.PIDDataSource
 import cz.lastaapps.database.domain.model.DepartureInfo
 import cz.lastaapps.database.domain.model.TransportConnection
 import kotlinx.coroutines.flow.Flow
-import kotlinx.datetime.LocalDateTime
-import org.lighthousegames.logging.logging
+import kotlinx.datetime.Clock
+import kotlinx.datetime.Instant
+import kotlin.time.Duration
+import kotlin.time.Duration.Companion.minutes
 
-class PIDRepoImpl(private val pidDataSource: PIDDataSource) : PIDRepo {
+internal interface PIDRepo {
+    suspend fun getData(
+        from: Instant,
+        connection: TransportConnection,
+    ): Flow<List<DepartureInfo>>
 
-    companion object {
-        private val log = logging()
-    }
-
-    override suspend fun getData(
-        fromDateTime: LocalDateTime,
-        connection: TransportConnection
-    ): Flow<List<DepartureInfo>> {
-        return pidDataSource.getData(fromDateTime, connection)
-    }
-}
-
-fun List<DepartureInfo>.dropOld(limit: LocalDateTime): List<DepartureInfo> {
-    if (isEmpty() || first().dateTime >= limit) return this
-    return dropWhile { it.dateTime < limit }
+    suspend fun getLatestData(
+        connection: TransportConnection,
+        nowProvider: () -> Instant = { Clock.System.now() },
+        includePast: Duration = 1.minutes,
+    ): Flow<List<DepartureInfo>>
 }
