@@ -17,33 +17,22 @@
  * along with ČVUT Bus.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package cz.lastaapps.plugin.multiplatform
+package cz.lastaapps.plugin.android
 
-import cz.lastaapps.extensions.*
+import cz.lastaapps.extensions.alias
+import cz.lastaapps.extensions.libs
+import cz.lastaapps.extensions.pluginManager
 import cz.lastaapps.plugin.BasePlugin
 import org.jetbrains.kotlin.gradle.dsl.kotlinExtension
 
-class KMPKspConvention : BasePlugin({
+class AndroidKspConvention : BasePlugin({
     pluginManager {
         alias(libs.plugins.google.ksp)
     }
 
-    multiplatform {
+    kotlinExtension.apply {
         sourceSets.all {
             kotlin.srcDir("build/generated/ksp/$name/kotlin")
-        }
-        sourceSets.apply {
-            getByName("jvmMain") {
-                kotlin.srcDir("build/generated/ksp/jvm/jvmMain/kotlin")
-            }
-        }
-    }
-
-    androidLibrary {
-        kotlinExtension.apply {
-            sourceSets.all {
-                kotlin.srcDir("build/generated/ksp/android/$name/kotlin")
-            }
         }
     }
 })

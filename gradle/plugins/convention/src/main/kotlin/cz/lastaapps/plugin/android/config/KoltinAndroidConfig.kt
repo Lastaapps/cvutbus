@@ -30,7 +30,6 @@ import org.gradle.kotlin.dsl.extra
 
 internal fun Project.configureKotlinAndroid(
     commonExtension: CommonExtension<*, *, *, *>,
-    applyKotlinOptions: Boolean = true,
 ) = with(commonExtension) {
 
     compileSdk = libs.versions.sdk.compile.get().toInt()
@@ -38,14 +37,6 @@ internal fun Project.configureKotlinAndroid(
     defaultConfig {
         minSdk = libs.versions.sdk.min.get().toInt()
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-    }
-
-    sourceSets {
-        getByName("main").res.srcDirs(
-            "src/main/res",
-            "src/main/res/drawable",
-            "src/main/res/drawableFlags"
-        )
     }
 
     buildTypes {
@@ -57,7 +48,7 @@ internal fun Project.configureKotlinAndroid(
         }
     }
 
-    if (applyKotlinOptions) {
+    try {
         kotlinOptions {
             // Treat all Kotlin warnings as errors (disabled by default)
             allWarningsAsErrors = properties["warningsAsErrors"] as? Boolean ?: false
@@ -69,6 +60,7 @@ internal fun Project.configureKotlinAndroid(
             // Set JVM target to 1.8
             jvmTarget = JavaVersion.VERSION_11.toString()
         }
+    } catch (_: Exception) {
     }
 
     compileOptions {

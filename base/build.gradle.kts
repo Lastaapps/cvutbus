@@ -27,4 +27,7 @@ android {
 
 dependencies {
     commonMainImplementation(libs.ktor.client.core)
+    androidMainImplementation(libs.androidx.compose.runtime)
+    androidMainImplementation(libs.androidx.lifecycle.viewModel)
+    androidMainImplementation(libs.androidx.lifecycle.runtime.compose)
 }

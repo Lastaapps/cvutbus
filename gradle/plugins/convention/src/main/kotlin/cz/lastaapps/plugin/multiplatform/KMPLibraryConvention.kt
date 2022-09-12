@@ -25,14 +25,12 @@ import cz.lastaapps.extensions.libs
 import cz.lastaapps.extensions.multiplatform
 import cz.lastaapps.extensions.pluginManager
 import cz.lastaapps.plugin.BasePlugin
+import cz.lastaapps.plugin.android.AndroidLibraryConvention
 import cz.lastaapps.plugin.android.common.KotlinBaseConvention
 import cz.lastaapps.plugin.android.config.configureKotlinAndroid
 import org.gradle.api.JavaVersion
 import org.gradle.api.tasks.testing.Test
-import org.gradle.kotlin.dsl.apply
-import org.gradle.kotlin.dsl.configure
-import org.gradle.kotlin.dsl.get
-import org.gradle.kotlin.dsl.withType
+import org.gradle.kotlin.dsl.*
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 @Suppress("unused")
@@ -44,6 +42,7 @@ class KMPLibraryConvention : BasePlugin({
     }
 
     apply<KotlinBaseConvention>()
+    apply<AndroidLibraryConvention>()
 
     afterEvaluate {
         multiplatform {
@@ -60,7 +59,7 @@ class KMPLibraryConvention : BasePlugin({
 
         sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
 
-        configureKotlinAndroid(this, applyKotlinOptions = false)
+        configureKotlinAndroid(this)
         defaultConfig {
             multiDexEnabled = true
         }
@@ -161,6 +160,15 @@ class KMPLibraryConvention : BasePlugin({
                     implementation(libs.junit5.jupiter.runtime)
                 }
             }
+        }
+    }
+
+    dependencies {
+        try {
+            add("kspCommonMainMetadata", libs.koin.annotations.compiler)
+            add("kspAndroid", libs.koin.annotations.compiler)
+            add("kspJvm", libs.koin.annotations.compiler)
+        } catch (_: Exception) {
         }
     }
 })

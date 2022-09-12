@@ -21,23 +21,30 @@ package cz.lastaapps.plugin.android
 
 import com.android.build.api.dsl.LibraryExtension
 import cz.lastaapps.extensions.alias
+import cz.lastaapps.extensions.implementation
 import cz.lastaapps.extensions.libs
 import cz.lastaapps.extensions.pluginManager
 import cz.lastaapps.plugin.BasePlugin
 import cz.lastaapps.plugin.android.common.KotlinBaseConvention
+import cz.lastaapps.plugin.android.config.configureComposeCompiler
 import cz.lastaapps.plugin.android.config.configureKotlinAndroid
 import org.gradle.kotlin.dsl.apply
 import org.gradle.kotlin.dsl.configure
+import org.gradle.kotlin.dsl.dependencies
 
 
 class AndroidLibraryConvention : BasePlugin({
     pluginManager {
         alias(libs.plugins.android.library)
-        alias(libs.plugins.kotlin.android)
+
+        // to prevent conflicts with the KMP plugin
+        if (extensions.findByName("kotlin") == null)
+            alias(libs.plugins.kotlin.android)
     }
 
     extensions.configure<LibraryExtension> {
         configureKotlinAndroid(this)
+        configureComposeCompiler(this)
         defaultConfig {
             multiDexEnabled = true
         }
@@ -45,6 +52,9 @@ class AndroidLibraryConvention : BasePlugin({
         buildFeatures {
             buildConfig = false
         }
+    }
+    dependencies {
+        implementation(libs.androidx.compose.runtime)
     }
 
     apply<KotlinBaseConvention>()
