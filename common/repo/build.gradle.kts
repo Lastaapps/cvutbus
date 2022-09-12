@@ -39,7 +39,6 @@ dependencies {
 
     commonMainImplementation(libs.russhwolf.settins.core)
     commonMainImplementation(libs.russhwolf.settins.coroutines)
-    commonMainImplementation(libs.russhwolf.settins.serialization)
     androidMainImplementation(libs.russhwolf.settins.datastore)
     androidMainImplementation(libs.androidx.datastore)
 }

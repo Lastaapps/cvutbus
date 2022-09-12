@@ -20,10 +20,8 @@
 package cz.lastaapps.database
 
 import com.squareup.sqldelight.db.SqlDriver
-import org.koin.core.annotation.Factory
 import java.io.File
 
-@Factory
 class JvmDatabaseDriverFactoryImpl(private val file: File) : DriverFactory {
     override fun createDriver(): SqlDriver {
         return JvmSqliteDriver(PIDDatabase.Schema, file.absolutePath)

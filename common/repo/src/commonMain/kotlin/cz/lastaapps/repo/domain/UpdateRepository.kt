@@ -21,9 +21,10 @@ package cz.lastaapps.repo.domain
 
 import cz.lastaapps.base.Resultus
 import cz.lastaapps.repo.domain.model.DataVersion
+import kotlinx.coroutines.flow.Flow
 
 internal interface UpdateRepository {
     suspend fun updateFromRepo(force: Boolean): Resultus<Unit>
 
-    suspend fun getConfig(): DataVersion?
+    suspend fun getConfig(): Flow<DataVersion>
 }

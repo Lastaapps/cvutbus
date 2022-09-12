@@ -17,33 +17,25 @@
  * along with ČVUT Bus.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package cz.lastaapps.repo.di
+package cz.lastaapps.database.di
 
-import cz.lastaapps.repo.data.PIDRepoImpl
-import cz.lastaapps.repo.domain.PIDRepo
-import cz.lastaapps.repo.domain.usecases.*
-import io.ktor.client.*
+import cz.lastaapps.database.DriverFactory
+import cz.lastaapps.database.createDatabase
+import cz.lastaapps.database.data.PIDDataSourceImpl
+import cz.lastaapps.database.data.UpdateDataSourceImpl
+import cz.lastaapps.database.domain.PIDDataSource
+import cz.lastaapps.database.domain.UpdateDataSource
 import org.koin.core.module.Module
 import org.koin.core.module.dsl.bind
 import org.koin.core.module.dsl.factoryOf
-import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.module
 
 internal expect val platformModule: Module
 
-val repoModule = module {
+val databaseModule = module {
     includes(platformModule)
-    singleOf(::PIDRepoImpl) { bind<PIDRepo>() }
-    single { httpClient() }
 
-    factoryOf(::GetConnectionsUseCaseImpl) { bind<GetConnectionsUseCase>() }
-    factoryOf(::GetDataVersionUseCaseImpl) { bind<GetDataVersionUseCase>() }
-    factoryOf(::GetDeparturesUseCaseImpl) { bind<GetDeparturesUseCase>() }
-    factoryOf(::UpdateDatabaseUseCaseImpl) { bind<UpdateDatabaseUseCase>() }
-    factoryOf(::GetConnectionsUseCaseImpl) { bind<GetConnectionsUseCase>() }
-}
-
-private fun httpClient(): HttpClient = HttpClient {
-    expectSuccess = true
-    followRedirects = true
+    factory { createDatabase(get<DriverFactory>().createDriver()) }
+    factoryOf(::PIDDataSourceImpl) { bind<PIDDataSource>() }
+    factoryOf(::UpdateDataSourceImpl) { bind<UpdateDataSource>() }
 }

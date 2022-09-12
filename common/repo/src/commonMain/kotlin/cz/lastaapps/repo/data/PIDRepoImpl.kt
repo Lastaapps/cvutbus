@@ -21,6 +21,7 @@ package cz.lastaapps.repo.data
 
 import cz.lastaapps.database.domain.PIDDataSource
 import cz.lastaapps.database.domain.model.DepartureInfo
+import cz.lastaapps.database.domain.model.StopPair
 import cz.lastaapps.database.domain.model.TransportConnection
 import cz.lastaapps.repo.domain.PIDRepo
 import cz.lastaapps.repo.util.secondsTicker
@@ -38,6 +39,9 @@ internal class PIDRepoImpl(private val pidDataSource: PIDDataSource) : PIDRepo {
     companion object {
         private val log = logging()
     }
+
+    override suspend fun getConnections(): Flow<List<StopPair>> =
+        pidDataSource.getConnections()
 
     override suspend fun getData(
         from: Instant,

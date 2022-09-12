@@ -21,9 +21,10 @@ package cz.lastaapps.repo.data.preferences
 
 import com.russhwolf.settings.ExperimentalSettingsApi
 import com.russhwolf.settings.coroutines.FlowSettings
-import com.russhwolf.settings.coroutines.toBlockingSettings
-import com.russhwolf.settings.serialization.decodeValueOrNull
-import com.russhwolf.settings.serialization.encodeValue
+import cz.lastaapps.repo.util.getSerializableOrNull
+import cz.lastaapps.repo.util.getSerializableOrNullFlow
+import cz.lastaapps.repo.util.putSerializable
+import kotlinx.coroutines.flow.Flow
 import kotlinx.datetime.LocalDate
 import kotlinx.serialization.ExperimentalSerializationApi
 
@@ -31,13 +32,18 @@ internal interface ConfigPreferences {
     suspend fun getDownloadUrl(): String
 
     suspend fun getLastChecked(): LocalDate?
+    fun getLastCheckedFlow(): Flow<LocalDate?>
+
     suspend fun getReleaseDate(): LocalDate?
+    fun getReleaseDateFlow(): Flow<LocalDate?>
+
     suspend fun getValidUntil(): LocalDate?
+    fun getValidUntilFlow(): Flow<LocalDate?>
+
     suspend fun updateLastChecked(lastChecked: LocalDate)
     suspend fun updateData(releaseDate: LocalDate, validUntil: LocalDate)
 }
 
-// TODO resolve flow outputs
 @ExperimentalSerializationApi
 @OptIn(ExperimentalSettingsApi::class)
 internal class ConfigPreferencesImpl(
@@ -53,7 +59,6 @@ internal class ConfigPreferencesImpl(
         private const val validUntilKey = "valid_until"
     }
 
-    private val blk = set.toBlockingSettings()
     private val ldSer = LocalDate.serializer()
 
     override suspend fun getDownloadUrl(): String =
@@ -62,21 +67,30 @@ internal class ConfigPreferencesImpl(
 
     // ---------------------------------------------------------------------------------------------
     override suspend fun getLastChecked(): LocalDate? =
-        blk.decodeValueOrNull(ldSer, lastCheckedKey)
+        set.getSerializableOrNull(ldSer, lastCheckedKey)
+
+    override fun getLastCheckedFlow(): Flow<LocalDate?> =
+        set.getSerializableOrNullFlow(ldSer, lastCheckedKey)
 
     override suspend fun updateLastChecked(lastChecked: LocalDate) =
-        blk.encodeValue(ldSer, lastCheckedKey, lastChecked)
+        set.putSerializable(ldSer, lastCheckedKey, lastChecked)
 
 
     // ---------------------------------------------------------------------------------------------
     override suspend fun getReleaseDate(): LocalDate? =
-        blk.decodeValueOrNull(ldSer, releaseKey)
+        set.getSerializableOrNull(ldSer, releaseKey)
+
+    override fun getReleaseDateFlow(): Flow<LocalDate?> =
+        set.getSerializableOrNullFlow(ldSer, releaseKey)
 
     override suspend fun getValidUntil(): LocalDate? =
-        blk.decodeValueOrNull(ldSer, validUntilKey)
+        set.getSerializableOrNull(ldSer, validUntilKey)
+
+    override fun getValidUntilFlow(): Flow<LocalDate?> =
+        set.getSerializableOrNullFlow(ldSer, validUntilKey)
 
     override suspend fun updateData(releaseDate: LocalDate, validUntil: LocalDate) {
-        blk.encodeValue(ldSer, releaseKey, releaseDate)
-        blk.encodeValue(ldSer, validUntilKey, validUntil)
+        set.putSerializable(ldSer, releaseKey, releaseDate)
+        set.putSerializable(ldSer, validUntilKey, validUntil)
     }
 }

@@ -20,14 +20,19 @@
 package cz.lastaapps.plugin.multiplatform
 
 import com.android.build.gradle.LibraryExtension
-import cz.lastaapps.extensions.*
+import cz.lastaapps.extensions.alias
+import cz.lastaapps.extensions.libs
+import cz.lastaapps.extensions.multiplatform
+import cz.lastaapps.extensions.pluginManager
 import cz.lastaapps.plugin.BasePlugin
 import cz.lastaapps.plugin.android.common.KotlinBaseConvention
 import cz.lastaapps.plugin.android.config.configureKotlinAndroid
 import org.gradle.api.JavaVersion
 import org.gradle.api.tasks.testing.Test
-import org.gradle.kotlin.dsl.*
-import org.jetbrains.kotlin.gradle.dsl.kotlinExtension
+import org.gradle.kotlin.dsl.apply
+import org.gradle.kotlin.dsl.configure
+import org.gradle.kotlin.dsl.get
+import org.gradle.kotlin.dsl.withType
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 @Suppress("unused")
@@ -36,7 +41,6 @@ class KMPLibraryConvention : BasePlugin({
         alias(libs.plugins.kotlin.multiplatform)
         alias(libs.plugins.kotlin.serialization)
         alias(libs.plugins.android.library)
-        alias(libs.plugins.google.ksp)
     }
 
     apply<KotlinBaseConvention>()
@@ -49,12 +53,6 @@ class KMPLibraryConvention : BasePlugin({
                     "androidTestFixturesDebug", "androidTestFixturesRelease",
                 ).contains(sourceSet.name)
             }
-        }
-    }
-
-    kotlinExtension.apply {
-        sourceSets.all {
-            kotlin.srcDir("build/generated/ksp/$name/kotlin")
         }
     }
 
@@ -151,7 +149,6 @@ class KMPLibraryConvention : BasePlugin({
                     implementation(libs.logback.core)
                     implementation(libs.logback.classic)
                     implementation(libs.slf4j)
-                    kotlin.srcDir("build/generated/ksp/jvm/jvmMain/kotlin")
                 }
             }
 
@@ -163,20 +160,6 @@ class KMPLibraryConvention : BasePlugin({
                     implementation(libs.junit5.jupiter.api)
                     implementation(libs.junit5.jupiter.runtime)
                 }
-            }
-        }
-    }
-
-    dependencies {
-        add("kspCommonMainMetadata", libs.koin.annotations.compiler)
-        add("kspAndroid", libs.koin.annotations.compiler)
-        add("kspJvm", libs.koin.annotations.compiler)
-    }
-
-    androidLibrary {
-        kotlinExtension.apply {
-            sourceSets.all {
-                kotlin.srcDir("build/generated/ksp/android/$name/kotlin")
             }
         }
     }

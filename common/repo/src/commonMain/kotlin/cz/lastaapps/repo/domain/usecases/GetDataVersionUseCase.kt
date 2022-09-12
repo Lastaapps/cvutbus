@@ -17,21 +17,18 @@
  * along with ČVUT Bus.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package cz.lastaapps.database
+package cz.lastaapps.repo.domain.usecases
 
-import android.content.Context
-import com.squareup.sqldelight.android.AndroidSqliteDriver
-import com.squareup.sqldelight.db.SqlDriver
+import cz.lastaapps.base.usecase.UseCaseNoParams
+import cz.lastaapps.base.usecase.UseCaseNoParamsImpl
+import cz.lastaapps.repo.domain.UpdateRepository
+import cz.lastaapps.repo.domain.model.DataVersion
+import kotlinx.coroutines.flow.Flow
 
-class PIDDatabaseDriverFactory(private val context: Context) :
-    DriverFactory by AndroidDatabaseDriverFactoryImpl(context, "pid")
+interface GetDataVersionUseCase : UseCaseNoParams<Flow<DataVersion>>
 
-class AndroidDatabaseDriverFactoryImpl(
-    private val context: Context,
-    private val name: String
-) :
-    DriverFactory {
-    override fun createDriver(): SqlDriver {
-        return AndroidSqliteDriver(PIDDatabase.Schema, context, name)
-    }
+internal class GetDataVersionUseCaseImpl(
+    private val repo: UpdateRepository,
+) : GetDataVersionUseCase, UseCaseNoParamsImpl<Flow<DataVersion>>() {
+    override suspend fun doWork(): Flow<DataVersion> = repo.getConfig()
 }

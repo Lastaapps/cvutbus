@@ -17,19 +17,24 @@
  * along with ČVUT Bus.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package cz.lastaapps.database.domain
+package cz.lastaapps.repo.domain.usecases
 
+import cz.lastaapps.base.usecase.UseCase
+import cz.lastaapps.base.usecase.UseCaseImpl
+import cz.lastaapps.base.usecase.UseCaseParam
 import cz.lastaapps.database.domain.model.DepartureInfo
-import cz.lastaapps.database.domain.model.StopPair
 import cz.lastaapps.database.domain.model.TransportConnection
+import cz.lastaapps.repo.domain.PIDRepo
 import kotlinx.coroutines.flow.Flow
-import kotlinx.datetime.Instant
+import kotlinx.datetime.Clock
 
-interface PIDDataSource {
+interface GetDeparturesUseCase : UseCase<GetDeparturesUseCase.Params, Flow<List<DepartureInfo>>> {
+    data class Params(val pair: TransportConnection) : UseCaseParam
+}
 
-    suspend fun getConnections(): Flow<List<StopPair>>
-
-    suspend fun getData(
-        from: Instant, connection: TransportConnection,
-    ): Flow<List<DepartureInfo>>
+internal class GetDeparturesUseCaseImpl(
+    private val repo: PIDRepo,
+) : GetDeparturesUseCase, UseCaseImpl<GetDeparturesUseCase.Params, Flow<List<DepartureInfo>>>() {
+    override suspend fun doWork(params: GetDeparturesUseCase.Params): Flow<List<DepartureInfo>> =
+        repo.getLatestData(params.pair, { Clock.System.now() })
 }

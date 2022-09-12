@@ -17,15 +17,19 @@
  * along with ČVUT Bus.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package cz.lastaapps.database
+package cz.lastaapps.repo.domain.usecases
 
-import org.koin.core.module.Module
-import org.koin.dsl.module
+import cz.lastaapps.base.usecase.UseCaseNoParams
+import cz.lastaapps.base.usecase.UseCaseNoParamsImpl
+import cz.lastaapps.database.domain.model.StopPair
+import cz.lastaapps.repo.domain.PIDRepo
+import kotlinx.coroutines.flow.Flow
 
-internal expect val platformModule: Module
+interface GetConnectionsUseCase : UseCaseNoParams<Flow<List<StopPair>>>
 
-val databaseModule = module {
-    includes(platformModule)
-
-    factory { createDatabase(get<DriverFactory>().createDriver()) }
+internal class GetConnectionsUseCaseImpl(
+    private val repo: PIDRepo,
+) : GetConnectionsUseCase, UseCaseNoParamsImpl<Flow<List<StopPair>>>() {
+    override suspend fun doWork(): Flow<List<StopPair>> =
+        repo.getConnections()
 }

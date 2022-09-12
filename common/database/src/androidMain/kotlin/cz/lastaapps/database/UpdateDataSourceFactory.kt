@@ -20,8 +20,8 @@
 package cz.lastaapps.database
 
 import com.squareup.sqldelight.db.SqlDriver
-import cz.lastaapps.database.data.UpdateDataSourceImp
+import cz.lastaapps.database.data.UpdateDataSourceImpl
 import cz.lastaapps.database.domain.UpdateDataSource
 
 fun createUpdateDatabaseSource(driver: SqlDriver): UpdateDataSource =
-    UpdateDataSourceImp(createDatabase(driver))
+    UpdateDataSourceImpl(createDatabase(driver))

@@ -45,9 +45,7 @@ import org.koin.dsl.module
 )
 actual val platformModule = module {
     single {
-        ConfigPreferencesImpl(
-            DataStoreSettings(androidApplication().updateDataStore)
-        )
+        ConfigPreferencesImpl(DataStoreSettings(androidApplication().updateDataStore))
     } bind ConfigPreferences::class
 
     singleOf(::UpdateRepositoryImpl) { bind<UpdateRepository>() }

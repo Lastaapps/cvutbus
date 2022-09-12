@@ -22,7 +22,7 @@ package cz.lastaapps.repo.domain.model
 import kotlinx.datetime.LocalDate
 
 data class DataVersion(
-    val releaseDate: LocalDate,
-    val validUntil: LocalDate,
-    val lastChecked: LocalDate,
+    val releaseDate: LocalDate?,
+    val validUntil: LocalDate?,
+    val lastChecked: LocalDate?,
 )

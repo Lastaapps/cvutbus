@@ -20,6 +20,7 @@
 package cz.lastaapps.repo.domain
 
 import cz.lastaapps.database.domain.model.DepartureInfo
+import cz.lastaapps.database.domain.model.StopPair
 import cz.lastaapps.database.domain.model.TransportConnection
 import kotlinx.coroutines.flow.Flow
 import kotlinx.datetime.Clock
@@ -28,6 +29,9 @@ import kotlin.time.Duration
 import kotlin.time.Duration.Companion.minutes
 
 internal interface PIDRepo {
+
+    suspend fun getConnections(): Flow<List<StopPair>>
+
     suspend fun getData(
         from: Instant,
         connection: TransportConnection,

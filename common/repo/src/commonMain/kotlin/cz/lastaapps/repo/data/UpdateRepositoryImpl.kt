@@ -29,6 +29,8 @@ import cz.lastaapps.repo.data.api.ConfigApi
 import cz.lastaapps.repo.data.preferences.ConfigPreferences
 import cz.lastaapps.repo.domain.UpdateRepository
 import cz.lastaapps.repo.domain.model.DataVersion
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.combine
 import kotlinx.datetime.Clock
 import kotlinx.datetime.DateTimeUnit
 import kotlinx.datetime.plus
@@ -86,11 +88,11 @@ internal class UpdateRepositoryImpl(
         return unitResultus
     }
 
-    override suspend fun getConfig(): DataVersion? = with(pref) {
-        DataVersion(
-            lastChecked = getLastChecked() ?: return@with null,
-            releaseDate = getReleaseDate() ?: return@with null,
-            validUntil = getValidUntil() ?: return@with null,
-        )
+    override suspend fun getConfig(): Flow<DataVersion> = with(pref) {
+        combine(
+            getLastCheckedFlow(),
+            getReleaseDateFlow(),
+            getValidUntilFlow(),
+        ) { latest, release, valid -> DataVersion(latest, release, valid) }
     }
 }

@@ -17,11 +17,19 @@
  * along with ČVUT Bus.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package cz.lastaapps.database
+package cz.lastaapps.base.usecase
 
-import org.koin.dsl.module
-import org.koin.ksp.generated.defaultModule
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
+import kotlin.coroutines.CoroutineContext
 
-actual val platformModule = module {
-    includes(defaultModule)
+interface UseCase<P : UseCaseParam, R : Any?> {
+    suspend operator fun invoke(params: P): R
+}
+
+abstract class UseCaseImpl<P : UseCaseParam, R : Any?>(private val dispatcher: CoroutineContext = Dispatchers.Default) :
+    UseCase<P, R> {
+    override suspend fun invoke(params: P): R = withContext(dispatcher) { doWork(params) }
+
+    protected abstract suspend fun doWork(params: P): R
 }

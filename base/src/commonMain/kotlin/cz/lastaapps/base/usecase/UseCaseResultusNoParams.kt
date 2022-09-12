@@ -17,21 +17,20 @@
  * along with ČVUT Bus.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package cz.lastaapps.database
+package cz.lastaapps.base.usecase
 
-import android.content.Context
-import com.squareup.sqldelight.android.AndroidSqliteDriver
-import com.squareup.sqldelight.db.SqlDriver
+import cz.lastaapps.base.Resultus
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
+import kotlin.coroutines.CoroutineContext
 
-class PIDDatabaseDriverFactory(private val context: Context) :
-    DriverFactory by AndroidDatabaseDriverFactoryImpl(context, "pid")
+interface UseCaseResultusNoParams<R : Any> {
+    suspend operator fun invoke(): Resultus<R>
+}
 
-class AndroidDatabaseDriverFactoryImpl(
-    private val context: Context,
-    private val name: String
-) :
-    DriverFactory {
-    override fun createDriver(): SqlDriver {
-        return AndroidSqliteDriver(PIDDatabase.Schema, context, name)
-    }
+abstract class UseCaseResultusNoParamsImpl<R : Any>(private val dispatcher: CoroutineContext = Dispatchers.Default) :
+    UseCaseResultusNoParams<R> {
+    override suspend fun invoke(): Resultus<R> = withContext(dispatcher) { doWork() }
+
+    protected abstract suspend fun doWork(): Resultus<R>
 }

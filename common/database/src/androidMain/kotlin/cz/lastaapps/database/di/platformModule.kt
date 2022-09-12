@@ -17,21 +17,15 @@
  * along with ČVUT Bus.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package cz.lastaapps.database
+package cz.lastaapps.database.di
 
-import android.content.Context
-import com.squareup.sqldelight.android.AndroidSqliteDriver
-import com.squareup.sqldelight.db.SqlDriver
+import cz.lastaapps.database.AndroidDatabaseDriverFactoryImpl
+import cz.lastaapps.database.DriverFactory
+import org.koin.core.module.dsl.bind
+import org.koin.core.module.dsl.factoryOf
+import org.koin.dsl.module
 
-class PIDDatabaseDriverFactory(private val context: Context) :
-    DriverFactory by AndroidDatabaseDriverFactoryImpl(context, "pid")
 
-class AndroidDatabaseDriverFactoryImpl(
-    private val context: Context,
-    private val name: String
-) :
-    DriverFactory {
-    override fun createDriver(): SqlDriver {
-        return AndroidSqliteDriver(PIDDatabase.Schema, context, name)
-    }
+actual val platformModule = module {
+    factoryOf(::AndroidDatabaseDriverFactoryImpl) { bind<DriverFactory>() }
 }

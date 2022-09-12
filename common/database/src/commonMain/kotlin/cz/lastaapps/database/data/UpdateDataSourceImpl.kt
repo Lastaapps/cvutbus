@@ -33,10 +33,8 @@ import cz.lastaapps.database.domain.model.trip.TripId
 import cz.lastaapps.database.util.getAllColumnsMapper
 import cz.lastaapps.database.util.getAllConnectionMapper
 import kotlinx.datetime.LocalDate
-import org.koin.core.annotation.Factory
 
-@Factory
-internal class UpdateDataSourceImp(private val database: PIDDatabase) : UpdateDataSource {
+internal class UpdateDataSourceImpl(private val database: PIDDatabase) : UpdateDataSource {
     override fun inTransaction(block: () -> Unit) {
         database.transaction() { block() }
     }

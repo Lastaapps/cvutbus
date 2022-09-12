@@ -1,0 +1,56 @@
+/*
+ * Copyright 2022, Petr Laštovička as Lasta apps, All rights reserved
+ *
+ * This file is part of ČVUT Bus.
+ *
+ * ČVUT Bus is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * ČVUT Bus is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with ČVUT Bus.  If not, see <https://www.gnu.org/licenses/>.
+ */
+
+package cz.lastaapps.plugin.multiplatform
+
+import cz.lastaapps.extensions.*
+import cz.lastaapps.plugin.BasePlugin
+import org.gradle.kotlin.dsl.dependencies
+import org.jetbrains.kotlin.gradle.dsl.kotlinExtension
+
+class KMPKspConvention : BasePlugin({
+    pluginManager {
+        alias(libs.plugins.google.ksp)
+    }
+
+    dependencies {
+        add("kspCommonMainMetadata", libs.koin.annotations.compiler)
+        add("kspAndroid", libs.koin.annotations.compiler)
+        add("kspJvm", libs.koin.annotations.compiler)
+    }
+
+    multiplatform {
+        sourceSets.all {
+            kotlin.srcDir("build/generated/ksp/$name/kotlin")
+        }
+        sourceSets.apply {
+            getByName("jvmMain") {
+                kotlin.srcDir("build/generated/ksp/jvm/jvmMain/kotlin")
+            }
+        }
+    }
+
+    androidLibrary {
+        kotlinExtension.apply {
+            sourceSets.all {
+                kotlin.srcDir("build/generated/ksp/android/$name/kotlin")
+            }
+        }
+    }
+})

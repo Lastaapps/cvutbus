@@ -33,11 +33,9 @@ import cz.lastaapps.database.util.serviceToNormalDateTime
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import kotlinx.datetime.*
-import org.koin.core.annotation.Factory
 import org.lighthousegames.logging.logging
 import pid.GetAllForDays
 
-@Factory
 internal class PIDDataSourceImpl(
     private val database: PIDDatabase,
 ) : PIDDataSource {
