@@ -58,9 +58,12 @@ internal fun Project.configureComposeDependencies() {
         implementation(libs.accompanist.navigationAnimation)
         implementation(libs.accompanist.navigationMaterial)
         implementation(libs.accompanist.permission)
+        implementation(libs.accompanist.swipeToRefresh)
 
         implementation(libs.androidx.lifecycle.runtime)
+        implementation(libs.androidx.lifecycle.runtime.compose)
         implementation(libs.androidx.lifecycle.viewModel)
+        implementation(libs.androidx.lifecycle.viewModel.compose)
 
         implementation(libs.androidx.navigation.fragment)
         implementation(libs.androidx.navigation.ui)
