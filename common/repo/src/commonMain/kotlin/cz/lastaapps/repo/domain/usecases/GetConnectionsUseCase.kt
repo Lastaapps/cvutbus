@@ -21,7 +21,7 @@ package cz.lastaapps.repo.domain.usecases
 
 import cz.lastaapps.base.usecase.UseCaseNoParams
 import cz.lastaapps.base.usecase.UseCaseNoParamsImpl
-import cz.lastaapps.database.domain.model.StopPair
+import cz.lastaapps.core.domain.model.StopPair
 import cz.lastaapps.repo.domain.PIDRepo
 import kotlinx.coroutines.flow.Flow
 

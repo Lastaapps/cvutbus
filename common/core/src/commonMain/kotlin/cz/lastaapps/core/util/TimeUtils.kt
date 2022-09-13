@@ -18,7 +18,7 @@
  */
 
 
-package cz.lastaapps.database.util
+package cz.lastaapps.core.util
 
 import kotlinx.datetime.*
 

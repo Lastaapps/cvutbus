@@ -19,7 +19,7 @@
 
 package cz.lastaapps.database.domain.model.calendar
 
-import cz.lastaapps.database.util.index
+import cz.lastaapps.core.util.index
 import kotlinx.datetime.DayOfWeek
 import kotlinx.datetime.LocalDate
 

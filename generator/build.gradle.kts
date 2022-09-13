@@ -51,6 +51,7 @@ application {
 
 dependencies {
     implementation(projects.common.database)
+    implementation(projects.common.core)
 
     implementation(libs.ktor.client.core)
     implementation(libs.ktor.client.cio)

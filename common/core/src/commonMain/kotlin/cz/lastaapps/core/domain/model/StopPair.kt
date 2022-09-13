@@ -17,21 +17,11 @@
  * along with ČVUT Bus.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package cz.lastaapps.database.domain.model
+package cz.lastaapps.core.domain.model
 
-sealed class Direction(private val isIn: Boolean) {
-    object Outbound : Direction(false) {
-        override fun toString(): String = "Outbound"
-    }
 
-    object Inbound : Direction(true) {
-        override fun toString(): String = "Inbound"
-    }
-
-    val toBool get() = isIn
-
-    companion object {
-        fun fromBoolean(boolean: Boolean) =
-            if (boolean == Outbound.toBool) Outbound else Inbound
-    }
-}
+data class StopPair(
+    val id: Int,
+    val stop1: StopName,
+    val stop2: StopName,
+)

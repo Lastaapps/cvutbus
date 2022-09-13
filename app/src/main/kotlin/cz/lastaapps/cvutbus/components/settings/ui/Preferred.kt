@@ -23,13 +23,10 @@ import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import cz.lastaapps.core.domain.model.StopPair
 import cz.lastaapps.cvutbus.R
 import cz.lastaapps.cvutbus.components.settings.SettingsViewModel
 import cz.lastaapps.cvutbus.components.settings.modules.*
-import cz.lastaapps.database.domain.model.Direction
-import cz.lastaapps.database.domain.model.StopPair
-import cz.lastaapps.database.domain.model.StopPairs
-import cz.lastaapps.database.domain.model.TransportConnection
 
 /**
  * Ready for the future where there may be more connection added
@@ -80,8 +77,14 @@ fun PreferredDirectionSelection(
     val stopPair by viewModel.store.preferredStopPair.collectAsState(initial = null)
     if (stopPair == null) return
 
-    val inboundInfo = TransportConnection.fromStopPair(stopPair!!.stopPair, Direction.Inbound)
-    val outboundInfo = TransportConnection.fromStopPair(stopPair!!.stopPair, Direction.Outbound)
+    val inboundInfo = TransportConnection.fromStopPair(
+        stopPair!!.stopPair,
+        cz.lastaapps.core.domain.model.Direction.Inbound
+    )
+    val outboundInfo = TransportConnection.fromStopPair(
+        stopPair!!.stopPair,
+        cz.lastaapps.core.domain.model.Direction.Outbound
+    )
 
     val options = listOf(
         PreferredDirection.Inbound to

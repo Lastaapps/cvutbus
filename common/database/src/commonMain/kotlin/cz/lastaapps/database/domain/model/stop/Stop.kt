@@ -19,6 +19,8 @@
 
 package cz.lastaapps.database.domain.model.stop
 
+import cz.lastaapps.core.domain.model.StopName
+
 data class Stop(
     val stopId: StopId,
     val name: StopName,

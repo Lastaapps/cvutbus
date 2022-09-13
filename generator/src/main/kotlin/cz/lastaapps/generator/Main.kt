@@ -17,13 +17,15 @@
  * along with ČVUT Bus.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+@file:Suppress("BlockingMethodInNonBlockingContext")
+
 package cz.lastaapps.generator
 
+import cz.lastaapps.core.util.CET
 import cz.lastaapps.database.JvmDatabaseDriverFactoryImpl
 import cz.lastaapps.database.MemoryDriverFactory
 import cz.lastaapps.database.createUpdateDatabaseSource
 import cz.lastaapps.database.domain.UpdateDataSource
-import cz.lastaapps.database.util.CET
 import cz.lastaapps.generator.model.Config
 import cz.lastaapps.generator.model.ConfigV1
 import cz.lastaapps.generator.model.StopPairs

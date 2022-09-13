@@ -17,7 +17,7 @@
  * along with ČVUT Bus.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package cz.lastaapps.database.domain.model.stop
+package cz.lastaapps.core.domain.model
 
 @JvmInline
 value class StopName(val name: String)

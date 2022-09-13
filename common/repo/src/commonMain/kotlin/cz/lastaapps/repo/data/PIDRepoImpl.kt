@@ -19,10 +19,10 @@
 
 package cz.lastaapps.repo.data
 
+import cz.lastaapps.core.domain.model.DepartureInfo
+import cz.lastaapps.core.domain.model.StopPair
+import cz.lastaapps.core.domain.model.TransportConnection
 import cz.lastaapps.database.domain.PIDDataSource
-import cz.lastaapps.database.domain.model.DepartureInfo
-import cz.lastaapps.database.domain.model.StopPair
-import cz.lastaapps.database.domain.model.TransportConnection
 import cz.lastaapps.repo.domain.PIDRepo
 import cz.lastaapps.repo.util.secondsTicker
 import kotlinx.collections.immutable.toImmutableList

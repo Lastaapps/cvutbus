@@ -19,7 +19,7 @@
 
 package cz.lastaapps.repo.util
 
-import cz.lastaapps.database.util.roundToSeconds
+import cz.lastaapps.core.util.roundToSeconds
 import kotlinx.coroutines.delay
 import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant

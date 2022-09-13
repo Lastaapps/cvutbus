@@ -19,14 +19,14 @@
 
 package cz.lastaapps.database.domain
 
+import cz.lastaapps.core.domain.model.StopName
+import cz.lastaapps.core.domain.model.StopPair
 import cz.lastaapps.database.domain.model.RecordDto
-import cz.lastaapps.database.domain.model.StopPair
 import cz.lastaapps.database.domain.model.calendar.ServiceDayTime
 import cz.lastaapps.database.domain.model.calendar.ServiceDays
 import cz.lastaapps.database.domain.model.calendar.ServiceId
 import cz.lastaapps.database.domain.model.route.RouteId
 import cz.lastaapps.database.domain.model.stop.StopId
-import cz.lastaapps.database.domain.model.stop.StopName
 import cz.lastaapps.database.domain.model.trip.TripId
 import kotlinx.datetime.LocalDate
 

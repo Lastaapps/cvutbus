@@ -3,7 +3,6 @@ import cz.lastaapps.database.domain.model.route.RouteId;
 import cz.lastaapps.database.domain.model.trip.TripId;
 
 
-
 CREATE TABLE trips (
     trip_id TEXT AS TripId NOT NULL PRIMARY KEY,
     route_id INTEGER AS RouteId NOT NULL,

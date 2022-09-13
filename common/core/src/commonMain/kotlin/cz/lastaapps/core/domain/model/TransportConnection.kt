@@ -17,9 +17,7 @@
  * along with ČVUT Bus.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package cz.lastaapps.database.domain.model
-
-import cz.lastaapps.database.domain.model.stop.StopName
+package cz.lastaapps.core.domain.model
 
 data class TransportConnection(
     private val stop1: StopName,

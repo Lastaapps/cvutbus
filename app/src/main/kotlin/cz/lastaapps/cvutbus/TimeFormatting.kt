@@ -21,13 +21,14 @@ package cz.lastaapps.cvutbus
 
 import android.content.Context
 import android.text.format.DateFormat
-import cz.lastaapps.database.util.toHours
-import cz.lastaapps.database.util.toMinutes
-import cz.lastaapps.database.util.toSeconds
+import cz.lastaapps.core.util.toHours
+import cz.lastaapps.core.util.toMinutes
+import cz.lastaapps.core.util.toSeconds
 import kotlinx.datetime.toJavaLocalDate
 import kotlinx.datetime.toJavaLocalDateTime
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
+import kotlin.time.Duration
 
 fun kotlinx.datetime.LocalDate.format(formatter: DateTimeFormatter): String =
     toJavaLocalDate().format(formatter)
@@ -60,8 +61,7 @@ fun java.time.LocalDateTime.localizedFormat(use24: Boolean): String =
     toLocalTime().localizedFormat(use24)
 
 
-
-fun kotlin.time.Duration.countdownFormat(showSeconds: Boolean): String {
+fun Duration.countdownFormat(showSeconds: Boolean): String {
     val hours = toHours()
     val minutes = toMinutes()
     val seconds = toSeconds()

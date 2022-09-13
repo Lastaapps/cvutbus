@@ -48,7 +48,6 @@ import cz.lastaapps.cvutbus.components.battery.BatteryChoiceDialog
 import cz.lastaapps.cvutbus.components.battery.shouldShowBattery
 import cz.lastaapps.cvutbus.components.pid.PIDViewModel
 import cz.lastaapps.cvutbus.components.settings.SettingsViewModel
-import cz.lastaapps.database.domain.model.Direction
 import org.lighthousegames.logging.logging
 
 @Composable
@@ -66,7 +65,7 @@ fun PIDIcons(
     val log = remember { logging("PIDIcons") }
     val onDirection: () -> Unit = {
         log.i { "Switching direction from $direction" }
-        pidViewModel.setDirection(if (direction != Direction.Inbound) Direction.Inbound else Direction.Outbound)
+        pidViewModel.setDirection(if (direction != cz.lastaapps.core.domain.model.Direction.Inbound) cz.lastaapps.core.domain.model.Direction.Inbound else cz.lastaapps.core.domain.model.Direction.Outbound)
     }
     val onCounter: () -> Unit = {
         log.i { "Switching time mode from $showCounter" }
@@ -87,7 +86,10 @@ fun PIDIcons(
                 Modifier.clickable(onClick = onDirection),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                SwitchDirectionIcon(direction == Direction.Inbound, onDirection)
+                SwitchDirectionIcon(
+                    direction == cz.lastaapps.core.domain.model.Direction.Inbound,
+                    onDirection
+                )
                 Text(stringResource(R.string.pid_button_direction))
             }
             Row(
@@ -111,7 +113,10 @@ fun PIDIcons(
             horizontalArrangement = Arrangement.spacedBy(8.dp, Alignment.CenterHorizontally),
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            SwitchDirectionIcon(direction == Direction.Inbound, onDirection)
+            SwitchDirectionIcon(
+                direction == cz.lastaapps.core.domain.model.Direction.Inbound,
+                onDirection
+            )
             ShowCounterIcon(showCounter, onCounter)
             BatteryOptimization(battery, onBattery)
         }

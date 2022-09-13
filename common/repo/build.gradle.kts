@@ -29,7 +29,8 @@ android {
 
 dependencies {
     commonMainImplementation(projects.base)
-    commonMainApi(projects.common.database)
+    commonMainImplementation(projects.common.database)
+    commonMainImplementation(projects.common.core)
 
     commonMainImplementation(libs.kotlinx.serializationJson)
 

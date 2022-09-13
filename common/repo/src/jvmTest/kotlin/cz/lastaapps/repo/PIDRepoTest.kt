@@ -19,13 +19,14 @@
 
 package cz.lastaapps.repo
 
+import cz.lastaapps.core.domain.model.DepartureInfo
+import cz.lastaapps.core.domain.model.StopName
+import cz.lastaapps.core.domain.model.StopPair
+import cz.lastaapps.core.domain.model.TransportConnection
 import cz.lastaapps.database.JvmDatabaseDriverFactoryImpl
 import cz.lastaapps.database.PIDDatabase
-import cz.lastaapps.database.domain.model.DepartureInfo
-import cz.lastaapps.database.domain.model.StopPair
-import cz.lastaapps.database.domain.model.TransportConnection
-import cz.lastaapps.database.domain.model.stop.StopName
-import cz.lastaapps.repo.domain.usecases.PIDRepo
+import cz.lastaapps.repo.data.PIDRepoImpl
+import cz.lastaapps.repo.domain.PIDRepo
 import io.kotest.matchers.collections.shouldContainInOrder
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.first

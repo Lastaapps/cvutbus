@@ -17,18 +17,10 @@
  * along with ČVUT Bus.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package cz.lastaapps.generator.model
+plugins {
+    id(libs.plugins.lastaapps.kmp.library.get().pluginId)
+}
 
-import cz.lastaapps.core.domain.model.StopName
-import cz.lastaapps.core.domain.model.StopPair
-
-
-object StopPairs {
-    val allStops = listOf(
-        StopPair(0, StopName("Koleje Strahov"), StopName("Dejvická")),
-        StopPair(1, StopName("Stadion Strahov"), StopName("Karlovo náměstí")),
-        StopPair(2, StopName("Stadion Strahov"), StopName("Anděl")),
-        StopPair(3, StopName("Lotyšská"), StopName("Karlovo náměstí")),
-        StopPair(4, StopName("Újezd"), StopName("Petřín")),
-    )
+android {
+    namespace = "cz.lastaapps.core"
 }

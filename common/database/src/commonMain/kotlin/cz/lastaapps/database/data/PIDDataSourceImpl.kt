@@ -21,13 +21,13 @@ package cz.lastaapps.database.data
 
 import com.squareup.sqldelight.runtime.coroutines.asFlow
 import com.squareup.sqldelight.runtime.coroutines.mapToList
+import cz.lastaapps.core.domain.model.DepartureInfo
+import cz.lastaapps.core.domain.model.StopPair
+import cz.lastaapps.core.domain.model.TransportConnection
+import cz.lastaapps.core.util.CET
 import cz.lastaapps.database.PIDDatabase
 import cz.lastaapps.database.domain.PIDDataSource
-import cz.lastaapps.database.domain.model.DepartureInfo
-import cz.lastaapps.database.domain.model.StopPair
-import cz.lastaapps.database.domain.model.TransportConnection
 import cz.lastaapps.database.domain.model.calendar.hasDay
-import cz.lastaapps.database.util.CET
 import cz.lastaapps.database.util.getAllConnectionMapper
 import cz.lastaapps.database.util.serviceToNormalDateTime
 import kotlinx.coroutines.flow.Flow

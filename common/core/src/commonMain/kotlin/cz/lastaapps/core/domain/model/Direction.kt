@@ -17,27 +17,21 @@
  * along with ČVUT Bus.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package cz.lastaapps.database.domain.model
+package cz.lastaapps.core.domain.model
 
-import cz.lastaapps.database.util.CET
-import kotlinx.datetime.Instant
-import kotlinx.datetime.LocalDateTime
-import kotlinx.datetime.toInstant
+sealed class Direction(private val isIn: Boolean) {
+    object Outbound : Direction(false) {
+        override fun toString(): String = "Outbound"
+    }
 
-data class DepartureInfo(
-    val dateTime: Instant,
-    val routeShortName: String,
-    val connection: TransportConnection,
-) : Comparable<DepartureInfo> {
+    object Inbound : Direction(true) {
+        override fun toString(): String = "Inbound"
+    }
 
-    /** Used for tests only */
-    constructor(
-        dateTime: LocalDateTime,
-        routeShortName: String,
-        connection: TransportConnection,
-    ) : this(dateTime.toInstant(CET), routeShortName, connection)
+    val toBool get() = isIn
 
-    override fun compareTo(other: DepartureInfo): Int {
-        return dateTime.compareTo(other.dateTime)
+    companion object {
+        fun fromBoolean(boolean: Boolean) =
+            if (boolean == Outbound.toBool) Outbound else Inbound
     }
 }

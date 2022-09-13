@@ -22,8 +22,8 @@ package cz.lastaapps.repo.domain.usecases
 import cz.lastaapps.base.usecase.UseCase
 import cz.lastaapps.base.usecase.UseCaseImpl
 import cz.lastaapps.base.usecase.UseCaseParam
-import cz.lastaapps.database.domain.model.DepartureInfo
-import cz.lastaapps.database.domain.model.TransportConnection
+import cz.lastaapps.core.domain.model.DepartureInfo
+import cz.lastaapps.core.domain.model.TransportConnection
 import cz.lastaapps.repo.domain.PIDRepo
 import kotlinx.coroutines.flow.Flow
 import kotlinx.datetime.Clock

@@ -17,12 +17,27 @@
  * along with ČVUT Bus.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package cz.lastaapps.database.domain.model
+package cz.lastaapps.core.domain.model
 
-import cz.lastaapps.database.domain.model.stop.StopName
+import cz.lastaapps.core.util.CET
+import kotlinx.datetime.Instant
+import kotlinx.datetime.LocalDateTime
+import kotlinx.datetime.toInstant
 
-data class StopPair(
-    val id: Int,
-    val stop1: StopName,
-    val stop2: StopName,
-)
+data class DepartureInfo(
+    val dateTime: Instant,
+    val routeShortName: String,
+    val connection: TransportConnection,
+) : Comparable<DepartureInfo> {
+
+    /** Used for tests only */
+    constructor(
+        dateTime: LocalDateTime,
+        routeShortName: String,
+        connection: TransportConnection,
+    ) : this(dateTime.toInstant(CET), routeShortName, connection)
+
+    override fun compareTo(other: DepartureInfo): Int {
+        return dateTime.compareTo(other.dateTime)
+    }
+}

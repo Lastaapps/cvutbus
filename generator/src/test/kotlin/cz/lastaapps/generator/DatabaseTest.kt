@@ -22,7 +22,7 @@ package cz.lastaapps.generator
 //import cz.lastaapps.database.MemoryDriverFactory
 //import cz.lastaapps.database.createUpdateDatabaseSource
 //import cz.lastaapps.database.domain.UpdateDataSource
-//import cz.lastaapps.database.domain.model.stop.StopName
+//import StopName
 //import kotlinx.coroutines.ExperimentalCoroutinesApi
 //import kotlinx.coroutines.test.runTest
 //import org.junit.jupiter.api.BeforeAll

@@ -1,5 +1,6 @@
+import cz.lastaapps.core.domain.model.StopName;
 import cz.lastaapps.database.domain.model.stop.StopId;
-import cz.lastaapps.database.domain.model.stop.StopName;
+
 
 
 CREATE TABLE stops (

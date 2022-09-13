@@ -23,7 +23,6 @@ import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.intPreferencesKey
 import cz.lastaapps.cvutbus.components.settings.SettingsStore
-import cz.lastaapps.database.domain.model.Direction
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
@@ -38,7 +37,7 @@ sealed class PreferredDirection(val id: Int) {
 private val preferredDirectionKey = intPreferencesKey("preferred_direction")
 private val defaultPreferredDirection = PreferredDirection.TimeBased
 private val latestDirectionKey = booleanPreferencesKey("latest_direction")
-private val defaultDirection = Direction.Outbound
+private val defaultDirection = cz.lastaapps.core.domain.model.Direction.Outbound
 
 val SettingsStore.preferredDirection: Flow<PreferredDirection>
     get() = store.data.map {
@@ -58,12 +57,13 @@ suspend fun SettingsStore.setPreferredDirection(preferred: PreferredDirection) {
 }
 
 
-val SettingsStore.latestDirection: Flow<Direction>
+val SettingsStore.latestDirection: Flow<cz.lastaapps.core.domain.model.Direction>
     get() = store.data.map { pref ->
-        pref[latestDirectionKey]?.let { Direction.fromBoolean(it) } ?: defaultDirection
+        pref[latestDirectionKey]?.let { cz.lastaapps.core.domain.model.Direction.fromBoolean(it) }
+            ?: defaultDirection
     }
 
-suspend fun SettingsStore.setLatestDirection(direction: Direction) {
+suspend fun SettingsStore.setLatestDirection(direction: cz.lastaapps.core.domain.model.Direction) {
     store.edit { it[latestDirectionKey] = direction.toBool }
     log.i { "Storing latest direction $direction" }
 }

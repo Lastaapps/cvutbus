@@ -20,9 +20,9 @@
 
 package cz.lastaapps.database.domain.model.calendar
 
-import cz.lastaapps.database.util.toHours
-import cz.lastaapps.database.util.toMinutes
-import cz.lastaapps.database.util.toSeconds
+import cz.lastaapps.core.util.toHours
+import cz.lastaapps.core.util.toMinutes
+import cz.lastaapps.core.util.toSeconds
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.seconds
 

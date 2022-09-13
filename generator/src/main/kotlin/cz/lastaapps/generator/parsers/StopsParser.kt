@@ -19,9 +19,9 @@
 
 package cz.lastaapps.generator.parsers
 
+import cz.lastaapps.core.domain.model.StopName
 import cz.lastaapps.database.domain.model.stop.Stop
 import cz.lastaapps.database.domain.model.stop.StopId
-import cz.lastaapps.database.domain.model.stop.StopName
 import java.io.BufferedReader
 import java.io.InputStream
 import java.io.InputStreamReader

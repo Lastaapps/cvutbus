@@ -19,16 +19,16 @@
 
 package cz.lastaapps.database.data
 
+import cz.lastaapps.core.domain.model.StopName
+import cz.lastaapps.core.domain.model.StopPair
 import cz.lastaapps.database.PIDDatabase
 import cz.lastaapps.database.domain.UpdateDataSource
 import cz.lastaapps.database.domain.model.RecordDto
-import cz.lastaapps.database.domain.model.StopPair
 import cz.lastaapps.database.domain.model.calendar.ServiceDayTime
 import cz.lastaapps.database.domain.model.calendar.ServiceDays
 import cz.lastaapps.database.domain.model.calendar.ServiceId
 import cz.lastaapps.database.domain.model.route.RouteId
 import cz.lastaapps.database.domain.model.stop.StopId
-import cz.lastaapps.database.domain.model.stop.StopName
 import cz.lastaapps.database.domain.model.trip.TripId
 import cz.lastaapps.database.util.getAllColumnsMapper
 import cz.lastaapps.database.util.getAllConnectionMapper

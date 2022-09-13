@@ -23,8 +23,8 @@ import cz.lastaapps.base.Resultus
 import cz.lastaapps.base.errors.UpdateErrors
 import cz.lastaapps.base.toResultus
 import cz.lastaapps.base.unitResultus
+import cz.lastaapps.core.util.CET
 import cz.lastaapps.database.domain.UpdateDataSource
-import cz.lastaapps.database.util.CET
 import cz.lastaapps.repo.data.api.ConfigApi
 import cz.lastaapps.repo.data.preferences.ConfigPreferences
 import cz.lastaapps.repo.domain.UpdateRepository

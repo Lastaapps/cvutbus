@@ -2,6 +2,7 @@ import cz.lastaapps.database.domain.model.route.RouteId;
 
 
 
+
 CREATE TABLE routes (
     route_id INTEGER AS RouteId NOT NULL PRIMARY KEY,
     route_short_name TEXT NOT NULL,

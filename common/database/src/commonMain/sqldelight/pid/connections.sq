@@ -1,4 +1,7 @@
-import cz.lastaapps.database.domain.model.stop.StopName;
+import cz.lastaapps.core.domain.model.StopName;
+
+
+
 
 CREATE TABLE connections (
     id INTEGER NOT NULL PRIMARY KEY,

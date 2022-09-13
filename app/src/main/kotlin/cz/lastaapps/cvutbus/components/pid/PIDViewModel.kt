@@ -23,15 +23,13 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.PagerState
+import cz.lastaapps.core.domain.model.DepartureInfo
+import cz.lastaapps.core.domain.model.TransportConnection
+import cz.lastaapps.core.util.CET
 import cz.lastaapps.cvutbus.api.PIDRepoProvider
 import cz.lastaapps.cvutbus.components.settings.SettingsStore
 import cz.lastaapps.cvutbus.components.settings.modules.*
-import cz.lastaapps.database.domain.model.DepartureInfo
-import cz.lastaapps.database.domain.model.Direction
-import cz.lastaapps.database.domain.model.TransportConnection
-import cz.lastaapps.database.util.CET
 import cz.lastaapps.repo.*
-import cz.lastaapps.repo.util.getRoundedNow
 import cz.lastaapps.repo.util.secondsTicker
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
@@ -58,11 +56,11 @@ class PIDViewModel constructor(
 
     private val mIsReady = MutableStateFlow(false)
 
-    val direction: StateFlow<Direction> get() = mDirection
+    val direction: StateFlow<cz.lastaapps.core.domain.model.Direction> get() = mDirection
 
-    private lateinit var mDirection: MutableStateFlow<Direction>
+    private lateinit var mDirection: MutableStateFlow<cz.lastaapps.core.domain.model.Direction>
 
-    fun setDirection(direction: Direction) {
+    fun setDirection(direction: cz.lastaapps.core.domain.model.Direction) {
         mDirection.tryEmit(direction)
         viewModelScope.launch { store.setLatestDirection(direction) }
     }
@@ -91,15 +89,15 @@ class PIDViewModel constructor(
 
             mDirection = MutableStateFlow(
                 when (preferredDirection) {
-                    PreferredDirection.Inbound -> Direction.Inbound
-                    PreferredDirection.Outbound -> Direction.Outbound
+                    PreferredDirection.Inbound -> cz.lastaapps.core.domain.model.Direction.Inbound
+                    PreferredDirection.Outbound -> cz.lastaapps.core.domain.model.Direction.Outbound
                     PreferredDirection.Remember -> latestDirection
                     PreferredDirection.TimeBased ->
                         if (Clock.System.now().toLocalDateTime(CET).hour < 12)
-                            Direction.Outbound else Direction.Inbound
+                            cz.lastaapps.core.domain.model.Direction.Outbound else cz.lastaapps.core.domain.model.Direction.Inbound
                     PreferredDirection.TimeBasedReversed ->
                         if (Clock.System.now().toLocalDateTime(CET).hour >= 12)
-                            Direction.Outbound else Direction.Inbound
+                            cz.lastaapps.core.domain.model.Direction.Outbound else cz.lastaapps.core.domain.model.Direction.Inbound
                 }
             )
 

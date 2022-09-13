@@ -63,15 +63,15 @@ class WorkerState constructor(
         val preferredStopPair = store.preferredStopPair.first()
 
         val direction = when (preferredDirection) {
-            PreferredDirection.Inbound -> Direction.Inbound
-            PreferredDirection.Outbound -> Direction.Outbound
+            PreferredDirection.Inbound -> cz.lastaapps.core.domain.model.Direction.Inbound
+            PreferredDirection.Outbound -> cz.lastaapps.core.domain.model.Direction.Outbound
             PreferredDirection.Remember -> latestDirection
             PreferredDirection.TimeBased ->
                 if (Clock.System.now().toLocalDateTime(CET).hour < 12)
-                    Direction.Outbound else Direction.Inbound
+                    cz.lastaapps.core.domain.model.Direction.Outbound else cz.lastaapps.core.domain.model.Direction.Inbound
             PreferredDirection.TimeBasedReversed ->
                 if (Clock.System.now().toLocalDateTime(CET).hour >= 12)
-                    Direction.Outbound else Direction.Inbound
+                    cz.lastaapps.core.domain.model.Direction.Outbound else cz.lastaapps.core.domain.model.Direction.Inbound
         }
 
         connection = MutableStateFlow(
