@@ -22,9 +22,14 @@ package cz.lastaapps.plugin.android
 import cz.lastaapps.extensions.implementation
 import cz.lastaapps.extensions.libs
 import cz.lastaapps.plugin.BasePlugin
+import cz.lastaapps.plugin.common.DetektConvention
+import org.gradle.kotlin.dsl.apply
 import org.gradle.kotlin.dsl.dependencies
 
 class AndroidBaseConvention : BasePlugin({
+
+    apply<DetektConvention>()
+
     dependencies {
         implementation(libs.androidx.appcompat)
         implementation(libs.androidx.lifecycle.runtime)

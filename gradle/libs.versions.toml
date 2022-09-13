@@ -19,6 +19,7 @@ logback = "1.4.0"
 coil = "2.2.0"
 russhwolf-settings = "0.9"
 dagger = "2.42"
+detekt = "1.21.0"
 espresso = "3.4.0"
 firebase-bom = "30.2.0"
 google-ksp = "1.7.10-1.0.6"
@@ -132,6 +133,8 @@ coil-svg = { module = "io.coil-kt:coil-svg", version.ref = "coil" }
 coil-video = { module = "io.coil-kt:coil-video", version.ref = "coil" }
 dagger-hilt = { module = "com.google.dagger:hilt-android", version.ref = "dagger" }
 dagger-hiltCompiler = { module = "com.google.dagger:hilt-android-compiler", version.ref = "dagger" }
+detekt-kode-compose = "ru.kode:detekt-rules-compose:1.2.1"
+detekt-twitter-compose = "com.twitter.compose.rules:detekt:0.0.6"
 espresso-accessibility = { module = "androidx.test.espresso:espresso-accessibility", version.ref = "espresso" }
 espresso-contrib = { module = "androidx.test.espresso:espresso-contrib", version.ref = "espresso" }
 espresso-core = { module = "androidx.test.espresso:espresso-core", version.ref = "espresso" }
@@ -151,6 +154,7 @@ google-mlkitBarcode = "com.google.mlkit:barcode-scanning:17.0.2"
 google-playServices = "com.google.android.play:core-ktx:1.8.1"
 google-playServicesLocation = "com.google.android.gms:play-services-location:20.0.0"
 gradlePlugins-android = { module = "com.android.tools.build:gradle", version.ref = "android-gradle" }
+gradlePlugins-detekt = { module = "io.gitlab.arturbosch.detekt:detekt-gradle-plugin", version.ref = "detekt" }
 gradlePlugins-kotlin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
 gradlePlugins-shadow = { module = "gradle.plugin.com.github.johnrengelman:shadow", version.ref = "shadow" }
 junit5-bom = { module = "org.junit:junit-bom", version.ref = "junit5-bom" }
@@ -239,6 +243,7 @@ android-application = { id = "com.android.application", version.ref = "android-g
 android-library = { id = "com.android.library", version.ref = "android-gradle" }
 benNamesVersions = "com.github.ben-manes.versions:0.42.0"
 daggerHilt = { id = "dagger.hilt.android.plugin", version.ref = "dagger" }
+detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
 firebase-crashlytics = "com.google.firebase.crashlytics:2.8.1"
 google-ksp = { id = "com.google.devtools.ksp", version.ref = "google-ksp" }
 java-kotlin = { id = "kotlin" }

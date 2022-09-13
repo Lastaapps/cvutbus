@@ -21,7 +21,9 @@ package cz.lastaapps.plugin.jvm
 
 import cz.lastaapps.extensions.*
 import cz.lastaapps.plugin.BasePlugin
+import cz.lastaapps.plugin.common.DetektConvention
 import org.gradle.api.tasks.testing.Test
+import org.gradle.kotlin.dsl.apply
 import org.gradle.kotlin.dsl.dependencies
 import org.gradle.kotlin.dsl.kotlin
 import org.gradle.kotlin.dsl.withType
@@ -36,6 +38,8 @@ class JvmAppConvention : BasePlugin({
         alias(libs.plugins.kotlin.jvm)
         alias(libs.plugins.shadow)
     }
+
+    apply<DetektConvention>()
 
     tasks.withType<Test> {
         useJUnitPlatform()

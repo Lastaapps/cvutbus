@@ -28,6 +28,7 @@ import cz.lastaapps.plugin.BasePlugin
 import cz.lastaapps.plugin.android.AndroidLibraryConvention
 import cz.lastaapps.plugin.android.common.KotlinBaseConvention
 import cz.lastaapps.plugin.android.config.configureKotlinAndroid
+import cz.lastaapps.plugin.common.DetektConvention
 import org.gradle.api.JavaVersion
 import org.gradle.api.tasks.testing.Test
 import org.gradle.kotlin.dsl.*
@@ -43,6 +44,7 @@ class KMPLibraryConvention : BasePlugin({
 
     apply<KotlinBaseConvention>()
     apply<AndroidLibraryConvention>()
+    apply<DetektConvention>()
 
     afterEvaluate {
         multiplatform {

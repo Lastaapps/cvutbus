@@ -1,4 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?><!--
+<?xml version="1.0" ?>
+<!--
   ~ Copyright 2022, Petr Laštovička as Lasta apps, All rights reserved
   ~
   ~ This file is part of ČVUT Bus.
@@ -17,4 +18,7 @@
   ~ along with ČVUT Bus.  If not, see <https://www.gnu.org/licenses/>.
   -->
 
-<manifest />
+<SmellBaseline>
+    <ManuallySuppressedIssues />
+    <CurrentIssues></CurrentIssues>
+</SmellBaseline>
